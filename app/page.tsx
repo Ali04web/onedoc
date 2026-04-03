@@ -137,7 +137,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="py-6 px-6 border-t-2 border-dashed border-[rgba(100,70,40,.15)] text-center">
         <div className="font-caveat text-[15px] text-ink4">
-          Made with ✍️ — OneDocs is free, open, and privacy-first.
+          Made by <a href="https://x.com/alivldm">Ali</a> — OneDocs is free, open, and privacy-first.
         </div>
       </footer>
     </div>
