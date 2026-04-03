@@ -43,8 +43,8 @@ const emojiToLucide: Record<string, keyof typeof Lucide> = {
   "🛡️": "ShieldCheck",
   "⚡": "Zap",
   "🌐": "Globe",
-  "𝕏": "Twitter",
-  "X": "Twitter",
+  "𝕏": "XBrand",
+  "X": "XBrand",
   "✉️": "Mail",
 };
 
@@ -56,6 +56,22 @@ interface IconProps extends React.SVGProps<SVGSVGElement> {
   sketchy?: boolean;
 }
 
+const XBrandIcon = ({ size = 24, ...props }: any) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    {...props}
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+);
+
+const CustomIcons: Record<string, any> = {
+  "XBrand": XBrandIcon
+};
+
 export function UIcon({ emoji, name, size = 24, color = "currentColor", sketchy = false, className = "", ...props }: IconProps) {
   let mappedName = name;
   if (emoji && emojiToLucide[emoji]) {
@@ -63,7 +79,11 @@ export function UIcon({ emoji, name, size = 24, color = "currentColor", sketchy 
   }
 
   // Fallback to a generic box if unknown symbol
-  const SelectedIcon = (mappedName ? (Lucide as any)[mappedName] : null) || Lucide.Box;
+  let SelectedIcon = (mappedName ? (Lucide as any)[mappedName] || CustomIcons[mappedName as string] : null);
+  
+  if (!SelectedIcon) {
+    SelectedIcon = Lucide.Box;
+  }
 
   return (
     <div className={`inline-flex items-center justify-center ${className}`} style={{ width: size, height: size, color }}>

@@ -54,7 +54,7 @@ export default function SupportPage() {
         <div className="flex justify-center">
           <Tip tip="Follow us on X (Twitter)" side="bottom">
             <a
-              href="https://x.com"
+              href="https://x.com/alivldm"
               target="_blank"
               rel="noopener noreferrer"
               className="py-[10px] px-[20px] bg-paper2 hover:bg-paper3 text-ink2 font-caveat text-[16px] font-bold rounded-[4px_12px_3px_10px] border-2 border-[rgba(100,70,40,.25)] shadow-[2px_2px_0_rgba(30,15,5,.08)] hover:shadow-[3px_3px_0_rgba(30,15,5,.12)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[8px]"
