@@ -48,9 +48,21 @@ export default function SupportPage() {
         <h1 className="font-caveat text-[32px] md:text-[42px] font-bold text-ink2 -rotate-[0.5deg] mb-2">
           Help & Support
         </h1>
-        <p className="font-patrick text-[15px] md:text-[16px] text-ink4 max-w-[440px] mx-auto leading-[1.7]">
+        <p className="font-patrick text-[15px] md:text-[16px] text-ink4 max-w-[440px] mx-auto leading-[1.7] mb-6">
           Find answers, learn tips, or reach out to us. We&apos;re here to help you get the most out of DocLens.
         </p>
+        <div className="flex justify-center">
+          <Tip tip="Follow us on X (Twitter)" side="bottom">
+            <a
+              href="https://x.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-[10px] px-[20px] bg-paper2 hover:bg-paper3 text-ink2 font-caveat text-[16px] font-bold rounded-[4px_12px_3px_10px] border-2 border-[rgba(100,70,40,.25)] shadow-[2px_2px_0_rgba(30,15,5,.08)] hover:shadow-[3px_3px_0_rgba(30,15,5,.12)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[8px]"
+            >
+              <Emoji symbol="𝕏" size={16} /> Connect on X
+            </a>
+          </Tip>
+        </div>
       </section>
 
       <div className="px-4 md:px-8 lg:px-16 pb-16 space-y-12">
@@ -183,14 +195,26 @@ export default function SupportPage() {
                   />
                 </Tip>
               </div>
-              <Tip tip="Submit your message — we typically reply within 24 hours" side="top">
-                <button
-                  type="submit"
-                  className="py-[12px] px-[24px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 cursor-pointer w-full sm:w-auto self-start flex items-center justify-center gap-[8px]"
-                >
-                  <Emoji symbol="✉️" size={18} /> Send Message
-                </button>
-              </Tip>
+              <div className="flex flex-wrap items-center gap-4">
+                <Tip tip="Submit your message — we typically reply within 24 hours" side="top">
+                  <button
+                    type="submit"
+                    className="py-[12px] px-[24px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 cursor-pointer w-full sm:w-auto flex items-center justify-center gap-[8px]"
+                  >
+                    <Emoji symbol="✉️" size={18} /> Send Message
+                  </button>
+                </Tip>
+                <Tip tip="Contact us on X (Twitter)" side="top">
+                  <a
+                    href="https://x.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-[12px] px-[24px] bg-paper2 hover:bg-paper3 text-ink2 font-caveat text-[18px] font-bold rounded-[4px_10px_3px_12px] border-2 border-[rgba(100,70,40,.28)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer w-full sm:w-auto flex items-center justify-center gap-[8px]"
+                  >
+                    <Emoji symbol="𝕏" size={18} /> Connect on X
+                  </a>
+                </Tip>
+              </div>
             </form>
           </SCard>
         </section>

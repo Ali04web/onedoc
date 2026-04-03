@@ -43,6 +43,9 @@ const emojiToLucide: Record<string, keyof typeof Lucide> = {
   "🛡️": "ShieldCheck",
   "⚡": "Zap",
   "🌐": "Globe",
+  "𝕏": "Twitter",
+  "X": "Twitter",
+  "✉️": "Mail",
 };
 
 interface IconProps extends React.SVGProps<SVGSVGElement> {
@@ -60,11 +63,11 @@ export function UIcon({ emoji, name, size = 24, color = "currentColor", sketchy 
   }
 
   // Fallback to a generic box if unknown symbol
-  const LucideIcon = mappedName ? Lucide[mappedName] as React.ElementType : Lucide.Box;
+  const SelectedIcon = (mappedName ? (Lucide as any)[mappedName] : null) || Lucide.Box;
 
   return (
     <div className={`inline-flex items-center justify-center ${className}`} style={{ width: size, height: size, color }}>
-      <LucideIcon
+      <SelectedIcon
         size={size}
         color="currentColor"
         strokeWidth={2.5}

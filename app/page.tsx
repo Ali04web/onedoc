@@ -55,7 +55,7 @@ export default function HomePage() {
           <span className="text-amber">understood</span>
         </h1>
         <p className="font-patrick text-[16px] md:text-[18px] text-ink4 max-w-[480px] leading-[1.75] mb-8">
-          Analyze, convert, and manage PDF & DOCX files — entirely in your browser.
+          Analyze, convert, and manage PDF & DOCX files. Entirely in your browser.
           No uploads, no accounts, no limits.
         </p>
         <div className="flex flex-wrap gap-3 justify-center">
