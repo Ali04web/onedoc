@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DocLens — Free Document Toolkit",
+  title: "OneDocs, Free Document Toolkit",
   description:
     "Analyze, convert, and manage PDF & DOCX documents entirely in your browser. No uploads, no accounts — 100% free.",
 };
