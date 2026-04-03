@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from "react";
 import { useScripts } from "@/app/hooks/useScripts";
-import { stem, dlBlob, dlText, parsePageRange } from "@/app/lib/utils";
+import { stem, dlBlob, dlText, parsePageRange, esc } from "@/app/lib/utils";
 import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
 
 declare global {
@@ -148,6 +148,81 @@ export default function PdfToolsPage() {
         return `✓ Rotated ${deg}°`;
       });
     },
+    pdfDocx: async () => {
+      const f = g("pdfDocx").file;
+      if (!f) return;
+      await run("pdfDocx", async () => {
+        const lib = pdfjs(), ab = await f.arrayBuffer(), pdf = await lib.getDocument({ data: ab }).promise;
+        const paragraphs: string[] = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const p = await pdf.getPage(i), c = await p.getTextContent();
+          const lines = c.items.map((x: any) => x.str).join(" ").split(/\n/);
+          lines.forEach((line: string) => {
+            if (line.trim()) paragraphs.push(line.trim());
+          });
+          paragraphs.push("");
+          s("pdfDocx", { prog: Math.round(i / pdf.numPages * 100) });
+        }
+        const bodyXml = paragraphs.map(p => p
+          ? `<w:p><w:r><w:t xml:space="preserve">${esc(p)}</w:t></w:r></w:p>`
+          : `<w:p/>`
+        ).join("\n");
+        const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+  xmlns:w10="urn:schemas-microsoft-com:office:word"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+  mc:Ignorable="w14 wp14">
+  <w:body>
+    ${bodyXml}
+    <w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr>
+  </w:body>
+</w:document>`;
+        const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`;
+        const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+        const zip = new window.JSZip();
+        zip.file("[Content_Types].xml", contentTypes);
+        zip.file("_rels/.rels", rels);
+        zip.file("word/document.xml", documentXml);
+        const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+        dlBlob(stem(f.name) + ".docx", blob);
+        return `✓ ${pdf.numPages} pages → DOCX`;
+      });
+    },
+    pdfLink: async () => {
+      const f = g("pdfLink").file;
+      if (!f) return;
+      await run("pdfLink", async () => {
+        const lib = pdfjs(), ab = await f.arrayBuffer(), pdf = await lib.getDocument({ data: ab }).promise;
+        const pages: string[] = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const p = await pdf.getPage(i), c = await p.getTextContent();
+          const text = c.items.map((x: any) => x.str).join(" ");
+          pages.push(text);
+          s("pdfLink", { prog: Math.round(i / pdf.numPages * 100) });
+        }
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(f.name)} — DocLens Viewer</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:Georgia,serif;background:#f7f0e3;color:#1c110a;padding:0}.header{background:#3d2510;color:#f7f0e3;padding:20px 32px;text-align:center;position:sticky;top:0;z-index:10}.header h1{font-size:22px;margin-bottom:4px}.header p{font-size:13px;opacity:.7}.page{max-width:820px;margin:24px auto;padding:28px 36px;background:#fff;border:1px solid #e3d8be;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.06);line-height:1.85;font-size:15px;white-space:pre-wrap;word-wrap:break-word}.page-num{text-align:center;font-size:12px;color:#b89060;margin:8px 0 16px;font-style:italic}.footer{text-align:center;padding:24px;font-size:12px;color:#b89060}@media(max-width:640px){.page{margin:12px 8px;padding:18px 16px;font-size:14px}.header{padding:14px 16px}.header h1{font-size:18px}}</style></head><body><div class="header"><h1>${esc(f.name)}</h1><p>${pdf.numPages} page${pdf.numPages > 1 ? "s" : ""} · Generated by DocLens</p></div>${pages.map((text, i) => `<div class="page-num">— Page ${i + 1} of ${pdf.numPages} —</div><div class="page">${esc(text)}</div>`).join("")}<div class="footer">Generated by DocLens · ${new Date().toLocaleDateString()}</div></body></html>`;
+        const blob = new Blob([html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+        s("pdfLink", { linkUrl: url });
+        return `✓ Opened as web page (${pdf.numPages} pages)`;
+      });
+    },
   };
 
   const cards = [
@@ -157,6 +232,8 @@ export default function PdfToolsPage() {
     { ico: "✂️", title: "Split PDF", desc: "Pull out specific page ranges", col: "#1a5c5c", rot: -0.2, tip: 'Enter pages like "1-3, 5, 7" to extract', body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("split").file} onFile={(f: File) => s("split", { file: f })} tip="The PDF you want to extract pages from" /><Tip tip='Examples: "1-3" · "2,4,6" · "1-3,7"'><HInput placeholder="Pages: 1-3, 5, 7" value={g("split").pages || ""} onChange={(e: any) => s("split", { pages: e.target.value })} /></Tip><CStat msg={g("split").status} type={g("split").statusType} /><HBtn onClick={convFns.split} disabled={!g("split").file || !g("split").pages} loading={g("split").loading} label="Extract Pages" tip="Saves only the pages you specified" /></> },
     { ico: "🖼️", title: "Images → PDF", desc: "Bundle JPG/PNG files into a PDF", col: "#1a3a6a", rot: 0.35, tip: "Images appear as full pages, in selection order", body: <><FZone accept="image/png,image/jpeg" label="Choose images (JPG/PNG)" multi files={g("imgPdf").files} onFiles={(f: File[]) => s("imgPdf", { files: f })} tip="Select multiple images at once" />{ML(g("imgPdf").files, "🖼️")}<CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} /><HBtn onClick={convFns.imgPdf} disabled={!(g("imgPdf").files?.length > 0)} loading={g("imgPdf").loading} label="Create PDF" tip="Each image becomes one full page" /></> },
     { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">↩ Rotate 90° clockwise</option><option value="180">↕ Rotate 180°</option><option value="270">↪ Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
+    { ico: "📝", title: "PDF → DOCX", desc: "Convert PDF text into an editable Word document", col: "#1a3c7a", rot: 0.25, tip: "Extracts text from each page and builds a real .docx file", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfDocx").file} onFile={(f: File) => s("pdfDocx", { file: f })} tip="The PDF to convert to Word format" />{g("pdfDocx").loading && (g("pdfDocx").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfDocx").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} /><HBtn onClick={convFns.pdfDocx} disabled={!g("pdfDocx").file} loading={g("pdfDocx").loading} label="Convert to DOCX" tip="Creates an editable .docx file from PDF text" /></> },
+    { ico: "🔗", title: "PDF → Link", desc: "Open your PDF as a viewable web page", col: "#1a5c5c", rot: -0.25, tip: "Renders all pages as a styled HTML page in a new tab", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfLink").file} onFile={(f: File) => s("pdfLink", { file: f })} tip="The PDF to view as a web page" />{g("pdfLink").loading && (g("pdfLink").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-teal transition-[width] duration-300" style={{ width: (g("pdfLink").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfLink").status} type={g("pdfLink").statusType} /><HBtn onClick={convFns.pdfLink} disabled={!g("pdfLink").file} loading={g("pdfLink").loading} label="Open as Web Page" tip="Opens a new tab with your PDF content as HTML" />{g("pdfLink").linkUrl && <div className="flex items-center gap-2 mt-1"><span className="font-caveat text-[13px] text-teal">✓ Page opened in new tab</span></div>}</> },
   ];
 
   return (

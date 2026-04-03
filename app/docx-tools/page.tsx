@@ -116,12 +116,92 @@ export default function DocxToolsPage() {
         return `✓ ${body.length} rows converted`;
       });
     },
+    docxPdf: async () => {
+      const f = g("docxPdf").file;
+      if (!f) return;
+      await run("docxPdf", async () => {
+        const ab = await f.arrayBuffer();
+        const result = await window.mammoth.extractRawText({ arrayBuffer: ab });
+        const text = result.value;
+        if (!text.trim()) throw new Error("No text content found in DOCX");
+        const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+        const pdf = await PDFDocument.create();
+        const font = await pdf.embedFont(StandardFonts.Helvetica);
+        const boldFont = await pdf.embedFont(StandardFonts.HelveticaBold);
+        const fontSize = 11;
+        const lineHeight = 16;
+        const margin = 54;
+        const pageWidth = 595;
+        const pageHeight = 842;
+        const maxTextWidth = pageWidth - margin * 2;
+        const allLines: string[] = [];
+        text.split("\n").forEach((line: string) => {
+          if (!line.trim()) {
+            allLines.push("");
+            return;
+          }
+          const words = line.split(/\s+/);
+          let currentLine = "";
+          for (const word of words) {
+            const test = currentLine ? currentLine + " " + word : word;
+            const width = font.widthOfTextAtSize(test, fontSize);
+            if (width > maxTextWidth && currentLine) {
+              allLines.push(currentLine);
+              currentLine = word;
+            } else {
+              currentLine = test;
+            }
+          }
+          if (currentLine) allLines.push(currentLine);
+        });
+        let page = pdf.addPage([pageWidth, pageHeight]);
+        let y = pageHeight - margin;
+        // Add title
+        page.drawText(f.name.replace(/\.docx$/i, ""), {
+          x: margin,
+          y,
+          size: 18,
+          font: boldFont,
+          color: rgb(0.12, 0.07, 0.04),
+        });
+        y -= 28;
+        // Draw separator line
+        page.drawLine({
+          start: { x: margin, y },
+          end: { x: pageWidth - margin, y },
+          thickness: 0.8,
+          color: rgb(0.8, 0.75, 0.68),
+        });
+        y -= 18;
+        for (const line of allLines) {
+          if (y < margin + lineHeight) {
+            page = pdf.addPage([pageWidth, pageHeight]);
+            y = pageHeight - margin;
+          }
+          if (line) {
+            page.drawText(line, {
+              x: margin,
+              y,
+              size: fontSize,
+              font: font,
+              color: rgb(0.1, 0.1, 0.1),
+            });
+          }
+          y -= lineHeight;
+        }
+        const bytes = await pdf.save();
+        dlBlob(stem(f.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
+        const pageCount = pdf.getPageCount();
+        return `✓ DOCX → PDF (${pageCount} page${pageCount > 1 ? "s" : ""})`;
+      });
+    },
   };
 
   const docxCards = [
     { ico: "🌐", title: "DOCX → HTML", desc: "Word doc into a styled webpage", col: "#1a5c5c", rot: 0.3, tip: "Preserves headings, bold, italic, and tables", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxHtml").file} onFile={(f: File) => s("docxHtml", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxHtml").status} type={g("docxHtml").statusType} /><HBtn onClick={convFns.docxHtml} disabled={!g("docxHtml").file} loading={g("docxHtml").loading} label="Convert & Download" tip="Downloads a self-contained .html file" /></> },
     { ico: "📄", title: "DOCX → TXT", desc: "Strip formatting, keep the text", col: "#5c1a1a", rot: -0.2, tip: "Plain text only — no bold, no structure", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxTxt").file} onFile={(f: File) => s("docxTxt", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxTxt").status} type={g("docxTxt").statusType} /><HBtn onClick={convFns.docxTxt} disabled={!g("docxTxt").file} loading={g("docxTxt").loading} label="Convert & Download" tip="Saves a clean .txt file" /></> },
     { ico: "📑", title: "DOCX → Markdown", desc: "Word to clean .md format", col: "#1a3c7a", rot: 0.2, tip: "Headings and formatting become Markdown syntax", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxMd").file} onFile={(f: File) => s("docxMd", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxMd").status} type={g("docxMd").statusType} /><HBtn onClick={convFns.docxMd} disabled={!g("docxMd").file} loading={g("docxMd").loading} label="Convert & Download" tip="Great for GitHub READMEs and note apps" /></> },
+    { ico: "📄", title: "DOCX → PDF", desc: "Convert Word document into a clean PDF", col: "#b02020", rot: -0.3, tip: "Extracts text and creates a properly formatted PDF with Helvetica font", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxPdf").file} onFile={(f: File) => s("docxPdf", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxPdf").status} type={g("docxPdf").statusType} /><HBtn onClick={convFns.docxPdf} disabled={!g("docxPdf").file} loading={g("docxPdf").loading} label="Convert to PDF" tip="Creates an A4 PDF with title and clean formatting" /></> },
   ];
 
   const textCards = [
@@ -139,7 +219,7 @@ export default function DocxToolsPage() {
 
       <div className="mb-[36px]">
         <SHead ico="📝" label="DOCX Conversions" sub="Convert Word documents to various formats" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[16px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
           {docxCards.map(({ ico, title, desc, col, rot, body, tip }) => (
             <Tip key={title} tip={tip} side="top">
               <CCard ico={ico} title={title} desc={desc} accentCol={col} rot={rot}>{body}</CCard>
