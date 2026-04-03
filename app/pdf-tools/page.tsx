@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { useScripts } from "../../hooks/useScripts";
-import { stem, dlBlob, dlText, parsePageRange } from "../../lib/utils";
-import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "../../components/DocLensUI";
+import { useScripts } from "@/app/hooks/useScripts";
+import { stem, dlBlob, dlText, parsePageRange } from "@/app/lib/utils";
+import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
 
 declare global {
   interface Window {

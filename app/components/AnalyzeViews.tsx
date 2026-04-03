@@ -8,7 +8,7 @@ export function TView({ text, searchQ }: any) {
     if (!searchQ || searchQ.length < 2) return e;
     return e.replace(new RegExp(escRe(esc(searchQ)), "gi"), (m: string) => `<mark style="background:rgba(255,215,60,.42);border-radius:2px;padding:0 2px">${m}</mark>`);
   }, [text, searchQ]);
-  return <div className="flex-1 overflow-y-auto py-7 px-8 font-mono text-[12.5px] leading-loose text-ink3 whitespace-pre-wrap break-words" dangerouslySetInnerHTML={{ __html: html }} />;
+  return <div className="flex-1 overflow-y-auto py-5 px-4 md:py-7 md:px-8 font-mono text-[11.5px] md:text-[12.5px] leading-loose text-ink3 whitespace-pre-wrap break-words" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 export function StatsView({ stats }: any) {
@@ -23,8 +23,8 @@ export function StatsView({ stats }: any) {
     { v: Math.round(wordCount / Math.max(sentenceCount, 1)), l: "words/sentence", i: "📏", t: "Average sentence length" }
   ];
   return (
-    <div className="flex-1 overflow-y-auto py-7 px-8">
-      <div className="grid grid-cols-3 gap-[14px] mb-[28px]">
+    <div className="flex-1 overflow-y-auto py-5 px-4 md:py-7 md:px-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-[14px] mb-[28px]">
         {cards.map(({ v, l, i, t }, idx) => (
           <Tip key={l} tip={t}>
             <div className={`bg-paper2 border-2 border-[rgba(60,35,10,.28)] py-[18px] px-[16px] cursor-default shadow-[2px_2px_0_rgba(30,15,5,.08)] rounded-[${3+idx}px_${8+idx}px_${4+idx}px_${7+idx}px]`} style={{ transform: `rotate(${idx % 2 === 0 ? 0.35 : -0.3}deg)` }}>
