@@ -92,7 +92,7 @@ export function UIcon({ emoji, name, size = 24, color = "currentColor", sketchy 
         color="currentColor"
         strokeWidth={2.5}
         className="transition-transform duration-200"
-        style={sketchy ? { filter: 'url(#handdrawn-filter)', transform: 'rotate(-2deg)' } : undefined}
+        style={sketchy && mappedName !== "XBrand" ? { filter: 'url(#handdrawn-filter)', transform: 'rotate(-2deg)' } : undefined}
         {...props}
       />
       {sketchy && (

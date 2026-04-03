@@ -176,10 +176,10 @@ export default function SupportPage() {
                     onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
                     className="w-full bg-paper2 border-[1.5px] border-[rgba(100,70,40,.38)] rounded-[2px_8px_3px_7px] py-[10px] px-[14px] text-ink font-patrick text-[14px] outline-none cursor-pointer"
                   >
-                    <option value="question">❓ Question</option>
-                    <option value="bug">🐛 Bug Report</option>
-                    <option value="feature">💡 Feature Request</option>
-                    <option value="feedback">💬 General Feedback</option>
+                    <option value="question">Question</option>
+                    <option value="bug">Bug Report</option>
+                    <option value="feature">Feature Request</option>
+                    <option value="feedback">General Feedback</option>
                   </select>
                 </Tip>
               </div>
@@ -243,18 +243,22 @@ export default function SupportPage() {
               </thead>
               <tbody>
                 {[
-                  ["PDF", "✓ Analyse, Convert", "✓ From Images, Text", "PDF Tools"],
-                  ["DOCX", "✓ Analyse, Convert", "—", "DOCX Tools"],
-                  ["TXT", "✓ Convert to PDF", "✓ From PDF, DOCX", "DOCX Tools"],
-                  ["HTML", "—", "✓ From DOCX, CSV", "DOCX Tools"],
-                  ["Markdown", "—", "✓ From DOCX", "DOCX Tools"],
-                  ["CSV", "✓ Convert to HTML", "✓ Word frequency", "DOCX Tools"],
-                  ["PNG/JPG", "✓ Bundle to PDF", "✓ From PDF pages", "PDF Tools"],
+                  ["PDF", ["✓", " Analyse, Convert"], ["✓", " From Images, Text"], "PDF Tools"],
+                  ["DOCX", ["✓", " Analyse, Convert"], "—", "DOCX Tools"],
+                  ["TXT", ["✓", " Convert to PDF"], ["✓", " From PDF, DOCX"], "DOCX Tools"],
+                  ["HTML", "—", ["✓", " From DOCX, CSV"], "DOCX Tools"],
+                  ["Markdown", "—", ["✓", " From DOCX"], "DOCX Tools"],
+                  ["CSV", ["✓", " Convert to HTML"], ["✓", " Word frequency"], "DOCX Tools"],
+                  ["PNG/JPG", ["✓", " Bundle to PDF"], ["✓", " From PDF pages"], "PDF Tools"],
                 ].map(([fmt, inp, out, pg]) => (
-                  <tr key={fmt} className="border-b border-dashed border-[rgba(100,70,40,.12)] hover:bg-[rgba(192,120,24,.04)] transition-colors duration-150">
+                  <tr key={fmt as string} className="border-b border-dashed border-[rgba(100,70,40,.12)] hover:bg-[rgba(192,120,24,.04)] transition-colors duration-150">
                     <td className="font-caveat text-[15px] font-bold text-amber2 py-3 px-4">{fmt}</td>
-                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">{inp}</td>
-                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">{out}</td>
+                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">
+                      {Array.isArray(inp) ? <span className="flex items-center gap-1"><Emoji symbol={inp[0]} size={14} />{inp[1]}</span> : inp}
+                    </td>
+                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">
+                      {Array.isArray(out) ? <span className="flex items-center gap-1"><Emoji symbol={out[0]} size={14} />{out[1]}</span> : out}
+                    </td>
                     <td className="font-patrick text-[13px] text-ink4 py-3 px-4">{pg}</td>
                   </tr>
                 ))}

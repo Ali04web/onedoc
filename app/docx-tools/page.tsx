@@ -45,7 +45,7 @@ export default function DocxToolsPage() {
         const ab = await f.arrayBuffer(), r = await window.mammoth.convertToHtml({ arrayBuffer: ab });
         const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Georgia,serif;max-width:820px;margin:44px auto;padding:0 28px;line-height:1.8;color:#1a1a1a}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:9px}</style></head><body>${r.value}</body></html>`;
         dlText(stem(f.name) + ".html", html);
-        return "✓ DOCX → HTML";
+        return "DOCX → HTML";
       });
     },
     docxTxt: async () => {
@@ -54,7 +54,7 @@ export default function DocxToolsPage() {
       await run("docxTxt", async () => {
         const ab = await f.arrayBuffer(), r = await window.mammoth.extractRawText({ arrayBuffer: ab });
         dlText(stem(f.name) + ".txt", r.value);
-        return "✓ Text extracted";
+        return "Text extracted";
       });
     },
     docxMd: async () => {
@@ -75,7 +75,7 @@ export default function DocxToolsPage() {
           .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
           .replace(/\n{3,}/g, "\n\n").trim();
         dlText(stem(f.name) + ".md", md);
-        return "✓ DOCX → Markdown";
+        return "DOCX → Markdown";
       });
     },
     txtPdf: async () => {
@@ -101,7 +101,7 @@ export default function DocxToolsPage() {
         }
         const bytes = await pdf.save();
         dlBlob(stem(f.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
-        return "✓ PDF created";
+        return "PDF created";
       });
     },
     csvHtml: async () => {
@@ -114,7 +114,7 @@ export default function DocxToolsPage() {
         const [header, ...body] = rows;
         const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:'Patrick Hand',cursive;padding:32px;background:#f7f0e3;color:#1c110a}h2{margin-bottom:20px;font-size:20px;font-family:'Caveat',cursive}table{border-collapse:collapse;width:100%;border-radius:8px;overflow:hidden}th{background:#1c110a;color:#f7f0e3;padding:11px 14px;text-align:left;font-size:14px}td{padding:10px 14px;border-bottom:1px solid #e3d8be;font-size:13px}tr:nth-child(even) td{background:#ede5d0}</style></head><body><h2>${esc(f.name)} — ${body.length} rows</h2><table><thead><tr>${header.map((h: string) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body.map((row: string[]) => `<tr>${row.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></body></html>`;
         dlText(stem(f.name) + ".html", html);
-        return `✓ ${body.length} rows converted`;
+        return `${body.length} rows converted`;
       });
     },
     docxPdf: async () => {
@@ -193,7 +193,7 @@ export default function DocxToolsPage() {
         const bytes = await pdf.save();
         dlBlob(stem(f.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
         const pageCount = pdf.getPageCount();
-        return `✓ DOCX → PDF (${pageCount} page${pageCount > 1 ? "s" : ""})`;
+        return `DOCX → PDF (${pageCount} page${pageCount > 1 ? "s" : ""})`;
       });
     },
   };

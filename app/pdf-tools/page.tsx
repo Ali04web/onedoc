@@ -68,7 +68,7 @@ export default function PdfToolsPage() {
           t += `--- Page ${i} ---\n` + c.items.map((x: any) => x.str).join(" ") + "\n\n";
         }
         dlText(stem(f.name) + ".txt", t.trim());
-        return `✓ ${pdf.numPages} pages extracted`;
+        return `${pdf.numPages} pages extracted`;
       });
     },
     pdfImg: async () => {
@@ -87,7 +87,7 @@ export default function PdfToolsPage() {
         }
         const zb = await zip.generateAsync({ type: "blob" });
         dlBlob(stem(f.name) + "_images.zip", zb);
-        return `✓ ${pdf.numPages} pages → ZIP`;
+        return `${pdf.numPages} pages → ZIP`;
       });
     },
     merge: async () => {
@@ -101,7 +101,7 @@ export default function PdfToolsPage() {
         }
         const bytes = await merged.save();
         dlBlob("merged.pdf", new Blob([bytes], { type: "application/pdf" }));
-        return `✓ ${files.length} PDFs merged`;
+        return `${files.length} PDFs merged`;
       });
     },
     split: async () => {
@@ -114,7 +114,7 @@ export default function PdfToolsPage() {
         copied.forEach((p: any) => out.addPage(p));
         const bytes = await out.save();
         dlBlob(stem(f.name) + "_split.pdf", new Blob([bytes], { type: "application/pdf" }));
-        return `✓ ${pages.length} page(s) extracted`;
+        return `${pages.length} page(s) extracted`;
       });
     },
     imgPdf: async () => {
@@ -132,7 +132,7 @@ export default function PdfToolsPage() {
         }
         const bytes = await pdf.save();
         dlBlob("images.pdf", new Blob([bytes], { type: "application/pdf" }));
-        return `✓ ${files.length} images → PDF`;
+        return `${files.length} images → PDF`;
       });
     },
     rotate: async () => {
@@ -147,7 +147,7 @@ export default function PdfToolsPage() {
         });
         const bytes = await pdf.save();
         dlBlob(stem(f.name) + "_rotated.pdf", new Blob([bytes], { type: "application/pdf" }));
-        return `✓ Rotated ${deg}°`;
+        return `Rotated ${deg}°`;
       });
     },
     pdfDocx: async () => {
@@ -202,7 +202,7 @@ export default function PdfToolsPage() {
         zip.file("word/document.xml", documentXml);
         const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
         dlBlob(stem(f.name) + ".docx", blob);
-        return `✓ ${pdf.numPages} pages → DOCX`;
+        return `${pdf.numPages} pages → DOCX`;
       });
     },
   };
@@ -213,7 +213,7 @@ export default function PdfToolsPage() {
     { ico: "🔗", title: "Merge PDFs", desc: "Stitch multiple PDFs into one", col: "#7a4510", rot: 0.2, tip: "Files are merged in the order you pick them", body: <><FZone accept=".pdf" label="Choose multiple PDFs" multi files={g("merge").files} onFiles={(f: File[]) => s("merge", { files: f })} tip="Hold Ctrl/Cmd to select multiple files" />{ML(g("merge").files, "📄")}<CStat msg={g("merge").status} type={g("merge").statusType} /><HBtn onClick={convFns.merge} disabled={!(g("merge").files?.length >= 2)} loading={g("merge").loading} label="Merge & Download" tip="You need at least 2 PDFs to merge" /></> },
     { ico: "✂️", title: "Split PDF", desc: "Pull out specific page ranges", col: "#1a5c5c", rot: -0.2, tip: 'Enter pages like "1-3, 5, 7" to extract', body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("split").file} onFile={(f: File) => s("split", { file: f })} tip="The PDF you want to extract pages from" /><Tip tip='Examples: "1-3" · "2,4,6" · "1-3,7"'><HInput placeholder="Pages: 1-3, 5, 7" value={g("split").pages || ""} onChange={(e: any) => s("split", { pages: e.target.value })} /></Tip><CStat msg={g("split").status} type={g("split").statusType} /><HBtn onClick={convFns.split} disabled={!g("split").file || !g("split").pages} loading={g("split").loading} label="Extract Pages" tip="Saves only the pages you specified" /></> },
     { ico: "🖼️", title: "Images → PDF", desc: "Bundle JPG/PNG files into a PDF", col: "#1a3a6a", rot: 0.35, tip: "Images appear as full pages, in selection order", body: <><FZone accept="image/png,image/jpeg" label="Choose images (JPG/PNG)" multi files={g("imgPdf").files} onFiles={(f: File[]) => s("imgPdf", { files: f })} tip="Select multiple images at once" />{ML(g("imgPdf").files, "🖼️")}<CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} /><HBtn onClick={convFns.imgPdf} disabled={!(g("imgPdf").files?.length > 0)} loading={g("imgPdf").loading} label="Create PDF" tip="Each image becomes one full page" /></> },
-    { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">↩ Rotate 90° clockwise</option><option value="180">↕ Rotate 180°</option><option value="270">↪ Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
+    { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">Rotate 90° clockwise</option><option value="180">Rotate 180°</option><option value="270">Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
     { ico: "📝", title: "PDF → DOCX", desc: "Convert PDF text into an editable Word document", col: "#1a3c7a", rot: 0.25, tip: "Extracts text from each page and builds a real .docx file", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfDocx").file} onFile={(f: File) => s("pdfDocx", { file: f })} tip="The PDF to convert to Word format" />{g("pdfDocx").loading && (g("pdfDocx").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfDocx").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} /><HBtn onClick={convFns.pdfDocx} disabled={!g("pdfDocx").file} loading={g("pdfDocx").loading} label="Convert to DOCX" tip="Creates an editable .docx file from PDF text" /></> },
     { ico: "🔗", title: "PDF → Link", desc: "Upload & get a shareable viewer link", col: "#1a5c5c", rot: -0.25, tip: "Like Tiiny.host — upload your PDF and share a link", body: <div className="flex flex-col items-center gap-3 py-2 relative"><div className="absolute -top-2 -right-2 bg-amber text-white font-caveat text-[12px] font-bold px-2 py-0.5 rounded-[4px_10px_3px_8px] rotate-[10deg] shadow-sm z-10">Coming Soon</div><div className="font-patrick text-[13px] text-ink4 text-center leading-[1.6]">Upload your PDF and get an instant shareable link that anyone can open to view and download.</div><Link href="/pdf-link" className="py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] hover:shadow-[3px_3px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[6px]"><Emoji symbol="🔗" size={18} /> Go to PDF Link →</Link></div> },
   ];
