@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
+import Link from "next/link";
 import { useScripts } from "@/app/hooks/useScripts";
 import { stem, dlBlob, dlText, parsePageRange, esc } from "@/app/lib/utils";
 import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
@@ -203,75 +204,6 @@ export default function PdfToolsPage() {
         return `✓ ${pdf.numPages} pages → DOCX`;
       });
     },
-    pdfLink: async () => {
-      const f = g("pdfLink").file;
-      if (!f) return;
-      await run("pdfLink", async () => {
-        s("pdfLink", { prog: 10 });
-        const ab = await f.arrayBuffer();
-        const uint8 = new Uint8Array(ab);
-        s("pdfLink", { prog: 30 });
-        // Convert to base64
-        let binary = "";
-        const chunkSize = 8192;
-        for (let i = 0; i < uint8.length; i += chunkSize) {
-          binary += String.fromCharCode(...uint8.subarray(i, i + chunkSize));
-        }
-        const base64 = btoa(binary);
-        s("pdfLink", { prog: 60 });
-        const sizeMB = (f.size / 1048576).toFixed(1);
-        const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${esc(f.name)} — DocLens PDF Viewer</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#1a1a2e;color:#fff;display:flex;flex-direction:column}
-.toolbar{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#16213e;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
-.toolbar .logo{font-weight:800;font-size:18px;letter-spacing:-0.5px}
-.toolbar .logo span{color:#c07818}
-.toolbar .fname{flex:1;font-size:13px;color:rgba(255,255,255,.6);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.toolbar .badge{font-size:11px;padding:3px 10px;border-radius:4px;background:#c07818;color:#fff;font-weight:600}
-.toolbar .dl-btn{font-size:12px;padding:6px 14px;border-radius:5px;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.15);cursor:pointer;text-decoration:none;transition:all .15s}
-.toolbar .dl-btn:hover{background:rgba(255,255,255,.2)}
-.viewer{flex:1;display:flex;align-items:stretch}
-.viewer iframe,.viewer embed,.viewer object{width:100%;height:100%;border:none}
-.fallback{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px;text-align:center}
-.fallback p{color:rgba(255,255,255,.6);font-size:14px;max-width:400px;line-height:1.6}
-.fallback a{display:inline-block;padding:12px 28px;background:#c07818;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;transition:background .15s}
-.fallback a:hover{background:#9a5e10}
-@media(max-width:640px){.toolbar{padding:8px 12px;gap:8px}.toolbar .logo{font-size:15px}.toolbar .badge{display:none}}
-</style>
-</head>
-<body>
-<div class="toolbar">
-<div class="logo">Doc<span>Lens</span></div>
-<div class="fname">${esc(f.name)} · ${sizeMB} MB</div>
-<div class="badge">PDF</div>
-<a class="dl-btn" href="data:application/pdf;base64,${base64}" download="${esc(f.name)}">⬇ Download</a>
-</div>
-<div class="viewer">
-<iframe src="data:application/pdf;base64,${base64}" type="application/pdf"></iframe>
-</div>
-<noscript>
-<div class="fallback">
-<p>Your browser doesn't support embedded PDFs.</p>
-<a href="data:application/pdf;base64,${base64}" download="${esc(f.name)}">Download PDF</a>
-</div>
-</noscript>
-</body>
-</html>`;
-        s("pdfLink", { prog: 80 });
-        const blob = new Blob([html], { type: "text/html" });
-        const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-        s("pdfLink", { prog: 100, linkUrl: url, htmlBlob: blob });
-        return `✓ PDF link created — opened in new tab`;
-      });
-    },
   };
 
   const cards = [
@@ -282,7 +214,7 @@ body{background:#1a1a2e;color:#fff;display:flex;flex-direction:column}
     { ico: "🖼️", title: "Images → PDF", desc: "Bundle JPG/PNG files into a PDF", col: "#1a3a6a", rot: 0.35, tip: "Images appear as full pages, in selection order", body: <><FZone accept="image/png,image/jpeg" label="Choose images (JPG/PNG)" multi files={g("imgPdf").files} onFiles={(f: File[]) => s("imgPdf", { files: f })} tip="Select multiple images at once" />{ML(g("imgPdf").files, "🖼️")}<CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} /><HBtn onClick={convFns.imgPdf} disabled={!(g("imgPdf").files?.length > 0)} loading={g("imgPdf").loading} label="Create PDF" tip="Each image becomes one full page" /></> },
     { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">↩ Rotate 90° clockwise</option><option value="180">↕ Rotate 180°</option><option value="270">↪ Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
     { ico: "📝", title: "PDF → DOCX", desc: "Convert PDF text into an editable Word document", col: "#1a3c7a", rot: 0.25, tip: "Extracts text from each page and builds a real .docx file", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfDocx").file} onFile={(f: File) => s("pdfDocx", { file: f })} tip="The PDF to convert to Word format" />{g("pdfDocx").loading && (g("pdfDocx").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfDocx").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} /><HBtn onClick={convFns.pdfDocx} disabled={!g("pdfDocx").file} loading={g("pdfDocx").loading} label="Convert to DOCX" tip="Creates an editable .docx file from PDF text" /></> },
-    { ico: "🔗", title: "PDF → Link", desc: "Create a shareable viewer link for your PDF", col: "#1a5c5c", rot: -0.25, tip: "Embeds the full PDF into a branded viewer page — like Tiiny.host, but free", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfLink").file} onFile={(f: File) => s("pdfLink", { file: f, linkUrl: null, htmlBlob: null })} tip="The PDF you want to share as a link" />{g("pdfLink").loading && (g("pdfLink").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-teal transition-[width] duration-300" style={{ width: (g("pdfLink").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfLink").status} type={g("pdfLink").statusType} /><HBtn onClick={convFns.pdfLink} disabled={!g("pdfLink").file} loading={g("pdfLink").loading} label="🔗 Generate Link" tip="Creates a shareable viewer page with your PDF embedded" />{g("pdfLink").linkUrl && <div className="flex flex-col gap-2 mt-2"><div className="flex items-center gap-2 flex-wrap"><Tip tip="Copy the viewer link to your clipboard"><button onClick={() => { navigator.clipboard.writeText(g("pdfLink").linkUrl); setToast("✓ Link copied to clipboard!"); }} className="flex items-center gap-[6px] py-[6px] px-[12px] rounded-[2px_8px_3px_7px] font-caveat text-[14px] font-semibold text-teal bg-[rgba(26,92,92,.08)] border-[1.5px] border-teal cursor-pointer hover:bg-[rgba(26,92,92,.15)] transition-all duration-150">📋 Copy Link</button></Tip><Tip tip="Download the viewer HTML file — host it anywhere for a permanent link"><button onClick={() => { if (g("pdfLink").htmlBlob) dlBlob((g("pdfLink").file?.name || "document") + "_viewer.html", g("pdfLink").htmlBlob); }} className="flex items-center gap-[6px] py-[6px] px-[12px] rounded-[2px_8px_3px_7px] font-caveat text-[14px] font-semibold text-ink3 bg-paper2 border-[1.5px] border-[rgba(100,70,40,.28)] cursor-pointer hover:bg-[rgba(192,120,24,.1)] hover:border-amber transition-all duration-150">💾 Download HTML</button></Tip><Tip tip="Open the viewer page again in a new tab"><button onClick={() => window.open(g("pdfLink").linkUrl, "_blank")} className="flex items-center gap-[6px] py-[6px] px-[12px] rounded-[2px_8px_3px_7px] font-caveat text-[14px] font-semibold text-ink3 bg-paper2 border-[1.5px] border-[rgba(100,70,40,.28)] cursor-pointer hover:bg-[rgba(192,120,24,.1)] hover:border-amber transition-all duration-150">↗ Re-open</button></Tip></div><div className="font-patrick text-[11px] text-ink4 leading-[1.5]">💡 <strong>Tip:</strong> Download the HTML file and host it on any web server for a permanent shareable link.</div></div>}</> },
+    { ico: "🔗", title: "PDF → Link", desc: "Upload & get a shareable viewer link", col: "#1a5c5c", rot: -0.25, tip: "Like Tiiny.host — upload your PDF and share a link", body: <div className="flex flex-col items-center gap-3 py-2"><div className="font-patrick text-[13px] text-ink4 text-center leading-[1.6]">Upload your PDF and get an instant shareable link that anyone can open to view and download.</div><Link href="/pdf-link" className="py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] hover:shadow-[3px_3px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer">🔗 Go to PDF Link →</Link></div> },
   ];
 
   return (

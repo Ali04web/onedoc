@@ -10,6 +10,7 @@ const navItems = [
   { href: "/analyze", icon: "🔬", label: "Analyse", tip: "Analyze docs — extract text, stats, search" },
   { href: "/pdf-tools", icon: "📄", label: "PDF Tools", tip: "All PDF conversions and manipulations" },
   { href: "/docx-tools", icon: "📝", label: "DOCX Tools", tip: "All DOCX conversions and utilities" },
+  { href: "/pdf-link", icon: "🔗", label: "PDF Link", tip: "Upload PDF & get a shareable link" },
   { href: "/support", icon: "💬", label: "Support", tip: "Help, FAQ, and contact us" },
 ];
 
@@ -21,10 +22,10 @@ export default function Navbar() {
     <header className="flex items-center justify-between px-4 md:px-[28px] h-[54px] border-b-2 border-[rgba(60,35,10,.18)] bg-[rgba(237,229,208,.7)] backdrop-blur-[8px] flex-shrink-0 sticky top-0 z-[100]">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-[10px] cursor-pointer no-underline">
-        <Tip tip="DocLens — a free doc toolkit. Everything runs in your browser.">
+        <Tip tip="OneDocs — a free doc toolkit. Everything runs in your browser.">
           <div className="flex items-center gap-[10px] cursor-pointer">
             <div className="font-caveat text-[24px] font-bold text-ink2 -rotate-[0.5deg] tracking-[-0.5px]">
-              Doc<span className="text-amber">Lens</span>
+              One<span className="text-amber">Docs</span>
             </div>
             <div className="font-patrick text-[10px] py-[3px] px-[10px] rounded-[2px_8px_3px_7px] bg-teal text-white font-semibold tracking-[0.5px] rotate-[0.8deg] animate-stamp-in">
               FREE
