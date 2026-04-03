@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Tip } from "./DocLensUI";
+import { Emoji } from "./Icons";
 
 const navItems = [
   { href: "/", icon: "🏠", label: "Home", tip: "Dashboard — overview of all tools" },
@@ -48,7 +49,7 @@ export default function Navbar() {
                     : "border-transparent text-ink3 rotate-[0.3deg] hover:text-ink2"
                 }`}
               >
-                <span className="text-[16px]">{icon}</span>
+                <Emoji symbol={icon} size={18} className="mr-1" />
                 <span className="hidden lg:inline">{label}</span>
               </Link>
             </Tip>
@@ -94,7 +95,7 @@ export default function Navbar() {
                     : "border-transparent text-ink3 hover:text-ink2 hover:bg-[rgba(100,70,40,.04)]"
                 }`}
               >
-                <span className="text-[20px]">{icon}</span>
+                <Emoji symbol={icon} size={22} className="mr-1" />
                 {label}
                 <span className="text-[12px] font-patrick font-normal text-ink4 ml-auto">{tip}</span>
               </Link>

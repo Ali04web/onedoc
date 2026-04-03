@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Tip, SCard } from "./components/DocLensUI";
+import { Emoji } from "./components/Icons";
 
 const tools = [
   {
@@ -48,7 +49,7 @@ export default function HomePage() {
     <div className="flex-1 overflow-y-auto">
       {/* Hero */}
       <section className="flex flex-col items-center justify-center text-center py-12 md:py-20 px-6">
-        <div className="text-[56px] md:text-[72px] inline-block animate-wobble-in -rotate-[6deg] mb-4">📄</div>
+        <div className="inline-block animate-wobble-in -rotate-[6deg] mb-4"><Emoji symbol="📄" size={64} className="text-amber" /></div>
         <h1 className="font-caveat text-[36px] md:text-[48px] font-bold text-ink2 -rotate-[0.5deg] mb-3 leading-tight">
           Your documents,<br />
           <span className="text-amber">understood</span>
@@ -61,17 +62,17 @@ export default function HomePage() {
           <Tip tip="Jump into document analysis" side="bottom">
             <Link
               href="/analyze"
-              className="py-[12px] px-[28px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer"
+              className="py-[12px] px-[28px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
             >
-              🔬 Start Analysing
+              <Emoji symbol="🔬" size={20} /> Start Analysing
             </Link>
           </Tip>
           <Tip tip="Browse all conversion tools" side="bottom">
             <Link
               href="/pdf-tools"
-              className="py-[12px] px-[28px] bg-paper hover:bg-paper2 text-ink2 font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-[rgba(60,35,10,.32)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer"
+              className="py-[12px] px-[28px] bg-paper hover:bg-paper2 text-ink2 font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-[rgba(60,35,10,.32)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
             >
-              🔄 Convert Files
+              <Emoji symbol="🔄" size={20} /> Convert Files
             </Link>
           </Tip>
         </div>
@@ -80,7 +81,7 @@ export default function HomePage() {
       {/* Tool cards */}
       <section className="px-4 md:px-8 lg:px-16 pb-16">
         <div className="flex items-center gap-[14px] mb-6 px-2">
-          <span className="text-[22px] -rotate-[4deg] inline-block">🧰</span>
+          <div className="-rotate-[4deg] inline-block"><Emoji symbol="🧰" size={26} /></div>
           <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
             All tools
             <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
@@ -95,9 +96,9 @@ export default function HomePage() {
             <Link key={tool.href} href={tool.href} className="no-underline group">
               <SCard rotate={tool.rot}>
                 <div className="flex items-start gap-[14px]">
-                  <span className="text-[32px] flex-shrink-0 inline-block group-hover:-rotate-[5deg] transition-transform duration-200">
-                    {tool.icon}
-                  </span>
+                  <div className="flex-shrink-0 inline-block group-hover:-rotate-[5deg] transition-transform duration-200">
+                    <Emoji symbol={tool.icon} size={36} />
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-caveat text-[22px] font-bold text-ink2 mb-[4px] leading-[1.1] flex items-center gap-2">
                       {tool.title}
@@ -125,8 +126,8 @@ export default function HomePage() {
 
       {/* Privacy notice */}
       <section className="px-4 md:px-8 lg:px-16 pb-16">
-        <div className="bg-[rgba(26,92,92,.06)] border-2 border-teal rounded-[4px_16px_6px_14px] p-6 md:p-8 text-center">
-          <div className="text-[28px] mb-2">🔒</div>
+        <div className="bg-[rgba(26,92,92,.06)] border-2 border-teal rounded-[4px_16px_6px_14px] p-6 md:p-8 text-center flex flex-col items-center">
+          <div className="mb-3"><Emoji symbol="🔒" size={36} className="text-teal" /></div>
           <div className="font-caveat text-[22px] font-bold text-teal mb-2">100% Private & Secure</div>
           <div className="font-patrick text-[14px] text-ink3 max-w-[500px] mx-auto leading-[1.7]">
             Every single operation happens right in your browser. Your files never leave your device — no server uploads, no cloud storage, no tracking. DocLens is completely free and always will be.

@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from "react";
 import { Tip, Toast } from "@/app/components/DocLensUI";
+import { Emoji } from "@/app/components/Icons";
 
 interface UploadedFile {
   id: string;
@@ -108,8 +109,8 @@ export default function PdfLinkPage() {
     <div className="flex-1 overflow-y-auto">
       {/* Hero */}
       <section className="flex flex-col items-center justify-center text-center py-10 md:py-16 px-6">
-        <div className="text-[52px] md:text-[64px] inline-block animate-wobble-in -rotate-[5deg] mb-4">
-          🔗
+        <div className="inline-block animate-wobble-in -rotate-[5deg] mb-4">
+          <Emoji symbol="🔗" size={56} className="text-amber" />
         </div>
         <h1 className="font-caveat text-[34px] md:text-[46px] font-bold text-ink2 -rotate-[0.5deg] mb-2 leading-tight">
           PDF to <span className="text-amber">Link</span>
@@ -168,7 +169,7 @@ export default function PdfLinkPage() {
 
               {file ? (
                 <>
-                  <div className="text-[40px] mb-3">📄</div>
+                  <div className="mb-3"><Emoji symbol="📄" size={48} className="text-teal" /></div>
                   <div className="font-caveat text-[20px] font-bold text-ink2 mb-1">
                     {file.name}
                   </div>
@@ -181,15 +182,15 @@ export default function PdfLinkPage() {
                       e.stopPropagation();
                       reset();
                     }}
-                    className="mt-3 font-caveat text-[13px] text-red font-semibold underline cursor-pointer bg-transparent border-none"
+                    className="mt-3 font-caveat flex items-center gap-[4px] text-[13px] text-red font-semibold underline cursor-pointer bg-transparent border-none"
                   >
-                    ✕ Remove
+                    <Emoji symbol="✕" size={14} /> Remove
                   </button>
                 </>
               ) : (
                 <>
-                  <div className="text-[48px] mb-3 -rotate-[4deg] inline-block">
-                    📂
+                  <div className="mb-3 -rotate-[4deg] inline-block">
+                    <Emoji symbol="📂" size={56} className="text-ink3" />
                   </div>
                   <div className="font-caveat text-[20px] font-bold text-ink2 mb-1">
                     Drop your PDF here
@@ -223,21 +224,22 @@ export default function PdfLinkPage() {
               <button
                 onClick={upload}
                 disabled={!file || uploading}
-                className={`mt-5 w-full py-[14px] px-[24px] font-caveat text-[20px] font-bold rounded-[4px_14px_6px_12px] border-2 shadow-[2px_3px_0_rgba(30,15,5,.12)] transition-all duration-150 cursor-pointer ${
+                className={`mt-5 w-full flex items-center justify-center gap-[8px] py-[14px] px-[24px] font-caveat text-[20px] font-bold rounded-[4px_14px_6px_12px] border-2 shadow-[2px_3px_0_rgba(30,15,5,.12)] transition-all duration-150 cursor-pointer ${
                   !file || uploading
                     ? "bg-paper3 text-ink4 border-[rgba(100,70,40,.2)] cursor-not-allowed opacity-60"
                     : "bg-amber hover:bg-amber2 text-white border-amber2 hover:shadow-[3px_4px_0_rgba(30,15,5,.18)] hover:-translate-y-[1px]"
                 }`}
               >
-                {uploading ? "⏳ Uploading..." : "🔗 Generate Shareable Link"}
+                <Emoji symbol={uploading ? "⏳" : "🔗"} size={22} />
+                {uploading ? "Uploading..." : "Generate Shareable Link"}
               </button>
             </Tip>
           </div>
         ) : (
           /* Success card */
           <div className="bg-paper border-2 border-teal rounded-[6px_20px_8px_18px] p-6 md:p-8 shadow-[3px_4px_0_rgba(26,92,92,.12)]">
-            <div className="text-center mb-5">
-              <div className="text-[48px] mb-2">✅</div>
+            <div className="text-center mb-5 flex flex-col items-center">
+              <div className="mb-3"><Emoji symbol="✅" size={56} className="text-teal" /></div>
               <div className="font-caveat text-[26px] font-bold text-teal mb-1">
                 Your link is ready!
               </div>
@@ -254,13 +256,13 @@ export default function PdfLinkPage() {
               <Tip tip={copied ? "Copied!" : "Copy link to clipboard"}>
                 <button
                   onClick={copyLink}
-                  className={`py-[10px] px-[16px] rounded-[3px_10px_4px_9px] font-caveat text-[15px] font-bold border-2 transition-all duration-150 cursor-pointer whitespace-nowrap ${
+                  className={`py-[10px] px-[16px] rounded-[3px_10px_4px_9px] font-caveat text-[15px] font-bold border-2 transition-all duration-150 cursor-pointer whitespace-nowrap flexItems-center gap-[6px] ${
                     copied
                       ? "bg-teal text-white border-teal"
                       : "bg-amber hover:bg-amber2 text-white border-amber2"
                   }`}
                 >
-                  {copied ? "✓ Copied" : "📋 Copy"}
+                  <Emoji symbol={copied ? "✓" : "📋"} size={16} /> {copied ? "Copied" : "Copy"}
                 </button>
               </Tip>
             </div>
@@ -274,7 +276,7 @@ export default function PdfLinkPage() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-[6px] py-[8px] px-[14px] rounded-[3px_10px_4px_9px] font-caveat text-[15px] font-semibold text-ink2 bg-paper2 border-[1.5px] border-[rgba(100,70,40,.28)] no-underline cursor-pointer hover:bg-[rgba(192,120,24,.1)] hover:border-amber transition-all duration-150"
                 >
-                  ↗ Open Viewer
+                  <Emoji symbol="↗" size={16} /> Open Viewer
                 </a>
               </Tip>
               <Tip tip="Upload a different PDF" side="bottom">
@@ -282,14 +284,14 @@ export default function PdfLinkPage() {
                   onClick={reset}
                   className="flex items-center gap-[6px] py-[8px] px-[14px] rounded-[3px_10px_4px_9px] font-caveat text-[15px] font-semibold text-ink3 bg-paper2 border-[1.5px] border-[rgba(100,70,40,.28)] cursor-pointer hover:bg-[rgba(192,120,24,.1)] hover:border-amber transition-all duration-150"
                 >
-                  📂 Upload Another
+                  <Emoji symbol="📂" size={16} /> Upload Another
                 </button>
               </Tip>
             </div>
 
             {/* File info */}
             <div className="flex items-center gap-3 py-[10px] px-[14px] bg-[rgba(26,92,92,.04)] border border-teal rounded-[3px_10px_4px_9px]">
-              <span className="text-[24px]">📄</span>
+              <Emoji symbol="📄" size={26} className="text-teal" />
               <div className="flex-1 min-w-0">
                 <div className="font-caveat text-[15px] font-bold text-ink2 overflow-hidden text-ellipsis whitespace-nowrap">
                   {uploaded.fileName}
@@ -310,7 +312,7 @@ export default function PdfLinkPage() {
       {recentLinks.length > 0 && (
         <section className="px-4 md:px-8 lg:px-16 pb-8 max-w-[640px] mx-auto">
           <div className="flex items-center gap-[14px] mb-4">
-            <span className="text-[18px] -rotate-[4deg]">🕐</span>
+            <div className="-rotate-[4deg]"><Emoji symbol="🕐" size={20} /></div>
             <div className="font-caveat text-[20px] font-bold text-ink2">
               Recent Links
             </div>
@@ -322,7 +324,7 @@ export default function PdfLinkPage() {
                 key={link.id}
                 className="flex items-center gap-3 py-[10px] px-[14px] bg-paper border-[1.5px] border-[rgba(60,35,10,.18)] rounded-[3px_10px_4px_9px] group"
               >
-                <span className="text-[18px]">📄</span>
+                <Emoji symbol="📄" size={20} />
                 <div className="flex-1 min-w-0">
                   <div className="font-caveat text-[14px] font-bold text-ink2 overflow-hidden text-ellipsis whitespace-nowrap">
                     {link.fileName}
@@ -336,17 +338,17 @@ export default function PdfLinkPage() {
                     navigator.clipboard.writeText(link.url);
                     showToast("✓ Link copied!");
                   }}
-                  className="font-caveat text-[12px] font-semibold text-teal bg-transparent border-[1.5px] border-teal py-[4px] px-[10px] rounded-[2px_7px_3px_6px] cursor-pointer opacity-60 group-hover:opacity-100 transition-opacity duration-150"
+                  className="font-caveat text-[12px] font-semibold text-teal bg-transparent border-[1.5px] border-teal py-[4px] px-[10px] rounded-[2px_7px_3px_6px] cursor-pointer opacity-60 group-hover:opacity-100 transition-opacity duration-150 flex items-center gap-[4px]"
                 >
-                  📋 Copy
+                  <Emoji symbol="📋" size={12} /> Copy
                 </button>
                 <a
                   href={link.url}
                   target="_blank"
                   rel="noopener"
-                  className="font-caveat text-[12px] font-semibold text-ink3 bg-transparent border-[1.5px] border-[rgba(100,70,40,.25)] py-[4px] px-[10px] rounded-[2px_7px_3px_6px] no-underline cursor-pointer opacity-60 group-hover:opacity-100 transition-opacity duration-150"
+                  className="font-caveat text-[12px] font-semibold text-ink3 bg-transparent border-[1.5px] border-[rgba(100,70,40,.25)] py-[4px] px-[10px] rounded-[2px_7px_3px_6px] no-underline cursor-pointer opacity-60 group-hover:opacity-100 transition-opacity duration-150 flex items-center"
                 >
-                  ↗
+                  <Emoji symbol="↗" size={14} />
                 </a>
               </div>
             ))}
@@ -357,7 +359,7 @@ export default function PdfLinkPage() {
       {/* How it works */}
       <section className="px-4 md:px-8 lg:px-16 pb-12 max-w-[640px] mx-auto">
         <div className="flex items-center gap-[14px] mb-5">
-          <span className="text-[18px] -rotate-[4deg]">💡</span>
+          <div className="-rotate-[4deg] text-amber"><Emoji symbol="💡" size={24} /></div>
           <div className="font-caveat text-[20px] font-bold text-ink2">
             How it works
           </div>
@@ -386,12 +388,12 @@ export default function PdfLinkPage() {
           ].map(({ step, icon, title, desc }) => (
             <div
               key={step}
-              className="bg-paper border-2 border-[rgba(60,35,10,.18)] rounded-[4px_14px_5px_13px] p-5 text-center"
+              className="bg-paper border-2 border-[rgba(60,35,10,.18)] rounded-[4px_14px_5px_13px] p-5 text-center flex flex-col items-center"
             >
               <div className="font-caveat text-[40px] text-amber font-bold mb-1 -rotate-[2deg]">
                 {step}
               </div>
-              <div className="text-[28px] mb-2">{icon}</div>
+              <div className="mb-3"><Emoji symbol={icon} size={32} /></div>
               <div className="font-caveat text-[18px] font-bold text-ink2 mb-1">
                 {title}
               </div>

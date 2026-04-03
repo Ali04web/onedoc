@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fmtSize } from "../lib/utils";
+import { Emoji } from "./Icons";
 
 export function Tip({ children, tip, side="top" }: any) {
   const [show, setShow] = useState(false);
@@ -32,7 +33,7 @@ export function Toast({ msg, onDone }: any) {
   useEffect(() => { const t = setTimeout(onDone, 2800); return () => clearTimeout(t); }, [onDone]);
   return (
     <div className="fixed bottom-7 right-7 z-[9999] bg-paper border-[2.5px] border-ink2 rounded-[3px_12px_5px_10px] py-3 px-[22px] font-caveat text-[17px] font-bold text-ink2 shadow-[3px_4px_0_rgba(30,15,5,.18),5px_6px_0_rgba(30,15,5,.08)] animate-stamp-in flex items-center gap-2.5 -rotate-[0.5deg]">
-      <span className="text-[20px] text-teal">✓</span>{msg}
+      <Emoji symbol="✅" size={24} className="text-teal" />{msg}
     </div>
   );
 }
@@ -44,7 +45,7 @@ export function Spinner() {
 export function SHead({ ico, label, sub }: any) {
   return (
     <div className="flex items-center gap-[14px] mb-[20px]">
-      <span className="text-[22px] -rotate-[4deg] inline-block">{ico}</span>
+      <div className="-rotate-[4deg] inline-block">{typeof ico === 'string' ? <Emoji symbol={ico} size={30} /> : ico}</div>
       <div>
         <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
           {label}
@@ -81,7 +82,9 @@ export function CCard({ ico, title, desc, accentCol="#c07818", rot=0, children }
       <div className="absolute top-[9px] right-[11px] w-[9px] h-[9px] rounded-full opacity-[0.55]" style={{ background: accentCol }} />
       <div className="absolute -inset-[3px] border border-[rgba(60,35,10,.14)] rounded-[6px_18px_7px_17px] pointer-events-none" />
       <div className="flex items-start gap-[12px]">
-        <span className="text-[24px] flex-shrink-0 inline-block transition-transform duration-200" style={{ transform: `rotate(${hov ? -5 : 0}deg)` }}>{ico}</span>
+        <div className="flex-shrink-0 inline-block transition-transform duration-200" style={{ transform: `rotate(${hov ? -5 : 0}deg)` }}>
+          {typeof ico === 'string' ? <Emoji symbol={ico} size={28} /> : ico}
+        </div>
         <div>
           <div className="font-caveat text-[19px] font-bold text-ink2 mb-[3px] leading-[1.1]">{title}</div>
           <div className="font-patrick text-[13px] text-ink4 leading-[1.4]">{desc}</div>
@@ -97,9 +100,10 @@ export function FZone({ accept, label, multi, file, files, onFile, onFiles, tip 
   const has = multi ? (files?.length > 0) : !!file;
   const el = (
     <label onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      className={`block cursor-pointer transition-all duration-200 text-center py-[11px] px-[14px] font-caveat text-[15px] border-2 border-dashed rounded-[3px_12px_5px_10px] overflow-hidden whitespace-nowrap text-ellipsis ${has ? "font-bold text-teal border-teal bg-[rgba(26,92,92,.05)]" : hov ? "font-normal text-amber2 border-amber bg-[rgba(192,120,24,.04)]" : "font-normal text-ink3 border-[rgba(100,70,40,.28)] bg-transparent"}`}>
+      className={`block cursor-pointer flex items-center justify-center gap-[6px] transition-all duration-200 text-center py-[11px] px-[14px] font-caveat text-[15px] border-2 border-dashed rounded-[3px_12px_5px_10px] overflow-hidden whitespace-nowrap text-ellipsis ${has ? "font-bold text-teal border-teal bg-[rgba(26,92,92,.05)]" : hov ? "font-normal text-amber2 border-amber bg-[rgba(192,120,24,.04)]" : "font-normal text-ink3 border-[rgba(100,70,40,.28)] bg-transparent"}`}>
       <input type="file" accept={accept} multiple={multi} className="hidden" onChange={e => multi ? onFiles(Array.from(e.target.files || [])) : onFile?.(e.target.files?.[0])} />
-      {has ? (multi ? `✓ ${files.length} file${files.length > 1 ? "s" : ""} selected` : `✓ ${file.name}`) : `📎 ${label}`}
+      {has ? <Emoji symbol="✅" size={16} /> : <Emoji symbol="📎" size={16} />}
+      {has ? (multi ? `${files.length} file${files.length > 1 ? "s" : ""} selected` : file.name) : label}
     </label>
   );
   return tip ? <Tip tip={tip} side="right">{el}</Tip> : el;
@@ -115,8 +119,8 @@ export function HSel({ value, onChange, children, className }: any) {
 
 export function CStat({ msg, type }: any) {
   if (!msg) return null;
-  const c = type === "ok" ? "text-teal" : type === "err" ? "text-red" : "text-ink4";
-  return <div className={`font-caveat text-[14px] flex items-center gap-[5px] ${c}`}><span>{type === "ok" ? "✓" : type === "err" ? "✗" : "→"}</span>{msg}</div>;
+  const c = type === "ok" ? "text-teal" : type === "err" ? "text-red" : "text-amber2";
+  return <div className={`font-caveat text-[14px] flex items-center gap-[5px] ${c}`}><Emoji symbol={type === "ok" ? "✅" : type === "err" ? "✕" : "🔄"} size={14} />{msg}</div>;
 }
 
 export function HBtn({ onClick, disabled, loading, label, tip }: any) {
@@ -137,14 +141,14 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
     <Tip tip={`${doc.name} · ${fmtSize(doc.size)}`} side="right">
       <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} onClick={onSelect}
         className={`flex items-center gap-[10px] py-[9px] px-[11px] cursor-pointer mb-1 rounded-[3px_10px_4px_9px] transition-all duration-150 border-[1.5px] ${active ? "border-amber bg-[rgba(192,120,24,.09)]" : hov ? "border-[rgba(100,70,40,.28)] bg-[rgba(100,70,40,.04)] rotate-[0.3deg]" : "border-transparent bg-transparent"}`}>
-        <span className={`text-[20px] flex-shrink-0 transition-transform duration-150 ${active ? "scale-[1.15]" : ""}`}>{doc.type === "pdf" ? "📄" : "📝"}</span>
+        <div className={`flex-shrink-0 transition-transform duration-150 ${active ? "scale-[1.15]" : ""}`}><Emoji symbol={doc.type === "pdf" ? "📄" : "📝"} size={22} /></div>
         <div className="flex-1 min-w-0">
           <div className={`font-patrick text-[13px] whitespace-nowrap overflow-hidden text-ellipsis ${active ? "font-bold text-amber2" : "font-normal text-ink"}`}>{doc.name}</div>
           <div className="font-patrick text-[11px] text-ink4 mt-[1px]">{fmtSize(doc.size)}{doc.pages ? ` · ${doc.pages}p` : ""}</div>
         </div>
         {hov && (
           <Tip tip="Remove" side="left">
-            <button onClick={(e: any) => { e.stopPropagation(); onRemove(); }} className="bg-transparent border-none text-ink4 cursor-pointer text-[16px] leading-none py-[2px] px-[5px] rounded-[4px] hover:text-red">✕</button>
+            <button onClick={(e: any) => { e.stopPropagation(); onRemove(); }} className="bg-transparent border-none text-ink4 cursor-pointer flex items-center justify-center p-[4px] rounded-[4px] hover:text-red transition-colors"><Emoji symbol="✕" size={16} /></button>
           </Tip>
         )}
       </div>

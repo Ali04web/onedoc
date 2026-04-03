@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useScripts } from "@/app/hooks/useScripts";
 import { stem, dlBlob, dlText, parsePageRange, esc } from "@/app/lib/utils";
 import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
+import { Emoji } from "@/app/components/Icons";
 
 declare global {
   interface Window {
@@ -48,8 +49,8 @@ export default function PdfToolsPage() {
     (files || []).length > 0 && (
       <div className="flex flex-col gap-[3px] max-h-[70px] overflow-y-auto">
         {files.map((f, i) => (
-          <div key={i} className="font-patrick text-[12px] text-ink3 bg-paper2 rounded-[2px_6px_3px_5px] py-[3px] px-[9px] whitespace-nowrap overflow-hidden text-ellipsis">
-            {ico} {f.name}
+          <div key={i} className="font-patrick text-[12px] text-ink3 bg-paper2 rounded-[2px_6px_3px_5px] py-[3px] px-[9px] whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5">
+            <Emoji symbol={ico} size={14} /> {f.name}
           </div>
         ))}
       </div>
@@ -214,14 +215,15 @@ export default function PdfToolsPage() {
     { ico: "🖼️", title: "Images → PDF", desc: "Bundle JPG/PNG files into a PDF", col: "#1a3a6a", rot: 0.35, tip: "Images appear as full pages, in selection order", body: <><FZone accept="image/png,image/jpeg" label="Choose images (JPG/PNG)" multi files={g("imgPdf").files} onFiles={(f: File[]) => s("imgPdf", { files: f })} tip="Select multiple images at once" />{ML(g("imgPdf").files, "🖼️")}<CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} /><HBtn onClick={convFns.imgPdf} disabled={!(g("imgPdf").files?.length > 0)} loading={g("imgPdf").loading} label="Create PDF" tip="Each image becomes one full page" /></> },
     { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">↩ Rotate 90° clockwise</option><option value="180">↕ Rotate 180°</option><option value="270">↪ Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
     { ico: "📝", title: "PDF → DOCX", desc: "Convert PDF text into an editable Word document", col: "#1a3c7a", rot: 0.25, tip: "Extracts text from each page and builds a real .docx file", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfDocx").file} onFile={(f: File) => s("pdfDocx", { file: f })} tip="The PDF to convert to Word format" />{g("pdfDocx").loading && (g("pdfDocx").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfDocx").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} /><HBtn onClick={convFns.pdfDocx} disabled={!g("pdfDocx").file} loading={g("pdfDocx").loading} label="Convert to DOCX" tip="Creates an editable .docx file from PDF text" /></> },
-    { ico: "🔗", title: "PDF → Link", desc: "Upload & get a shareable viewer link", col: "#1a5c5c", rot: -0.25, tip: "Like Tiiny.host — upload your PDF and share a link", body: <div className="flex flex-col items-center gap-3 py-2"><div className="font-patrick text-[13px] text-ink4 text-center leading-[1.6]">Upload your PDF and get an instant shareable link that anyone can open to view and download.</div><Link href="/pdf-link" className="py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] hover:shadow-[3px_3px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer">🔗 Go to PDF Link →</Link></div> },
+    { ico: "🔗", title: "PDF → Link", desc: "Upload & get a shareable viewer link", col: "#1a5c5c", rot: -0.25, tip: "Like Tiiny.host — upload your PDF and share a link", body: <div className="flex flex-col items-center gap-3 py-2"><div className="font-patrick text-[13px] text-ink4 text-center leading-[1.6]">Upload your PDF and get an instant shareable link that anyone can open to view and download.</div><Link href="/pdf-link" className="py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] hover:shadow-[3px_3px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[6px]"><Emoji symbol="🔗" size={18} /> Go to PDF Link →</Link></div> },
   ];
 
   return (
     <div className="flex-1 overflow-y-auto py-6 md:py-[28px] px-4 md:px-[32px] lg:px-16">
       {!ready && (
-        <div className="text-center mb-4">
-          <span className="font-patrick text-[13px] text-ink4 italic">⏳ Loading PDF libraries…</span>
+        <div className="text-center mb-4 flex items-center justify-center gap-[6px]">
+          <Emoji symbol="⏳" size={14} className="text-ink4" />
+          <span className="font-patrick text-[13px] text-ink4 italic">Loading PDF libraries…</span>
         </div>
       )}
       <SHead ico="📄" label="PDF Tools" sub="All your PDF conversion and manipulation needs" />

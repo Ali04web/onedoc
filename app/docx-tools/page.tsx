@@ -4,6 +4,7 @@ import React, { useState, useCallback } from "react";
 import { useScripts } from "@/app/hooks/useScripts";
 import { stem, dlBlob, dlText, esc } from "@/app/lib/utils";
 import { SHead, CCard, FZone, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
+import { Emoji } from "@/app/components/Icons";
 
 declare global {
   interface Window {
@@ -212,8 +213,9 @@ export default function DocxToolsPage() {
   return (
     <div className="flex-1 overflow-y-auto py-6 md:py-[28px] px-4 md:px-[32px] lg:px-16">
       {!ready && (
-        <div className="text-center mb-4">
-          <span className="font-patrick text-[13px] text-ink4 italic">⏳ Loading libraries…</span>
+        <div className="text-center mb-4 flex items-center justify-center gap-[6px]">
+          <Emoji symbol="⏳" size={14} className="text-ink4" />
+          <span className="font-patrick text-[13px] text-ink4 italic">Loading libraries…</span>
         </div>
       )}
 
