@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Tip, SCard, Toast } from "@/app/components/DocLensUI";
+import { Emoji } from "@/app/components/Icons";
 
 const faqs = [
   { q: "Is DocLens really free?", a: "Yes, 100% free — no hidden charges, no premium tiers, no ads. DocLens is an open-source tool built for the community." },
@@ -43,7 +44,7 @@ export default function SupportPage() {
     <div className="flex-1 overflow-y-auto">
       {/* Hero */}
       <section className="text-center py-10 md:py-16 px-6">
-        <div className="text-[48px] inline-block animate-wobble-in -rotate-[5deg] mb-3">💬</div>
+        <div className="inline-block animate-wobble-in -rotate-[5deg] mb-3"><Emoji symbol="💬" size={56} className="text-amber" /></div>
         <h1 className="font-caveat text-[32px] md:text-[42px] font-bold text-ink2 -rotate-[0.5deg] mb-2">
           Help & Support
         </h1>
@@ -56,7 +57,7 @@ export default function SupportPage() {
         {/* Quick Tips */}
         <section>
           <div className="flex items-center gap-[14px] mb-6">
-            <span className="text-[22px] -rotate-[4deg] inline-block">💡</span>
+            <div className="-rotate-[4deg] inline-block"><Emoji symbol="💡" size={26} /></div>
             <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
               Quick Tips
               <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
@@ -70,7 +71,7 @@ export default function SupportPage() {
               <Tip key={tip.title} tip={tip.desc} side="top">
                 <SCard rotate={i % 2 === 0 ? 0.2 : -0.2}>
                   <div className="flex items-start gap-3">
-                    <span className="text-[24px] flex-shrink-0">{tip.icon}</span>
+                    <div className="flex-shrink-0"><Emoji symbol={tip.icon} size={28} /></div>
                     <div>
                       <div className="font-caveat text-[18px] font-bold text-ink2 mb-1">{tip.title}</div>
                       <div className="font-patrick text-[13px] text-ink4 leading-[1.5]">{tip.desc}</div>
@@ -85,7 +86,7 @@ export default function SupportPage() {
         {/* FAQ */}
         <section>
           <div className="flex items-center gap-[14px] mb-6">
-            <span className="text-[22px] -rotate-[4deg] inline-block">❓</span>
+            <div className="-rotate-[4deg] inline-block"><Emoji symbol="❓" size={26} /></div>
             <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
               Frequently Asked Questions
               <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
@@ -118,7 +119,7 @@ export default function SupportPage() {
         {/* Contact Form */}
         <section>
           <div className="flex items-center gap-[14px] mb-6">
-            <span className="text-[22px] -rotate-[4deg] inline-block">✉️</span>
+            <div className="-rotate-[4deg] inline-block"><Emoji symbol="✉️" size={26} /></div>
             <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
               Contact Us
               <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
@@ -185,9 +186,9 @@ export default function SupportPage() {
               <Tip tip="Submit your message — we typically reply within 24 hours" side="top">
                 <button
                   type="submit"
-                  className="py-[12px] px-[24px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 cursor-pointer w-full sm:w-auto self-start"
+                  className="py-[12px] px-[24px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 cursor-pointer w-full sm:w-auto self-start flex items-center justify-center gap-[8px]"
                 >
-                  ✉️ Send Message
+                  <Emoji symbol="✉️" size={18} /> Send Message
                 </button>
               </Tip>
             </form>
@@ -197,7 +198,7 @@ export default function SupportPage() {
         {/* Keyboard shortcuts */}
         <section>
           <div className="flex items-center gap-[14px] mb-6">
-            <span className="text-[22px] -rotate-[4deg] inline-block">⌨️</span>
+            <div className="-rotate-[4deg] inline-block"><Emoji symbol="⌨️" size={26} /></div>
             <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
               Supported Formats
               <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">

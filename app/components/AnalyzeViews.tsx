@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { esc, escRe, stem, dlText } from "../lib/utils";
 import { Tip, SCard } from "./DocLensUI";
+import { Emoji } from "./Icons";
 
 export function TView({ text, searchQ }: any) {
   const html = useMemo(() => {
@@ -29,7 +30,7 @@ export function StatsView({ stats }: any) {
           <Tip key={l} tip={t}>
             <div className={`bg-paper2 border-2 border-[rgba(60,35,10,.28)] py-[18px] px-[16px] cursor-default shadow-[2px_2px_0_rgba(30,15,5,.08)] rounded-[${3+idx}px_${8+idx}px_${4+idx}px_${7+idx}px]`} style={{ transform: `rotate(${idx % 2 === 0 ? 0.35 : -0.3}deg)` }}>
               <div className="font-caveat text-[30px] font-bold text-amber2 leading-none flex items-center gap-[8px]">
-                <span className="text-[18px]">{i}</span>{v}
+                <Emoji symbol={i} size={28} className="translate-y-[-2px]" />{v}
               </div>
               <div className="font-patrick text-[13px] text-ink3 mt-[6px]">{l}</div>
             </div>
@@ -37,7 +38,7 @@ export function StatsView({ stats }: any) {
         ))}
       </div>
       <div className="font-caveat text-[18px] font-bold text-ink2 mb-[14px] flex items-center gap-[8px]">
-        <span>🏆</span> Most frequent words
+        <Emoji symbol="🏆" size={24} className="text-amber" /> Most frequent words
         <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.2)] ml-[8px]" />
       </div>
       <div className="flex flex-col gap-[9px]">
@@ -74,7 +75,7 @@ export function SearchView({ text }: any) {
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="py-[16px] px-[26px] border-b-[1.5px] border-dashed border-[rgba(100,70,40,.2)] flex gap-[10px] items-center bg-[rgba(237,229,208,.5)]">
         <div className="flex-1 flex items-center gap-[10px] bg-paper border-2 border-[rgba(100,70,40,.32)] rounded-[3px_10px_4px_9px] px-[14px] py-[9px]">
-          <span className="font-caveat text-ink4 text-[16px]">🔍</span>
+          <Emoji symbol="🔍" size={18} className="text-ink4" />
           <input value={q} onChange={e => setQ(e.target.value)} placeholder="What are you looking for?" className="flex-1 bg-transparent border-none outline-none text-ink font-patrick text-[14px]" />
         </div>
         {matches.length > 0 && <span className="font-caveat text-[15px] text-ink4 whitespace-nowrap">{cur + 1} / {matches.length}</span>}
@@ -89,7 +90,7 @@ export function SearchView({ text }: any) {
       </div>
       <div className="flex-1 overflow-y-auto py-[16px] px-[26px] flex flex-col gap-[10px]">
         {!q || q.length < 2 ? <div className="text-center text-ink4 font-caveat italic text-[22px] mt-[60px] -rotate-[0.5deg]">Start typing to search…</div>
-         : matches.length === 0 ? <div className="text-center text-red font-caveat text-[20px] mt-[60px]">✗ Nothing found for "{q}"</div>
+         : matches.length === 0 ? <div className="text-center text-red font-caveat text-[20px] mt-[60px] flex items-center justify-center gap-2"><Emoji symbol="✕" size={20} /> Nothing found for "{q}"</div>
          : matches.map((m, i) => (
           <div key={i} onClick={() => setCur(i)} className={`border-[1.5px] rounded-[3px_10px_4px_9px] py-[12px] px-[15px] cursor-pointer transition-all duration-150 ${i === cur ? "bg-[rgba(192,120,24,.08)] border-amber rotate-0" : "bg-paper2 border-[rgba(100,70,40,.22)] rotate-[0.15deg]"}`}>
             <div className="font-caveat text-[12px] text-ink4 mb-[4px]">Result {i + 1}</div>
@@ -110,11 +111,11 @@ export function ExportView({ doc }: any) {
   ];
   return (
     <div className="flex-1 overflow-y-auto py-[28px] px-[32px] flex flex-col gap-[14px]">
-      <div className="font-caveat text-[26px] font-bold text-ink2 mb-[4px] -rotate-[0.4deg]">Save your work ✍️</div>
+      <div className="font-caveat text-[26px] font-bold text-ink2 mb-[4px] -rotate-[0.4deg] flex items-center gap-2">Save your work <Emoji symbol="✍️" size={24} /></div>
       {items.map((e, i) => (
         <SCard key={e.title} rotate={i % 2 === 0 ? 0.2 : -0.2}>
           <div className="flex items-center gap-[15px]">
-            <span className="text-[28px] flex-shrink-0">{e.ico}</span>
+            <div className="flex-shrink-0"><Emoji symbol={e.ico} size={36} /></div>
             <div className="flex-1">
               <div className="font-caveat text-[18px] font-bold text-ink2 mb-[2px]">
                 {e.title} <span className="font-mono text-[11px] text-ink4 bg-paper2 py-[1px] px-[5px] rounded-[4px]">{e.ext}</span>

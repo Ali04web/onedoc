@@ -109,8 +109,9 @@ export default function PdfLinkPage() {
     <div className="flex-1 overflow-y-auto">
       {/* Hero */}
       <section className="flex flex-col items-center justify-center text-center py-10 md:py-16 px-6">
-        <div className="inline-block animate-wobble-in -rotate-[5deg] mb-4">
+        <div className="inline-block animate-wobble-in -rotate-[5deg] mb-4 relative">
           <Emoji symbol="🔗" size={56} className="text-amber" />
+          <div className="absolute -top-3 -right-6 bg-teal text-white font-caveat text-[14px] font-bold px-3 py-1 rounded-[4px_12px_3px_10px] rotate-[12deg] shadow-md border-2 border-white">Coming Soon</div>
         </div>
         <h1 className="font-caveat text-[34px] md:text-[46px] font-bold text-ink2 -rotate-[0.5deg] mb-2 leading-tight">
           PDF to <span className="text-amber">Link</span>
