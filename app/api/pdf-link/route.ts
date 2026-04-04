@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";

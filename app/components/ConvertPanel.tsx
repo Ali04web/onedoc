@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { stem, dlBlob, dlText, parsePageRange, esc } from "../lib/utils";
 import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip } from "./DocLensUI";

@@ -1,8 +1,9 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useCallback, useRef, useState } from "react";
 import { Emoji } from "@/app/components/Icons";
-import { SCard, Tip, Toast } from "@/app/components/DocLensUI";
+import { Toast } from "@/app/components/DocLensUI";
 
 interface UploadedFile {
   id: string;
