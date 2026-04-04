@@ -27,24 +27,6 @@ const faqs = [
   },
 ];
 
-const tips = [
-  {
-    icon: "⚡",
-    title: "Start with the right mode",
-    desc: "For PDF to DOCX, accuracy-first is best for presentation, while editable mode is best for revision.",
-  },
-  {
-    icon: "🔍",
-    title: "Use analysis before export",
-    desc: "Search and statistics help you validate the extraction quality before you send anything to a customer.",
-  },
-  {
-    icon: "📊",
-    title: "Use cleaner supporting exports",
-    desc: "Markdown, HTML, text, and CSV views are useful for QA, content review, and structured handoff.",
-  },
-];
-
 const formats = [
   ["PDF", "Analyse and convert", "Text, image, DOCX, sharing", "PDF Tools"],
   ["DOCX", "Analyse and convert", "HTML, text, Markdown, print", "DOCX Tools"],
@@ -77,60 +59,24 @@ export default function SupportPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="page-hero p-8 md:p-10 xl:p-14">
-          <div className="relative z-10 grid gap-10 xl:grid-cols-[minmax(0,1.15fr)_360px]">
+        <section className="page-hero p-6 md:p-7">
+          <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <div className="page-kicker mb-5">Support Experience</div>
-              <h1 className="page-title max-w-[760px]">
-                Help that feels as polished as the product.
-              </h1>
-              <p className="page-copy mt-6">
-                This page now matches the rest of the redesign: calmer layout,
-                sharper hierarchy, and support content that feels curated instead
-                of dropped into a default template.
+              <div className="page-kicker mb-4">Support</div>
+              <h1 className="page-title max-w-[760px]">Quick help and contact.</h1>
+              <p className="page-copy mt-3">
+                Find answers, contact support, and check supported formats.
               </p>
             </div>
-            <div className="surface-panel p-7">
-              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-                Support pillars
-              </div>
-              <div className="mt-5 grid gap-4">
-                <div className="premium-metric">
-                  <strong>Clear</strong>
-                  <span>Customers can find answers without hunting through clutter.</span>
-                </div>
-                <div className="premium-metric">
-                  <strong>Trustworthy</strong>
-                  <span>The interface looks maintained and intentionally crafted.</span>
-                </div>
-                <div className="premium-metric">
-                  <strong>Actionable</strong>
-                  <span>Contact, troubleshooting, and guidance are one screen away.</span>
-                </div>
-              </div>
+            <div className="flex flex-wrap gap-3 lg:justify-end">
+              <span className="premium-chip">FAQ</span>
+              <span className="premium-chip">Contact</span>
+              <span className="premium-chip">Formats</span>
             </div>
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6 lg:grid-cols-3">
-          {tips.map((tip) => (
-            <SCard key={tip.title}>
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[rgba(42,34,24,.1)] bg-white/80 text-amber">
-                  <Emoji symbol={tip.icon} size={20} />
-                </div>
-                <div>
-                  <div className="font-caveat text-[26px] font-semibold leading-none text-ink2">
-                    {tip.title}
-                  </div>
-                  <p className="mt-3 text-[14px] leading-relaxed text-ink3">{tip.desc}</p>
-                </div>
-              </div>
-            </SCard>
-          ))}
-        </section>
-
-        <section className="mt-12 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
+        <section className="mt-5 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
           <div className="surface-panel p-8">
             <div className="mb-5 flex items-center gap-4">
               <div className="page-kicker">Frequently Asked Questions</div>
@@ -176,11 +122,10 @@ export default function SupportPage() {
           <div className="surface-panel p-8">
             <div className="mb-5 page-kicker">Contact Studio</div>
             <div className="font-caveat text-[32px] font-semibold leading-none text-ink2">
-              Stay close to your users.
+              Contact support
             </div>
             <p className="mt-4 text-[14px] leading-relaxed text-ink3">
-              This form still uses a placeholder action, but the UI now feels
-              like a real product support desk rather than a quick scaffold.
+              Send a message and wire this form to your inbox later.
             </p>
 
             <form onSubmit={handleSubmit} className="mt-6 grid gap-4">

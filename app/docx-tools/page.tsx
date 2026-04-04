@@ -473,96 +473,29 @@ export default function DocxToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero">
-        <div>
-          <div className="page-kicker">Premium DOCX Workspace</div>
-          <h1 className="page-title">
-            Stronger DOCX exports with a presentation layer that feels worth
-            paying for.
-          </h1>
-          <p className="page-copy">
-            The DOCX side of OneDocs now matches the rest of the product: richer
-            output options, cleaner handling of structured content, and a far
-            more intentional interface across every workflow.
-          </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {[
-              { label: "HTML exports", value: "Standalone pages" },
-              { label: "Markdown", value: "Richer conversion path" },
-              { label: "PDF flow", value: "Print-ready preview" },
-            ].map((item) => (
-              <div key={item.label} className="premium-metric">
-                <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
-                  {item.label}
-                </div>
-                <div className="mt-4 font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
-                  {item.value}
-                </div>
-              </div>
-            ))}
+      <section className="page-hero p-6 md:p-7">
+        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="page-kicker mb-4">DOCX tools</div>
+            <h1 className="page-title">Convert DOCX files without the extra noise.</h1>
+            <p className="page-copy mt-3">
+              Export Word files into simpler formats and print-ready views.
+            </p>
           </div>
-        </div>
-
-        <div className="surface-panel flex flex-col gap-5 p-6 md:p-7">
-          <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-            Why it feels better
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <span className="premium-chip">HTML</span>
+            <span className="premium-chip">Markdown</span>
+            <span className="premium-chip">Text</span>
+            <span className="premium-chip">PDF preview</span>
           </div>
-          <div className="font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
-            More polish in both results and interaction
-          </div>
-          <div className="premium-divider" />
-          <div className="grid gap-3">
-            {[
-              {
-                title: "Richer HTML and markdown",
-                description:
-                  "Word files now pass through the stronger rich-export helpers, which preserves more structure before conversion.",
-                icon: "LayoutTemplate",
-              },
-              {
-                title: "Better CSV handling",
-                description:
-                  "Quoted cells and more realistic spreadsheet content are parsed more reliably before building HTML tables.",
-                icon: "Table2",
-              },
-              {
-                title: "Premium visual consistency",
-                description:
-                  "This workspace now aligns with the upgraded brand and feels like part of one coherent suite.",
-                icon: "SwatchBook",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[22px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
-                    <UIcon name={item.icon as any} size={16} />
-                  </div>
-                  <div className="text-[15px] font-semibold text-ink2">
-                    {item.title}
-                  </div>
-                </div>
-                <div className="mt-3 text-[14px] leading-relaxed text-ink4">
-                  {item.description}
-                </div>
-              </div>
-            ))}
-          </div>
-          {!ready ? (
-            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(255,250,243,.82)] px-4 py-3 text-[13px] leading-relaxed text-ink4">
-              Loading DOCX libraries so the conversion tools can start working.
-            </div>
-          ) : null}
         </div>
       </section>
 
-      <section className="surface-panel p-6 md:p-8">
+      <section className="surface-panel mt-5 p-6 md:p-8">
         <SHead
           ico={<UIcon name="FileSignature" size={24} />}
           label="DOCX Conversions"
-          sub="Premium-feeling export paths for Word documents and text-heavy content."
+          sub="Core conversions for Word documents."
         />
         <div className="grid gap-4 xl:grid-cols-2">
           {docxCards.map((card) => (
@@ -584,7 +517,7 @@ export default function DocxToolsPage() {
         <SHead
           ico={<UIcon name="FileSpreadsheet" size={24} />}
           label="Text And Data"
-          sub="Supportive utilities for plain text and spreadsheet-style exports."
+          sub="Simple helpers for text and CSV files."
         />
         <div className="grid gap-4 xl:grid-cols-2">
           {dataCards.map((card) => (

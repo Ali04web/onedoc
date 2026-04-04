@@ -618,95 +618,29 @@ export default function PdfToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero">
-        <div>
-          <div className="page-kicker">Premium PDF Workspace</div>
-          <h1 className="page-title">
-            PDF tools that feel premium and produce more trustworthy outputs.
-          </h1>
-          <p className="page-copy">
-            This workspace brings higher-confidence PDF conversion, cleaner
-            manipulation flows, and a much stronger presentation layer so the
-            product feels deliberate at every step.
-          </p>
-          <div className="mt-8 grid gap-3 sm:grid-cols-3">
-            {[
-              { label: "High-accuracy DOCX", value: "2 output modes" },
-              { label: "Image export", value: "ZIP per page" },
-              { label: "PDF utilities", value: "Merge, split, rotate" },
-            ].map((item) => (
-              <div key={item.label} className="premium-metric">
-                <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
-                  {item.label}
-                </div>
-                <div className="mt-4 font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
-                  {item.value}
-                </div>
-              </div>
-            ))}
+      <section className="page-hero p-6 md:p-7">
+        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="page-kicker mb-4">PDF tools</div>
+            <h1 className="page-title">Convert and edit PDFs faster.</h1>
+            <p className="page-copy mt-3">
+              Choose a tool below and get straight to work.
+            </p>
           </div>
-        </div>
-
-        <div className="surface-panel flex flex-col gap-5 p-6 md:p-7">
-          <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-            Product positioning
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <span className="premium-chip">PDF to DOCX</span>
+            <span className="premium-chip">Merge</span>
+            <span className="premium-chip">Split</span>
+            <span className="premium-chip">Rotate</span>
           </div>
-          <div className="font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
-            Built for sharper customer confidence
-          </div>
-          <div className="premium-divider" />
-          <div className="grid gap-3">
-            {[
-              {
-                title: "Better PDF to DOCX logic",
-                description:
-                  "Customers can choose a page-faithful Word file or a cleaner editable output, with scanned PDFs protected from bad editable conversions.",
-                icon: "BadgeCheck",
-              },
-              {
-                title: "Cleaner operations",
-                description:
-                  "Merge, split, rotate, and image export are presented like a polished document suite rather than loose utilities.",
-                icon: "Wrench",
-              },
-              {
-                title: "Consistent premium UI",
-                description:
-                  "Every card, control, and state now shares the same editorial visual system used across the rest of the site.",
-                icon: "Palette",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-[22px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
-                    <UIcon name={item.icon as any} size={16} />
-                  </div>
-                  <div className="text-[15px] font-semibold text-ink2">
-                    {item.title}
-                  </div>
-                </div>
-                <div className="mt-3 text-[14px] leading-relaxed text-ink4">
-                  {item.description}
-                </div>
-              </div>
-            ))}
-          </div>
-          {!ready ? (
-            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(255,250,243,.82)] px-4 py-3 text-[13px] leading-relaxed text-ink4">
-              Loading PDF libraries so the tools can start working.
-            </div>
-          ) : null}
         </div>
       </section>
 
-      <section className="surface-panel p-6 md:p-8">
+      <section className="surface-panel mt-5 p-6 md:p-8">
         <SHead
           ico={<UIcon name="FileText" size={24} />}
           label="Conversion Tools"
-          sub="High-value PDF exports with improved extraction and output quality."
+          sub="Convert PDFs into the format you need."
         />
         <div className="grid gap-4 xl:grid-cols-3">
           {conversionCards.map((card) => (
@@ -728,7 +662,7 @@ export default function PdfToolsPage() {
         <SHead
           ico={<UIcon name="Layers3" size={24} />}
           label="Organize And Deliver"
-          sub="Manipulate, combine, and share PDFs with a calmer, more premium workflow."
+          sub="Merge, split, rotate, and share."
         />
         <div className="grid gap-4 xl:grid-cols-3">
           {organizeCards.map((card) => (

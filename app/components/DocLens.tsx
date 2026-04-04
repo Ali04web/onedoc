@@ -24,27 +24,6 @@ type DocRecord = {
 const PDF_WORKER_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
-const heroPoints = [
-  {
-    title: "Premium reading surface",
-    description:
-      "Document review, search, and export live in one calm workspace that feels polished instead of improvised.",
-    icon: "PanelsTopLeft",
-  },
-  {
-    title: "Private by default",
-    description:
-      "Analysis runs in the browser so customers can trust the experience with sensitive files.",
-    icon: "ShieldCheck",
-  },
-  {
-    title: "Better PDF extraction",
-    description:
-      "The analyzer uses the stronger PDF parsing flow, which makes search and export more dependable.",
-    icon: "Sparkles",
-  },
-];
-
 export default function DocLens() {
   const ready = useScripts([
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
@@ -217,73 +196,25 @@ export default function DocLens() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero">
-        <div>
-          <div className="page-kicker">Premium Analysis Workspace</div>
-          <h1 className="page-title">
-            Review, search, and export documents in a workspace that feels
-            carefully crafted.
-          </h1>
-          <p className="page-copy">
-            OneDocs keeps analysis private, readable, and fast. Upload PDFs or
-            DOCX files, inspect the text, surface patterns, and export what you
-            need without sending documents away.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <span className="premium-chip">
-              <UIcon name="ShieldCheck" size={14} />
-              Browser-first privacy
-            </span>
-            <span className="premium-chip">
-              <UIcon name="FileSearch" size={14} />
-              Rich document search
-            </span>
-            <span className="premium-chip">
-              <UIcon name="Download" size={14} />
-              Quick export paths
-            </span>
+      <section className="page-hero p-6 md:p-7">
+        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <div className="page-kicker mb-4">Analyze documents</div>
+            <h1 className="page-title">Upload a file and start working.</h1>
+            <p className="page-copy mt-3">
+              Read, search, inspect, and export PDF or DOCX content.
+            </p>
           </div>
-        </div>
-
-        <div className="surface-panel flex flex-col gap-5 p-6 md:p-7">
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-                Workspace promise
-              </div>
-              <div className="mt-2 font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
-                Better confidence for every upload
-              </div>
-            </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2">
-              <UIcon name="Sparkles" size={20} />
-            </div>
-          </div>
-          <div className="premium-divider" />
-          <div className="grid gap-3">
-            {heroPoints.map((point) => (
-              <div
-                key={point.title}
-                className="rounded-[22px] border border-[rgba(42,34,24,.08)] bg-white/70 px-4 py-4"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
-                    <UIcon name={point.icon as any} size={16} />
-                  </div>
-                  <div className="text-[15px] font-semibold text-ink2">
-                    {point.title}
-                  </div>
-                </div>
-                <div className="mt-3 text-[14px] leading-relaxed text-ink4">
-                  {point.description}
-                </div>
-              </div>
-            ))}
+          <div className="flex flex-wrap gap-3 lg:justify-end">
+            <span className="premium-chip">PDF</span>
+            <span className="premium-chip">DOCX</span>
+            <span className="premium-chip">Search</span>
+            <span className="premium-chip">Export</span>
           </div>
         </div>
       </section>
 
-      <div className="surface-panel relative overflow-hidden p-0">
+      <div className="surface-panel relative mt-5 overflow-hidden p-0">
         <button
           onClick={() => setSidebarOpen((value) => !value)}
           className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-amber2/35 bg-gradient-to-br from-amber to-amber2 text-white shadow-[0_18px_34px_rgba(186,138,66,.3)] transition-transform duration-200 hover:scale-[1.02] md:hidden"
@@ -353,13 +284,11 @@ export default function DocLens() {
                 <div className="mt-4 text-[16px] font-semibold text-ink2">
                   Drop PDF or DOCX files
                 </div>
-                <div className="mt-2 text-[13px] leading-relaxed text-ink4">
-                  Click to browse or drag documents directly into the workspace.
-                </div>
+                <div className="mt-2 text-[13px] leading-relaxed text-ink4">Click or drag to upload.</div>
                 <div className="mt-4 flex flex-wrap justify-center gap-2">
                   <span className="premium-chip">PDF</span>
                   <span className="premium-chip">DOCX</span>
-                  <span className="premium-chip">Multi-file queue</span>
+                  <span className="premium-chip">Multi-file</span>
                 </div>
               </label>
             </div>
@@ -373,8 +302,7 @@ export default function DocLens() {
               </div>
               {docs.length === 0 ? (
                 <div className="rounded-[24px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-5 text-[14px] leading-relaxed text-ink4">
-                  Your uploaded files will appear here. Keep multiple documents
-                  ready and switch between them without leaving the analyzer.
+                  Your files will appear here.
                 </div>
               ) : (
                 docs.map((doc) => (
@@ -394,7 +322,7 @@ export default function DocLens() {
 
             <div className="border-t border-[rgba(42,34,24,.08)] px-5 py-5">
               <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
-                Workspace details
+                Quick info
               </div>
               <div className="mt-4 grid gap-3">
                 {workspaceMetrics.map((item) => (
@@ -421,58 +349,26 @@ export default function DocLens() {
 
             {!ready && (
               <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-3 text-[13px] text-ink4 md:px-8">
-                Loading document libraries. The workspace will be ready in a
-                moment.
+                Loading tools...
               </div>
             )}
 
             {!active ? (
               <div className="flex h-full flex-col justify-center px-5 py-10 md:px-8 md:py-14">
-                <div className="mx-auto flex w-full max-w-[860px] flex-col items-center text-center">
+                <div className="mx-auto flex w-full max-w-[560px] flex-col items-center text-center">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2 shadow-[0_20px_42px_rgba(186,138,66,.16)]">
                     <UIcon name="FileSearch" size={30} />
                   </div>
                   <div className="mt-6 font-caveat text-[40px] leading-none tracking-[-0.04em] text-ink2">
-                    No document is open yet.
+                    No document yet
                   </div>
                   <div className="mt-4 max-w-[620px] text-[16px] leading-relaxed text-ink4">
-                    Start by uploading a PDF or DOCX. Once a file is loaded you
-                    can review the text, inspect document statistics, search
-                    across the content, and export polished outputs.
+                    Upload a PDF or DOCX from the left panel to begin.
                   </div>
-                  <div className="mt-8 grid w-full gap-4 md:grid-cols-3">
-                    {[
-                      {
-                        title: "Read clearly",
-                        description:
-                          "A calmer text surface makes it easier to validate extraction quality.",
-                        icon: "FileText",
-                      },
-                      {
-                        title: "Search quickly",
-                        description:
-                          "Jump to the exact line you need without scrolling through the whole file.",
-                        icon: "Search",
-                      },
-                      {
-                        title: "Export cleanly",
-                        description:
-                          "Take plain text, markdown, and reporting formats in a few clicks.",
-                        icon: "Download",
-                      },
-                    ].map((item) => (
-                      <div key={item.title} className="surface-card text-left">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
-                          <UIcon name={item.icon as any} size={18} />
-                        </div>
-                        <div className="mt-5 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
-                          {item.title}
-                        </div>
-                        <div className="mt-3 text-[14px] leading-relaxed text-ink4">
-                          {item.description}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="mt-6 flex flex-wrap justify-center gap-3">
+                    <span className="premium-chip">Read</span>
+                    <span className="premium-chip">Search</span>
+                    <span className="premium-chip">Export</span>
                   </div>
                 </div>
               </div>

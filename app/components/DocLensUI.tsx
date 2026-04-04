@@ -54,18 +54,17 @@ export function Spinner() {
 
 export function SHead({ ico, label, sub }: any) {
   return (
-    <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end">
+    <div className="mb-6 flex flex-col gap-3 lg:flex-row lg:items-end">
       <div className="flex items-start gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[rgba(42,34,24,.12)] bg-white/80 text-amber shadow-[0_16px_34px_rgba(33,25,16,.08)]">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,rgba(91,124,255,.12),rgba(23,184,151,.12))] text-ink2">
           {typeof ico === "string" ? <Emoji symbol={ico} size={24} /> : ico}
         </div>
         <div>
-          <div className="page-kicker mb-3">OneDocs Workspace</div>
-          <div className="font-caveat text-[34px] font-semibold leading-none tracking-[-0.03em] text-ink2">
+          <div className="font-caveat text-[28px] font-semibold leading-none tracking-[-0.03em] text-ink2">
             {label}
           </div>
           {sub && (
-            <div className="mt-2 max-w-[640px] text-[15px] leading-relaxed text-ink4">
+            <div className="mt-2 max-w-[620px] text-[14px] leading-relaxed text-ink4">
               {sub}
             </div>
           )}
@@ -78,7 +77,7 @@ export function SHead({ ico, label, sub }: any) {
 
 export function SCard({ children, style = {} }: any) {
   return (
-    <div className="surface-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_56px_rgba(33,25,16,.12)]" style={style}>
+    <div className="surface-card p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(37,52,92,.1)]" style={style}>
       {children}
     </div>
   );
@@ -86,23 +85,23 @@ export function SCard({ children, style = {} }: any) {
 
 export function CCard({ ico, title, desc, accentCol = "#ba8a42", children }: any) {
   return (
-    <div className="surface-card group flex h-full flex-col gap-5 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_rgba(33,25,16,.12)]">
+    <div className="surface-card group flex h-full flex-col gap-4 p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(37,52,92,.1)]">
       <div
-        className="absolute inset-x-6 top-0 h-[2px] rounded-full opacity-70"
+        className="absolute inset-x-5 top-0 h-[3px] rounded-full opacity-80"
         style={{ background: `linear-gradient(90deg, transparent, ${accentCol}, transparent)` }}
       />
       <div className="flex items-start gap-4">
         <div
-          className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border bg-white/85 shadow-[0_16px_32px_rgba(33,25,16,.08)]"
+          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border bg-white/88 shadow-[0_10px_24px_rgba(37,52,92,.08)]"
           style={{ borderColor: `${accentCol}30`, color: accentCol }}
         >
-          {typeof ico === "string" ? <Emoji symbol={ico} size={24} /> : ico}
+          {typeof ico === "string" ? <Emoji symbol={ico} size={22} /> : ico}
         </div>
         <div className="min-w-0">
-          <div className="font-caveat text-[24px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink2">
+          <div className="font-caveat text-[22px] font-semibold leading-[1.05] tracking-[-0.02em] text-ink2">
             {title}
           </div>
-          <div className="mt-2 text-[14px] leading-relaxed text-ink4">{desc}</div>
+          <div className="mt-1.5 text-[13px] leading-relaxed text-ink4">{desc}</div>
         </div>
       </div>
       <div className="premium-divider" />
