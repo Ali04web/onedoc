@@ -8,7 +8,6 @@ import { computeStats } from "../lib/utils";
 import { DItem, Tip, Toast } from "./DocLensUI";
 import { ExportView, SearchView, StatsView, TView } from "./AnalyzeViews";
 import { UIcon } from "./Icons";
-import { PageHero } from "./PageHero";
 
 type DocType = "pdf" | "docx";
 
@@ -197,27 +196,17 @@ export default function DocLens() {
 
   return (
     <div className="page-shell">
-      <PageHero
-        kicker="Analyze documents"
-        title="Upload a file and move through reading, search, and export with less friction."
-        copy="The analysis workspace keeps the tool-first layout, but now it feels more crafted and visually easier to scan."
-        chips={["PDF", "DOCX", "Search", "Export"]}
-        stats={[
-          { label: "Input", value: "PDF + DOCX" },
-          { label: "Modes", value: "Read + stats" },
-          { label: "Output", value: "TXT, MD, CSV" },
-        ]}
-        artMode="analyze"
-      />
-
-      <div className="surface-panel relative mt-5 overflow-hidden p-0">
-        <button
-          onClick={() => setSidebarOpen((value) => !value)}
-          className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(110,124,255,.2)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] text-white shadow-[0_20px_36px_rgba(54,74,146,.28)] transition-transform duration-200 hover:scale-[1.02] md:hidden"
-          aria-label="Toggle document sidebar"
-        >
-          <UIcon name={sidebarOpen ? "X" : "PanelsLeftBottom"} size={22} />
-        </button>
+      <div className="surface-panel relative mt-1 overflow-hidden p-0">
+        <Tip tip={sidebarOpen ? "Close the document list." : "Open the document list."} side="left">
+          <button
+            onClick={() => setSidebarOpen((value) => !value)}
+            title={sidebarOpen ? "Close the document list." : "Open the document list."}
+            className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(110,124,255,.2)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] text-white shadow-[0_20px_36px_rgba(54,74,146,.28)] transition-transform duration-200 hover:scale-[1.02] md:hidden"
+            aria-label="Toggle document sidebar"
+          >
+            <UIcon name={sidebarOpen ? "X" : "PanelsLeftBottom"} size={22} />
+          </button>
+        </Tip>
 
         {sidebarOpen && (
           <div
@@ -226,7 +215,7 @@ export default function DocLens() {
           />
         )}
 
-        <div className="grid min-h-[760px] lg:grid-cols-[312px_minmax(0,1fr)]">
+        <div className="grid min-h-[620px] md:min-h-[760px] lg:grid-cols-[312px_minmax(0,1fr)]">
           <aside
             className={`fixed inset-y-0 left-0 z-[80] flex w-[312px] max-w-[88vw] flex-col border-r border-[rgba(110,124,255,.1)] bg-[linear-gradient(180deg,rgba(249,251,255,.98),rgba(240,247,255,.98))] transition-transform duration-200 lg:static lg:w-auto lg:max-w-none ${
               sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
@@ -243,6 +232,7 @@ export default function DocLens() {
               </div>
               <button
                 onClick={() => setSidebarOpen(false)}
+                title="Close the document list."
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.08)] bg-white/80 text-ink3 lg:hidden"
               >
                 <UIcon name="X" size={16} />
@@ -251,6 +241,7 @@ export default function DocLens() {
 
             <div className="border-b border-[rgba(110,124,255,.1)] px-5 py-5">
               <label
+                title="Upload PDFs or DOCX files into the analyzer."
                 onDragOver={(event) => {
                   event.preventDefault();
                   setDrag(true);

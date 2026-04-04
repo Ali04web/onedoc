@@ -26,7 +26,13 @@ export function Tip({ children, tip, side = "top" }: any) {
     hideRef.current = setTimeout(() => setShow(false), 1600);
   }
 
-  useEffect(() => () => clearHideTimer(), []);
+  useEffect(() => {
+    return () => {
+      if (hideRef.current) {
+        clearTimeout(hideRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -195,9 +201,11 @@ export function FZone({
   );
 
   return tip ? (
-    <Tip tip={tip} side="right">
-      {el}
-    </Tip>
+    <div className="w-full">
+      <Tip tip={tip} side="right">
+        {el}
+      </Tip>
+    </div>
   ) : (
     el
   );
@@ -212,7 +220,13 @@ export function HInput({ className = "", tip, ...props }: any) {
     />
   );
 
-  return tip ? <Tip tip={tip}>{input}</Tip> : input;
+  return tip ? (
+    <div className="w-full">
+      <Tip tip={tip}>{input}</Tip>
+    </div>
+  ) : (
+    input
+  );
 }
 
 export function HSel({ className = "", children, tip, ...props }: any) {
@@ -226,7 +240,13 @@ export function HSel({ className = "", children, tip, ...props }: any) {
     </select>
   );
 
-  return tip ? <Tip tip={tip}>{select}</Tip> : select;
+  return tip ? (
+    <div className="w-full">
+      <Tip tip={tip}>{select}</Tip>
+    </div>
+  ) : (
+    select
+  );
 }
 
 export function CStat({ msg, type }: any) {
@@ -266,7 +286,13 @@ export function HBtn({ onClick, disabled, loading, label, tip }: any) {
     </button>
   );
 
-  return tip ? <Tip tip={tip}>{btn}</Tip> : btn;
+  return tip ? (
+    <div className="w-full">
+      <Tip tip={tip}>{btn}</Tip>
+    </div>
+  ) : (
+    btn
+  );
 }
 
 export function DItem({ doc, active, onSelect, onRemove }: any) {

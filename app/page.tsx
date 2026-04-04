@@ -57,7 +57,7 @@ export default function HomePage() {
                 <Link
                   href="/pdf-tools"
                   title="Open the full PDF conversion workspace."
-                  className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white no-underline shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white no-underline shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
                 >
                   <UIcon name="FileText" size={16} />
                   Open PDF Tools
@@ -67,7 +67,7 @@ export default function HomePage() {
                 <Link
                   href="/analyze"
                   title="Open the document analyzer."
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.16)] bg-white/88 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(110,124,255,.16)] bg-white/88 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
                 >
                   <UIcon name="Microscope" size={16} />
                   Analyze Files
@@ -79,47 +79,49 @@ export default function HomePage() {
 
         <section className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {tools.map((tool) => (
-            <Tip key={tool.href} tip={tool.tip} side="top">
-              <Link href={tool.href} title={tool.tip} className="no-underline">
-                <SCard>
-                  <div className="flex h-full flex-col gap-4">
-                    <div
-                      className="flex h-12 w-12 items-center justify-center rounded-2xl"
-                      style={{
-                        color: tool.accent,
-                        background:
-                          tool.title === "PDF Tools"
-                            ? "linear-gradient(135deg, rgba(255,102,120,.14), rgba(255,201,90,.18))"
-                            : tool.title === "DOCX Tools"
-                              ? "linear-gradient(135deg, rgba(255,145,71,.14), rgba(110,124,255,.16))"
-                              : tool.title === "PDF Link"
-                                ? "linear-gradient(135deg, rgba(110,124,255,.16), rgba(85,199,247,.18))"
-                                : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(16,199,162,.16))",
-                      }}
-                    >
-                      <UIcon name={tool.icon} size={22} />
-                    </div>
-
-                    <div>
-                      <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
-                        {tool.title}
+            <div key={tool.href} className="h-full">
+              <Tip tip={tool.tip} side="top">
+                <Link href={tool.href} title={tool.tip} className="block h-full no-underline">
+                  <SCard>
+                    <div className="flex h-full flex-col gap-4">
+                      <div
+                        className="flex h-12 w-12 items-center justify-center rounded-2xl"
+                        style={{
+                          color: tool.accent,
+                          background:
+                            tool.title === "PDF Tools"
+                              ? "linear-gradient(135deg, rgba(255,102,120,.14), rgba(255,201,90,.18))"
+                              : tool.title === "DOCX Tools"
+                                ? "linear-gradient(135deg, rgba(255,145,71,.14), rgba(110,124,255,.16))"
+                                : tool.title === "PDF Link"
+                                  ? "linear-gradient(135deg, rgba(110,124,255,.16), rgba(85,199,247,.18))"
+                                  : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(16,199,162,.16))",
+                        }}
+                      >
+                        <UIcon name={tool.icon} size={22} />
                       </div>
-                      <div className="mt-2 text-[13px] leading-relaxed text-ink4">
-                        {tool.desc}
+
+                      <div>
+                        <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
+                          {tool.title}
+                        </div>
+                        <div className="mt-2 text-[13px] leading-relaxed text-ink4">
+                          {tool.desc}
+                        </div>
+                      </div>
+
+                      <div className="mt-auto flex items-center justify-between gap-3">
+                        <span className="premium-chip">
+                          <UIcon name="ExternalLink" size={12} />
+                          Open
+                        </span>
+                        <div className="h-2 flex-1 rounded-full bg-[linear-gradient(90deg,rgba(110,124,255,.14),rgba(16,199,162,.14),rgba(255,145,71,.14))]" />
                       </div>
                     </div>
-
-                    <div className="mt-auto flex items-center justify-between gap-3">
-                      <span className="premium-chip">
-                        <UIcon name="ExternalLink" size={12} />
-                        Open
-                      </span>
-                      <div className="h-2 flex-1 rounded-full bg-[linear-gradient(90deg,rgba(110,124,255,.14),rgba(16,199,162,.14),rgba(255,145,71,.14))]" />
-                    </div>
-                  </div>
-                </SCard>
-              </Link>
-            </Tip>
+                  </SCard>
+                </Link>
+              </Tip>
+            </div>
           ))}
         </section>
       </div>

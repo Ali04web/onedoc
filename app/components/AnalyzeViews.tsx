@@ -261,6 +261,7 @@ export function SearchView({ text }: { text: string }) {
             <UIcon name="Search" size={18} className="text-ink4" />
             <HInput
               value={query}
+              tip="Search inside the extracted document text."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setQuery(event.target.value);
                 setCurrent(0);
@@ -274,28 +275,34 @@ export function SearchView({ text }: { text: string }) {
               <UIcon name="Target" size={14} />
               {matches.length} result{matches.length === 1 ? "" : "s"}
             </span>
-            <button
-              onClick={() =>
-                setCurrent((value) =>
-                  matches.length ? (value - 1 + matches.length) % matches.length : 0
-                )
-              }
-              disabled={!matches.length}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
-            >
-              <UIcon name="ChevronUp" size={18} />
-            </button>
-            <button
-              onClick={() =>
-                setCurrent((value) =>
-                  matches.length ? (value + 1) % matches.length : 0
-                )
-              }
-              disabled={!matches.length}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
-            >
-              <UIcon name="ChevronDown" size={18} />
-            </button>
+            <Tip tip="Jump to the previous search result.">
+              <button
+                onClick={() =>
+                  setCurrent((value) =>
+                    matches.length ? (value - 1 + matches.length) % matches.length : 0
+                  )
+                }
+                title="Jump to the previous search result."
+                disabled={!matches.length}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+              >
+                <UIcon name="ChevronUp" size={18} />
+              </button>
+            </Tip>
+            <Tip tip="Jump to the next search result.">
+              <button
+                onClick={() =>
+                  setCurrent((value) =>
+                    matches.length ? (value + 1) % matches.length : 0
+                  )
+                }
+                title="Jump to the next search result."
+                disabled={!matches.length}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+              >
+                <UIcon name="ChevronDown" size={18} />
+              </button>
+            </Tip>
           </div>
         </div>
       </div>

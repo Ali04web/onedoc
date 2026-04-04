@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Emoji } from "@/app/components/Icons";
 import { Tip, Toast } from "@/app/components/DocLensUI";
-import { PageHero } from "@/app/components/PageHero";
+import { UIcon } from "@/app/components/Icons";
 
 const faqs = [
   {
@@ -20,11 +19,11 @@ const faqs = [
   },
   {
     q: "Does OneDocs work well on mobile?",
-    a: "Yes. The redesign keeps mobile layouts intentional rather than compressed, with clearer sections, better spacing, and simpler actions on smaller screens.",
+    a: "Yes. The layout stays compact on smaller screens, with direct actions and simpler sections instead of large hero blocks.",
   },
   {
     q: "Why does the app feel different now?",
-    a: "The interface was refreshed to look more premium and more deliberate across every page. Typography, surfaces, navigation, and hierarchy were all redesigned to feel more polished.",
+    a: "The interface was refreshed to feel clearer and more tool-focused, while still keeping a stronger visual identity on the homepage.",
   },
 ];
 
@@ -60,25 +59,13 @@ export default function SupportPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <PageHero
-          kicker="Support"
-          title="Help, answers, and contact in a cleaner support space."
-          copy="Support now looks more deliberate too, with the same brighter visual language used across the main tools."
-          chips={["FAQ", "Contact", "Formats"]}
-          stats={[
-            { label: "Fast help", value: "Common answers" },
-            { label: "Reach out", value: "Contact form" },
-            { label: "Coverage", value: "Format guide" },
-          ]}
-          artMode="support"
-        />
-
-        <section className="mt-5 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="surface-panel p-8">
+        <section className="mt-1 grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
+          <div className="surface-panel p-5 md:p-8">
             <div className="mb-5 flex items-center gap-4">
               <div className="page-kicker">Frequently Asked Questions</div>
               <div className="premium-divider flex-1" />
             </div>
+
             <div className="grid gap-3">
               {faqs.map((faq, index) => {
                 const open = openFaq === index;
@@ -91,32 +78,36 @@ export default function SupportPage() {
                         : "border-[rgba(110,124,255,.1)] bg-white/72"
                     }`}
                   >
-                    <button
-                      onClick={() => setOpenFaq(open ? null : index)}
-                      className="flex w-full items-center gap-4 px-5 py-5 text-left"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(110,124,255,.1)] bg-white/80 text-[var(--color-violet)]">
-                        <Emoji symbol={open ? "✓" : "❓"} size={16} />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="text-[15px] font-semibold text-ink2">{faq.q}</div>
-                      </div>
-                      <div className="text-[12px] uppercase tracking-[0.18em] text-ink4">
-                        {open ? "Hide" : "Open"}
-                      </div>
-                    </button>
-                    {open && (
+                    <Tip tip={open ? "Hide this answer." : "Open this answer."} side="top">
+                      <button
+                        onClick={() => setOpenFaq(open ? null : index)}
+                        title={open ? "Hide this answer." : "Open this answer."}
+                        className="flex w-full items-center gap-4 px-5 py-5 text-left"
+                      >
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(110,124,255,.1)] bg-white/80 text-[var(--color-violet)]">
+                          <UIcon name={open ? "Check" : "HelpCircle"} size={16} />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[15px] font-semibold text-ink2">{faq.q}</div>
+                        </div>
+                        <div className="text-[12px] uppercase tracking-[0.18em] text-ink4">
+                          {open ? "Hide" : "Open"}
+                        </div>
+                      </button>
+                    </Tip>
+
+                    {open ? (
                       <div className="px-5 pb-5 pt-0 text-[14px] leading-relaxed text-ink3 animate-fade-up">
                         {faq.a}
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="surface-panel p-8">
+          <div className="surface-panel p-5 md:p-8">
             <div className="mb-5 page-kicker">Contact Studio</div>
             <div className="font-caveat text-[32px] font-semibold leading-none text-ink2">
               Contact support
@@ -131,6 +122,7 @@ export default function SupportPage() {
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="Your name"
+                title="Enter the name support should reply to."
                 className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <input
@@ -138,11 +130,13 @@ export default function SupportPage() {
                 value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="Email address"
+                title="Enter the email address for the reply."
                 className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <select
                 value={form.type}
                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
+                title="Choose the kind of message you want to send."
                 className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               >
                 <option value="question">Question</option>
@@ -155,25 +149,30 @@ export default function SupportPage() {
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                 placeholder="Tell us what your users need, what feels off, or what you want improved."
+                title="Describe your question, problem, or requested improvement."
                 className="w-full resize-y rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
 
               <div className="flex flex-wrap gap-3">
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Emoji symbol="✉️" size={16} />
-                  Send message
-                </button>
-                <Tip tip="Open the profile used as the current contact path" side="top">
+                <Tip tip="Prepare this support message." side="top">
+                  <button
+                    type="submit"
+                    title="Prepare this support message."
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
+                  >
+                    <UIcon name="Mail" size={16} />
+                    Send message
+                  </button>
+                </Tip>
+                <Tip tip="Open the current public contact profile." side="top">
                   <a
                     href="https://x.com/alivldm"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                    title="Open the current public contact profile."
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
                   >
-                    <Emoji symbol="𝕏" size={14} />
+                    <UIcon name="XBrand" size={14} />
                     Connect on X
                   </a>
                 </Tip>
@@ -182,8 +181,8 @@ export default function SupportPage() {
           </div>
         </section>
 
-        <section className="mt-12 surface-panel overflow-hidden">
-          <div className="p-8">
+        <section className="mt-5 surface-panel overflow-hidden">
+          <div className="p-5 md:p-8">
             <div className="mb-5 flex items-center gap-4">
               <div className="page-kicker">Supported Formats</div>
               <div className="premium-divider flex-1" />
@@ -216,7 +215,7 @@ export default function SupportPage() {
         </section>
       </div>
 
-      {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
+      {toast ? <Toast msg={toast} onDone={() => setToast(null)} /> : null}
     </div>
   );
 }

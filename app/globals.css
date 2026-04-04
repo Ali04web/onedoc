@@ -359,7 +359,7 @@ body::after {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 28px;
+  gap: 22px;
 }
 
 .hero-copy {
@@ -531,8 +531,26 @@ select {
     letter-spacing: 0.14em;
   }
 
+  .hero-layout {
+    gap: 16px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .hero-actions > * {
+    flex: 1 1 100%;
+  }
+
+  .hero-chip-row {
+    gap: 8px;
+  }
+
   .hero-art-panel {
-    padding: 12px;
-    border-radius: 26px;
+    width: min(100%, 360px);
+    padding: 10px;
+    border-radius: 24px;
+    margin: 0 auto;
   }
 }
