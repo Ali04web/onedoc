@@ -50,10 +50,10 @@ type JsZipLike = {
 
 type JsZipCtor = new () => JsZipLike;
 
-interface PdfBrowserWindow extends Window {
+type PdfBrowserWindow = Window & {
   pdfjsLib?: PdfJsLibLike;
   JSZip?: JsZipCtor;
-}
+};
 
 interface PositionedToken {
   text: string;
@@ -378,6 +378,10 @@ function linesToParagraphs(lines: PdfLine[]): PdfParagraph[] {
       };
       paragraphs.push(current);
       previous = line;
+      continue;
+    }
+
+    if (!current) {
       continue;
     }
 

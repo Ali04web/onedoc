@@ -102,7 +102,7 @@ export default function HomePage() {
                     <div className="mb-2 flex items-center gap-2 text-xl font-bold text-ink transition-colors group-hover:text-amber">
                       {tool.title}
                       <span className="translate-x-[-8px] text-sm font-normal text-ink4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
-                        ->
+                        {"->"}
                       </span>
                     </div>
                     <div className="mb-4 text-[14px] leading-relaxed text-ink4">

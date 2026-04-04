@@ -8,7 +8,6 @@ import {
   htmlToMarkdown,
   openPrintPreviewWindow,
   parseCsv,
-  type MammothLike,
 } from "@/app/lib/rich-exports";
 import { dlBlob, dlText, esc, stem } from "@/app/lib/utils";
 import {
@@ -21,13 +20,6 @@ import {
   Toast,
 } from "@/app/components/DocLensUI";
 import { Emoji } from "@/app/components/Icons";
-
-declare global {
-  interface Window {
-    mammoth: MammothLike;
-    PDFLib: any;
-  }
-}
 
 const MAMMOTH_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
