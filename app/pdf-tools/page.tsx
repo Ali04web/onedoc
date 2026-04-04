@@ -86,6 +86,7 @@ export default function PdfToolsPage() {
   const ready = useScripts([
     "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
     "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",
   ]);
 
   const [state, setState] = useState<Record<string, any>>({});
@@ -100,6 +101,15 @@ export default function PdfToolsPage() {
     }));
 
   async function run(key: string, task: () => Promise<string>) {
+    if (!ready) {
+      setTool(key, {
+        loading: false,
+        status: "PDF libraries are still loading. Please try again in a moment.",
+        statusType: "err",
+      });
+      return;
+    }
+
     setTool(key, { loading: true, status: "", statusType: "" });
     try {
       const message = await task();

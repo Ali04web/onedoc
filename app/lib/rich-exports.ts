@@ -68,17 +68,22 @@ export function buildStandaloneHtml(title: string, bodyHtml: string): string {
   <style>
     :root {
       color-scheme: light;
-      --page: #ffffff;
-      --ink: #111827;
-      --muted: #6b7280;
-      --line: #e5e7eb;
-      --soft: #f8fafc;
-      --accent: #2563eb;
+      --page: #fdfbf8;
+      --page-2: #f5eee1;
+      --ink: #1e1911;
+      --muted: #766a57;
+      --line: rgba(36, 28, 18, 0.12);
+      --soft: #fff;
+      --accent: #275f5a;
+      --amber: #b48a4b;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 22%);
+      background:
+        radial-gradient(circle at top left, rgba(180, 138, 75, 0.18), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(39, 95, 90, 0.14), transparent 32%),
+        linear-gradient(180deg, #faf7f1 0%, #f3ede1 100%);
       color: var(--ink);
       font-family: "Segoe UI", Arial, sans-serif;
     }
@@ -87,34 +92,43 @@ export function buildStandaloneHtml(title: string, bodyHtml: string): string {
       margin: 32px auto;
       background: var(--page);
       border: 1px solid var(--line);
-      border-radius: 24px;
-      box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+      border-radius: 28px;
+      box-shadow: 0 28px 70px rgba(28, 21, 13, 0.12);
       overflow: hidden;
     }
     header {
-      padding: 28px 32px 20px;
+      padding: 30px 34px 22px;
       border-bottom: 1px solid var(--line);
-      background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.94));
+      background:
+        radial-gradient(circle at top right, rgba(39, 95, 90, 0.1), transparent 28%),
+        linear-gradient(135deg, rgba(180, 138, 75, 0.14), rgba(255, 255, 255, 0.94));
     }
     header h1 {
       margin: 0;
-      font-size: clamp(24px, 3vw, 34px);
-      line-height: 1.1;
+      font-size: clamp(26px, 3vw, 40px);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      font-family: Georgia, "Times New Roman", serif;
     }
     header p {
-      margin: 10px 0 0;
+      margin: 12px 0 0;
       color: var(--muted);
       font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
     }
     article {
-      padding: 32px;
-      line-height: 1.7;
+      padding: 36px 34px;
+      line-height: 1.8;
       font-size: 16px;
     }
     article h1, article h2, article h3, article h4 {
-      line-height: 1.2;
+      line-height: 1.15;
       margin-top: 1.8em;
       margin-bottom: 0.5em;
+      font-family: Georgia, "Times New Roman", serif;
+      letter-spacing: -0.02em;
     }
     article p, article ul, article ol, article table, article blockquote {
       margin: 0 0 1em;
@@ -122,18 +136,19 @@ export function buildStandaloneHtml(title: string, bodyHtml: string): string {
     article img {
       max-width: 100%;
       height: auto;
-      border-radius: 16px;
+      border-radius: 18px;
       border: 1px solid var(--line);
       display: block;
       margin: 18px auto;
       background: var(--soft);
+      box-shadow: 0 18px 40px rgba(28, 21, 13, 0.08);
     }
     article table {
       width: 100%;
       border-collapse: collapse;
       background: var(--page);
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: 18px;
       overflow: hidden;
     }
     article th, article td {
@@ -143,29 +158,31 @@ export function buildStandaloneHtml(title: string, bodyHtml: string): string {
       vertical-align: top;
     }
     article th {
-      background: var(--soft);
+      background: rgba(245, 238, 225, 0.82);
       font-weight: 700;
     }
     article blockquote {
       margin-left: 0;
-      padding: 14px 16px;
-      border-left: 4px solid var(--accent);
-      background: rgba(37, 99, 235, 0.06);
-      color: #1f2937;
+      padding: 16px 18px;
+      border-left: 4px solid var(--amber);
+      background: rgba(180, 138, 75, 0.08);
+      color: var(--ink);
+      border-radius: 0 18px 18px 0;
     }
     article code {
-      background: var(--soft);
+      background: rgba(245, 238, 225, 0.9);
       padding: 2px 6px;
       border-radius: 6px;
       font-family: "JetBrains Mono", Consolas, monospace;
       font-size: 0.92em;
     }
     article pre {
-      background: #0f172a;
-      color: #e2e8f0;
+      background: #1d211f;
+      color: #eef3f1;
       padding: 18px;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow: auto;
+      box-shadow: 0 20px 36px rgba(28, 21, 13, 0.12);
     }
     @media print {
       body { background: #fff; }
@@ -335,7 +352,7 @@ export function openPrintPreviewWindow(title: string): Window {
 
   preview.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml(
     title
-  )}</title><style>body{font-family:Segoe UI,Arial,sans-serif;padding:32px;color:#111827} .status{max-width:520px;margin:10vh auto;border:1px solid #e5e7eb;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(15,23,42,.08)} h1{margin:0 0 12px;font-size:28px} p{margin:0;color:#6b7280;line-height:1.7}</style></head><body><div class="status"><h1>Preparing your document...</h1><p>OneDocs is building a print-ready preview with the original formatting preserved as closely as possible.</p></div></body></html>`);
+  )}</title><style>body{margin:0;font-family:Segoe UI,Arial,sans-serif;padding:32px;color:#1e1911;background:radial-gradient(circle at top left, rgba(180,138,75,.18), transparent 28%),linear-gradient(180deg,#faf7f1 0%,#f3ede1 100%)} .status{max-width:560px;margin:12vh auto;border:1px solid rgba(36,28,18,.12);border-radius:28px;padding:28px;background:rgba(253,251,248,.92);box-shadow:0 28px 70px rgba(28,21,13,.12)} .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#766a57;font-weight:700} h1{margin:12px 0 12px;font-size:34px;line-height:1.04;letter-spacing:-.03em;font-family:Georgia,'Times New Roman',serif} p{margin:0;color:#766a57;line-height:1.8}</style></head><body><div class="status"><div class="eyebrow">OneDocs Preview</div><h1>Preparing your document...</h1><p>OneDocs is building a print-ready preview with the original formatting preserved as closely as possible.</p></div></body></html>`);
   preview.document.close();
   return preview;
 }

@@ -21,13 +21,6 @@ import {
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
 
-declare global {
-  interface Window {
-    mammoth: any;
-    PDFLib: any;
-  }
-}
-
 function CsvPreview({
   rows,
 }: {
@@ -74,6 +67,15 @@ export default function DocxToolsPage() {
     }));
 
   async function run(key: string, task: () => Promise<string>) {
+    if (!ready) {
+      setTool(key, {
+        loading: false,
+        status: "DOCX libraries are still loading. Please try again in a moment.",
+        statusType: "err",
+      });
+      return;
+    }
+
     setTool(key, { loading: true, status: "", statusType: "" });
     try {
       const message = await task();
@@ -116,7 +118,7 @@ export default function DocxToolsPage() {
 
               await run("docxHtml", async () => {
                 const htmlBody = await convertDocxToRichHtml(
-                  window.mammoth,
+                  (window as any).mammoth,
                   await file.arrayBuffer()
                 );
                 const page = buildStandaloneHtml(stem(file.name), htmlBody);
@@ -200,7 +202,7 @@ export default function DocxToolsPage() {
 
               await run("docxMd", async () => {
                 const htmlBody = await convertDocxToRichHtml(
-                  window.mammoth,
+                  (window as any).mammoth,
                   await file.arrayBuffer()
                 );
                 const markdown = htmlToMarkdown(htmlBody);
@@ -255,7 +257,7 @@ export default function DocxToolsPage() {
               await run("docxPdf", async () => {
                 try {
                   const htmlBody = await convertDocxToRichHtml(
-                    window.mammoth,
+                    (window as any).mammoth,
                     await file.arrayBuffer()
                   );
                   const page = buildStandaloneHtml(stem(file.name), htmlBody);

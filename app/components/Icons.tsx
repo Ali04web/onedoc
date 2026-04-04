@@ -78,9 +78,11 @@ export function UIcon({
   ...props
 }: IconProps) {
   const mappedName = (emoji && emojiToLucide[emoji]) || name;
+  const customIcon = mappedName
+    ? (customIcons as Record<string, React.ComponentType<any>>)[mappedName]
+    : undefined;
   const SelectedIcon =
-    (mappedName && ((Lucide as any)[mappedName] || customIcons[mappedName])) ||
-    Lucide.Box;
+    (mappedName && ((Lucide as any)[mappedName] || customIcon)) || Lucide.Box;
 
   return (
     <div

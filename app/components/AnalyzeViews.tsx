@@ -13,8 +13,8 @@ type StatsShape = {
 
 type DocShape = {
   name: string;
-  text: string;
-  stats: StatsShape;
+  text: string | null;
+  stats: StatsShape | null;
 };
 
 export function TView({
@@ -407,6 +407,14 @@ export function SearchView({ text }: { text: string }) {
 }
 
 export function ExportView({ doc }: { doc: DocShape }) {
+  const stats = doc.stats || {
+    wordCount: 0,
+    charCount: 0,
+    sentenceCount: 0,
+    readingTime: 0,
+    topWords: [] as Array<[string, number]>,
+  };
+
   const items = [
     {
       title: "Plain text",
@@ -414,7 +422,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       description: "Raw extracted copy for archives, notes, and quick reuse.",
       icon: "FileText",
       tip: "Save the extracted text as a plain text file.",
-      onClick: () => dlText(`${stem(doc.name)}.txt`, doc.text),
+      onClick: () => dlText(`${stem(doc.name)}.txt`, doc.text || ""),
     },
     {
       title: "Markdown",
@@ -425,7 +433,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       onClick: () =>
         dlText(
           `${stem(doc.name)}.md`,
-          doc.text
+          (doc.text || "")
             .split("\n")
             .map((line) =>
               line.trim().length > 60 ? line : line.trim() ? `## ${line.trim()}` : ""
@@ -440,7 +448,6 @@ export function ExportView({ doc }: { doc: DocShape }) {
       icon: "FileBarChart",
       tip: "Generate a plain text summary report.",
       onClick: () => {
-        const stats = doc.stats;
         dlText(
           `${stem(doc.name)}_report.txt`,
           [
@@ -471,7 +478,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
         dlText(
           `${stem(doc.name)}_frequency.csv`,
           "Word,Count\n" +
-            doc.stats.topWords.map(([word, count]) => `"${word}",${count}`).join("\n")
+            stats.topWords.map(([word, count]) => `"${word}",${count}`).join("\n")
         ),
     },
   ];

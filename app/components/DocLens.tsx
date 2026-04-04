@@ -8,14 +8,6 @@ import { DItem, Tip, Toast } from "./DocLensUI";
 import { ExportView, SearchView, StatsView, TView } from "./AnalyzeViews";
 import { UIcon } from "./Icons";
 
-declare global {
-  interface Window {
-    mammoth: {
-      extractRawText(input: { arrayBuffer: ArrayBuffer }): Promise<{ value: string }>;
-    };
-  }
-}
-
 type DocType = "pdf" | "docx";
 
 type DocRecord = {
@@ -132,7 +124,7 @@ export default function DocLens() {
         text = extraction.text;
       } else {
         const arrayBuffer = await file.arrayBuffer();
-        const result = await window.mammoth.extractRawText({ arrayBuffer });
+        const result = await (window as any).mammoth.extractRawText({ arrayBuffer });
         text = result.value;
       }
 
