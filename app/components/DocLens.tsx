@@ -8,6 +8,7 @@ import { computeStats } from "../lib/utils";
 import { DItem, Tip, Toast } from "./DocLensUI";
 import { ExportView, SearchView, StatsView, TView } from "./AnalyzeViews";
 import { UIcon } from "./Icons";
+import { PageHero } from "./PageHero";
 
 type DocType = "pdf" | "docx";
 
@@ -196,23 +197,18 @@ export default function DocLens() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero p-6 md:p-7">
-        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="page-kicker mb-4">Analyze documents</div>
-            <h1 className="page-title">Upload a file and start working.</h1>
-            <p className="page-copy mt-3">
-              Read, search, inspect, and export PDF or DOCX content.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 lg:justify-end">
-            <span className="premium-chip">PDF</span>
-            <span className="premium-chip">DOCX</span>
-            <span className="premium-chip">Search</span>
-            <span className="premium-chip">Export</span>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        kicker="Analyze documents"
+        title="Upload a file and move through reading, search, and export with less friction."
+        copy="The analysis workspace keeps the tool-first layout, but now it feels more crafted and visually easier to scan."
+        chips={["PDF", "DOCX", "Search", "Export"]}
+        stats={[
+          { label: "Input", value: "PDF + DOCX" },
+          { label: "Modes", value: "Read + stats" },
+          { label: "Output", value: "TXT, MD, CSV" },
+        ]}
+        artMode="analyze"
+      />
 
       <div className="surface-panel relative mt-5 overflow-hidden p-0">
         <button

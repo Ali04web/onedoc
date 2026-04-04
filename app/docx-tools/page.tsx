@@ -21,6 +21,7 @@ import {
   Toast,
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
+import { PageHero } from "@/app/components/PageHero";
 
 function CsvPreview({
   rows,
@@ -473,23 +474,18 @@ export default function DocxToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero p-6 md:p-7">
-        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="page-kicker mb-4">DOCX tools</div>
-            <h1 className="page-title">Convert DOCX files without the extra noise.</h1>
-            <p className="page-copy mt-3">
-              Export Word files into simpler formats and print-ready views.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 lg:justify-end">
-            <span className="premium-chip">HTML</span>
-            <span className="premium-chip">Markdown</span>
-            <span className="premium-chip">Text</span>
-            <span className="premium-chip">PDF preview</span>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        kicker="DOCX tools"
+        title="Turn Word files into polished outputs without losing readability."
+        copy="The DOCX workspace now feels more visual and more confident while keeping the conversion controls simple."
+        chips={["HTML", "Markdown", "Text", "PDF preview"]}
+        stats={[
+          { label: "Rich export", value: "HTML + MD" },
+          { label: "Text flow", value: "Readable output" },
+          { label: "Print path", value: "PDF preview" },
+        ]}
+        artMode="docx"
+      />
 
       <section className="surface-panel mt-5 p-6 md:p-8">
         <SHead

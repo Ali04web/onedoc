@@ -24,6 +24,7 @@ import {
   Toast,
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
+import { PageHero } from "@/app/components/PageHero";
 
 declare global {
   interface Window {
@@ -618,23 +619,18 @@ export default function PdfToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="page-hero p-6 md:p-7">
-        <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <div className="page-kicker mb-4">PDF tools</div>
-            <h1 className="page-title">Convert and edit PDFs faster.</h1>
-            <p className="page-copy mt-3">
-              Choose a tool below and get straight to work.
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3 lg:justify-end">
-            <span className="premium-chip">PDF to DOCX</span>
-            <span className="premium-chip">Merge</span>
-            <span className="premium-chip">Split</span>
-            <span className="premium-chip">Rotate</span>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        kicker="PDF tools"
+        title="Sharper PDF tools with better visual flow and cleaner output."
+        copy="Every main PDF action now sits inside a brighter, easier workspace without slowing down the actual tool work."
+        chips={["PDF to DOCX", "Merge", "Split", "Rotate"]}
+        stats={[
+          { label: "Best result", value: "Accurate DOCX" },
+          { label: "Image export", value: "PNG ZIP" },
+          { label: "Batch work", value: "Merge + split" },
+        ]}
+        artMode="pdf"
+      />
 
       <section className="surface-panel mt-5 p-6 md:p-8">
         <SHead

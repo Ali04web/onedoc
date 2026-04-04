@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Emoji } from "@/app/components/Icons";
 import { Tip, Toast } from "@/app/components/DocLensUI";
+import { PageHero } from "@/app/components/PageHero";
 
 const faqs = [
   {
@@ -59,22 +60,18 @@ export default function SupportPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="page-hero p-6 md:p-7">
-          <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <div className="page-kicker mb-4">Support</div>
-              <h1 className="page-title max-w-[760px]">Quick help and contact.</h1>
-              <p className="page-copy mt-3">
-                Find answers, contact support, and check supported formats.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3 lg:justify-end">
-              <span className="premium-chip">FAQ</span>
-              <span className="premium-chip">Contact</span>
-              <span className="premium-chip">Formats</span>
-            </div>
-          </div>
-        </section>
+        <PageHero
+          kicker="Support"
+          title="Help, answers, and contact in a cleaner support space."
+          copy="Support now looks more deliberate too, with the same brighter visual language used across the main tools."
+          chips={["FAQ", "Contact", "Formats"]}
+          stats={[
+            { label: "Fast help", value: "Common answers" },
+            { label: "Reach out", value: "Contact form" },
+            { label: "Coverage", value: "Format guide" },
+          ]}
+          artMode="support"
+        />
 
         <section className="mt-5 grid gap-6 xl:grid-cols-[minmax(0,1fr)_420px]">
           <div className="surface-panel p-8">

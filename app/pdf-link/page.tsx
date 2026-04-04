@@ -4,6 +4,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { Emoji } from "@/app/components/Icons";
 import { Toast } from "@/app/components/DocLensUI";
+import { PageHero } from "@/app/components/PageHero";
 
 interface UploadedFile {
   id: string;
@@ -128,22 +129,18 @@ export default function PdfLinkPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="page-hero p-6 md:p-7">
-          <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <div className="page-kicker mb-4">PDF link</div>
-              <h1 className="page-title max-w-[760px]">Upload a PDF and share the link.</h1>
-              <p className="page-copy mt-3">
-                A simple viewer page with download support.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3 lg:justify-end">
-              <span className="premium-chip">No sign-up</span>
-              <span className="premium-chip">20 MB max</span>
-              <span className="premium-chip">Viewer + download</span>
-            </div>
-          </div>
-        </section>
+        <PageHero
+          kicker="PDF link"
+          title="Upload a PDF and create a cleaner viewer link."
+          copy="This sharing flow now looks more polished while still keeping the upload path easy to understand."
+          chips={["No sign-up", "20 MB max", "Viewer + download"]}
+          stats={[
+            { label: "Setup", value: "Quick upload" },
+            { label: "Delivery", value: "Shareable link" },
+            { label: "Viewer", value: "Open + download" },
+          ]}
+          artMode="link"
+        />
 
         <section className="mt-5 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div className="surface-panel p-8">

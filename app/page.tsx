@@ -4,36 +4,36 @@ import React from "react";
 import Link from "next/link";
 import { Emoji } from "./components/Icons";
 import { SCard } from "./components/DocLensUI";
-import { BrandSymbol } from "./components/BrandSymbol";
+import { PageHero } from "./components/PageHero";
 
 const tools = [
   {
     href: "/analyze",
-    icon: "🔬",
+    icon: "ðŸ”¬",
     title: "Analyze",
     desc: "Read, search, and export document text.",
     accent: "var(--color-teal)",
   },
   {
     href: "/pdf-tools",
-    icon: "📄",
+    icon: "ðŸ“„",
     title: "PDF Tools",
     desc: "Convert, merge, split, and rotate PDFs.",
     accent: "var(--color-red)",
   },
   {
     href: "/docx-tools",
-    icon: "📝",
+    icon: "ðŸ“",
     title: "DOCX Tools",
     desc: "Export DOCX to HTML, text, markdown, or PDF.",
     accent: "var(--color-amber2)",
   },
   {
     href: "/pdf-link",
-    icon: "🔗",
+    icon: "ðŸ”—",
     title: "PDF Link",
     desc: "Turn a PDF into a shareable viewer link.",
-    accent: "var(--color-teal)",
+    accent: "var(--color-violet)",
   },
 ];
 
@@ -41,53 +41,36 @@ export default function HomePage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="page-hero p-7 md:p-8">
-          <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
-            <div>
-              <div className="page-kicker mb-4">Simple, colorful, faster</div>
-              <h1 className="page-title max-w-[700px]">
-                Convert, analyze, and share documents without the clutter.
-              </h1>
-              <p className="page-copy mt-4">
-                OneDocs keeps the UI light and puts the tools first.
-              </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href="/pdf-tools"
-                  className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--color-red),var(--color-amber2))] px-5 py-3 text-[14px] font-semibold text-white no-underline shadow-[0_16px_28px_rgba(240,141,54,.26)] transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Emoji symbol="📄" size={16} />
-                  Open PDF Tools
-                </Link>
-                <Link
-                  href="/analyze"
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(91,124,255,.14)] bg-white/88 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5"
-                >
-                  <Emoji symbol="🔬" size={16} />
-                  Analyze Files
-                </Link>
-              </div>
-            </div>
-
-            <div className="surface-panel flex items-center gap-4 p-5">
-              <div className="rounded-[24px] bg-white/92 p-2 shadow-[0_16px_28px_rgba(93,104,214,.14)]">
-                <BrandSymbol size={74} detailed />
-              </div>
-              <div className="min-w-0">
-                <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
-                  OneDocs mark
-                </div>
-                <div className="mt-2 text-[13px] leading-relaxed text-ink4">
-                  Custom SVG identity built around documents, links, and bright motion.
-                </div>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="premium-chip">PDF + DOCX</span>
-                  <span className="premium-chip">Readable UI</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <PageHero
+          kicker="Simple, colorful, faster"
+          title="Convert, analyze, and share documents with a clearer visual flow."
+          copy="The new hero artwork gives OneDocs a stronger personality while the workspace still stays quick to scan and easy to use."
+          chips={["PDF + DOCX", "Accurate output", "Shareable viewer"]}
+          stats={[
+            { label: "Main tools", value: "4 workspaces" },
+            { label: "Best fit", value: "Fast daily use" },
+            { label: "Style", value: "Bright and readable" },
+          ]}
+          artMode="home"
+          actions={
+            <>
+              <Link
+                href="/pdf-tools"
+                className="inline-flex items-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-amber2))] px-5 py-3 text-[14px] font-semibold text-white no-underline shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <Emoji symbol="ðŸ“„" size={16} />
+                Open PDF Tools
+              </Link>
+              <Link
+                href="/analyze"
+                className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.16)] bg-white/88 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5"
+              >
+                <Emoji symbol="ðŸ”¬" size={16} />
+                Analyze Files
+              </Link>
+            </>
+          }
+        />
 
         <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {tools.map((tool) => (
@@ -100,27 +83,35 @@ export default function HomePage() {
                       color: tool.accent,
                       background:
                         tool.title === "PDF Tools"
-                          ? "linear-gradient(135deg, rgba(255,100,116,.14), rgba(255,195,77,.18))"
+                          ? "linear-gradient(135deg, rgba(255,102,120,.14), rgba(255,201,90,.18))"
                           : tool.title === "DOCX Tools"
-                            ? "linear-gradient(135deg, rgba(255,143,63,.14), rgba(110,124,255,.16))"
-                            : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(22,199,161,.16))",
+                            ? "linear-gradient(135deg, rgba(255,145,71,.14), rgba(110,124,255,.16))"
+                            : tool.title === "PDF Link"
+                              ? "linear-gradient(135deg, rgba(110,124,255,.16), rgba(85,199,247,.18))"
+                              : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(16,199,162,.16))",
                     }}
                   >
                     <Emoji symbol={tool.icon} size={22} />
                   </div>
+
                   <div>
-                    <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
-                      {tool.title}
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
+                        {tool.title}
+                      </div>
+                      <span className="premium-chip text-[11px]">Popular</span>
                     </div>
                     <div className="mt-2 text-[13px] leading-relaxed text-ink4">
                       {tool.desc}
                     </div>
                   </div>
-                  <div className="mt-auto">
+
+                  <div className="mt-auto flex items-center justify-between gap-3">
                     <span className="premium-chip">
-                      <Emoji symbol="↗" size={12} />
+                      <Emoji symbol="â†—" size={12} />
                       Open
                     </span>
+                    <div className="h-2 flex-1 rounded-full bg-[linear-gradient(90deg,rgba(110,124,255,.14),rgba(16,199,162,.14),rgba(255,145,71,.14))]" />
                   </div>
                 </div>
               </SCard>
