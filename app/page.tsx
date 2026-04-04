@@ -2,145 +2,206 @@
 
 import React from "react";
 import Link from "next/link";
-import { Tip, SCard } from "./components/DocLensUI";
 import { Emoji } from "./components/Icons";
+import { SCard, Tip } from "./components/DocLensUI";
 
 const tools = [
   {
     href: "/analyze",
     icon: "🔬",
     title: "Analyse Documents",
-    desc: "Extract text from PDFs and DOCX files. Get word counts, sentence stats, frequency analysis, and search within documents.",
-    features: ["Text extraction", "Word frequency", "Full-text search", "Export results"],
-    color: "#c07818",
-    rot: 0.3,
+    desc: "Inspect PDFs and DOCX files with searchable text, reading stats, and export-ready outputs.",
+    features: ["Cleaner extraction", "Search and stats", "Quick exports"],
+    accent: "var(--color-amber)",
   },
   {
     href: "/pdf-tools",
     icon: "📄",
     title: "PDF Tools",
-    desc: "Convert, merge, split, rotate PDFs. Turn images into PDFs or render pages as PNG images.",
-    features: ["PDF → Text", "PDF → Images", "Merge PDFs", "Split pages", "Rotate pages", "Images → PDF"],
-    color: "#b02020",
-    rot: -0.2,
+    desc: "Handle PDF conversion, page operations, previews, and delivery with a far more premium workflow.",
+    features: ["Convert", "Merge or split", "Share and present"],
+    accent: "var(--color-red)",
   },
   {
     href: "/docx-tools",
     icon: "📝",
     title: "DOCX Tools",
-    desc: "Convert Word documents to HTML, plain text, or Markdown. Also convert TXT/CSV into formatted outputs.",
-    features: ["DOCX → HTML", "DOCX → Text", "DOCX → Markdown", "TXT → PDF", "CSV → HTML"],
-    color: "#1a5c5c",
-    rot: 0.2,
+    desc: "Transform Word documents into HTML, Markdown, text, and polished printable outputs.",
+    features: ["HTML and Markdown", "Text cleanup", "Print-ready exports"],
+    accent: "var(--color-teal)",
   },
   {
     href: "/support",
     icon: "💬",
-    title: "Help & Support",
-    desc: "Browse FAQs, learn tips, or get in touch with us. Everything you need to get started.",
-    features: ["FAQ", "Quick tips", "Contact form", "Feature requests"],
-    color: "#7a5535",
-    rot: -0.3,
+    title: "Help and Support",
+    desc: "Guide customers, answer common questions, and keep the experience feeling cared for at every step.",
+    features: ["FAQs", "Usage tips", "Support requests"],
+    accent: "var(--color-ink3)",
+  },
+];
+
+const principles = [
+  {
+    title: "Private by default",
+    body: "Work with sensitive documents without sending them to a third-party service.",
+  },
+  {
+    title: "Sharper outputs",
+    body: "Conversions are presented in a way that feels reliable and customer-ready.",
+  },
+  {
+    title: "One visual language",
+    body: "The full product now shares one premium design system instead of disconnected tool screens.",
   },
 ];
 
 export default function HomePage() {
   return (
     <div className="flex-1 overflow-y-auto">
-      {/* Hero */}
-      <section className="flex flex-col items-center justify-center text-center py-12 md:py-20 px-6">
-        <div className="inline-block animate-wobble-in -rotate-[6deg] mb-4"><Emoji symbol="📄" size={64} className="text-amber" /></div>
-        <h1 className="font-caveat text-[36px] md:text-[48px] font-bold text-ink2 -rotate-[0.5deg] mb-3 leading-tight">
-          Your documents,<br />
-          <span className="text-amber">understood</span>
-        </h1>
-        <p className="font-patrick text-[16px] md:text-[18px] text-ink4 max-w-[480px] leading-[1.75] mb-8">
-          Analyze, convert, and manage PDF & DOCX files. Entirely in your browser.
-          No uploads, no accounts, no limits.
-        </p>
-        <div className="flex flex-wrap gap-3 justify-center">
-          <Tip tip="Jump into document analysis" side="bottom">
-            <Link
-              href="/analyze"
-              className="py-[12px] px-[28px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Emoji symbol="🔬" size={20} /> Start Analysing
-            </Link>
-          </Tip>
-          <Tip tip="Browse all conversion tools" side="bottom">
-            <Link
-              href="/pdf-tools"
-              className="py-[12px] px-[28px] bg-paper hover:bg-paper2 text-ink2 font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-[rgba(60,35,10,.32)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Emoji symbol="🔄" size={20} /> Convert Files
-            </Link>
-          </Tip>
-        </div>
-      </section>
+      <div className="page-shell">
+        <section className="page-hero p-8 md:p-10 xl:p-14">
+          <div className="relative z-10 grid gap-10 xl:grid-cols-[minmax(0,1.2fr)_380px] xl:items-end">
+            <div>
+              <div className="page-kicker mb-5">Premium Document Workspace</div>
+              <h1 className="page-title max-w-[760px]">
+                A richer, more trusted experience for document conversion.
+              </h1>
+              <p className="page-copy mt-6">
+                OneDocs helps you analyse, convert, present, and share PDF and
+                DOCX files with a refined interface that feels deliberate,
+                private, and built by someone who cares about the final result.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Tip tip="Jump into your document workspace" side="bottom">
+                  <Link
+                    href="/analyze"
+                    className="inline-flex items-center gap-2 rounded-full border border-amber2/30 bg-gradient-to-r from-amber to-amber2 px-6 py-3.5 text-[15px] font-semibold text-white no-underline shadow-[0_18px_30px_rgba(186,138,66,.24)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_36px_rgba(186,138,66,.3)]"
+                  >
+                    <Emoji symbol="🔬" size={18} />
+                    Open Analysis
+                  </Link>
+                </Tip>
+                <Tip tip="Browse premium conversion tools" side="bottom">
+                  <Link
+                    href="/pdf-tools"
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-6 py-3.5 text-[15px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                  >
+                    <Emoji symbol="📄" size={18} />
+                    Explore Tools
+                  </Link>
+                </Tip>
+              </div>
+            </div>
 
-      {/* Tool cards */}
-      <section className="px-4 md:px-8 lg:px-16 pb-16">
-        <div className="flex items-center gap-[14px] mb-6 px-2">
-          <div className="-rotate-[4deg] inline-block"><Emoji symbol="🧰" size={26} /></div>
-          <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
-            All tools
-            <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
-              <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-amber)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            </svg>
-          </div>
-          <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {tools.map((tool) => (
-            <Link key={tool.href} href={tool.href} className="no-underline group">
-              <SCard rotate={tool.rot}>
-                <div className="flex items-start gap-[14px]">
-                  <div className="flex-shrink-0 inline-block group-hover:-rotate-[5deg] transition-transform duration-200">
-                    <Emoji symbol={tool.icon} size={36} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-caveat text-[22px] font-bold text-ink2 mb-[4px] leading-[1.1] flex items-center gap-2">
-                      {tool.title}
-                      <span className="text-[14px] text-ink4 font-patrick font-normal">→</span>
-                    </div>
-                    <div className="font-patrick text-[14px] text-ink4 leading-[1.6] mb-3">{tool.desc}</div>
-                    <div className="flex flex-wrap gap-[6px]">
-                      {tool.features.map((f) => (
-                        <span
-                          key={f}
-                          className="font-caveat text-[12px] font-bold py-[2px] px-[10px] rounded-[2px_7px_3px_6px] border-[1.5px] tracking-[0.5px]"
-                          style={{ borderColor: tool.color, color: tool.color }}
-                        >
-                          {f}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
+            <div className="surface-panel p-6 md:p-7">
+              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
+                Product signals
+              </div>
+              <div className="premium-grid mt-5 md:grid-cols-3 xl:grid-cols-1">
+                <div className="premium-metric">
+                  <strong>Private</strong>
+                  <span>Files stay with you while the interface feels premium.</span>
                 </div>
-              </SCard>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Privacy notice */}
-      <section className="px-4 md:px-8 lg:px-16 pb-16">
-        <div className="bg-[rgba(26,92,92,.06)] border-2 border-teal rounded-[4px_16px_6px_14px] p-6 md:p-8 text-center flex flex-col items-center">
-          <div className="mb-3"><Emoji symbol="🔒" size={36} className="text-teal" /></div>
-          <div className="font-caveat text-[22px] font-bold text-teal mb-2">100% Private & Secure</div>
-          <div className="font-patrick text-[14px] text-ink3 max-w-[500px] mx-auto leading-[1.7]">
-            Every single operation happens right in your browser. Your files never leave your device — no server uploads, no cloud storage, no tracking. DocLens is completely free and always will be.
+                <div className="premium-metric">
+                  <strong>Polished</strong>
+                  <span>Every tool page now shares one higher-end visual language.</span>
+                </div>
+                <div className="premium-metric">
+                  <strong>Focused</strong>
+                  <span>Clear layouts, better spacing, stronger contrast, better trust.</span>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className="py-6 px-6 border-t-2 border-dashed border-[rgba(100,70,40,.15)] text-center">
-        <div className="font-caveat text-[15px] text-ink4">
-          Made by <a href="https://x.com/alivldm">Ali</a> — OneDocs is free, open, and privacy-first.
-        </div>
-      </footer>
+        <section className="mt-8 grid gap-4 md:grid-cols-3">
+          {principles.map((item) => (
+            <div key={item.title} className="surface-panel p-6">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-ink4">
+                Design Principle
+              </div>
+              <div className="mt-3 font-caveat text-[28px] font-semibold leading-none text-ink2">
+                {item.title}
+              </div>
+              <p className="mt-3 text-[14px] leading-relaxed text-ink3">{item.body}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="mt-12">
+          <div className="mb-6 flex items-center gap-4">
+            <div className="page-kicker">Workspaces</div>
+            <div className="premium-divider flex-1" />
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {tools.map((tool) => (
+              <Link key={tool.href} href={tool.href} className="no-underline">
+                <SCard>
+                  <div className="flex items-start gap-5">
+                    <div
+                      className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border bg-white/85"
+                      style={{ borderColor: `${tool.accent}30`, color: tool.accent }}
+                    >
+                      <Emoji symbol={tool.icon} size={24} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-3">
+                        <h2 className="font-caveat text-[28px] font-semibold leading-none text-ink2">
+                          {tool.title}
+                        </h2>
+                        <span className="premium-chip">
+                          <Emoji symbol="↗" size={12} />
+                          Open
+                        </span>
+                      </div>
+                      <p className="mt-3 text-[14px] leading-relaxed text-ink3">
+                        {tool.desc}
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {tool.features.map((feature) => (
+                          <span key={feature} className="premium-chip">
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </SCard>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-12 grid gap-6 xl:grid-cols-[minmax(0,1.1fr)_360px]">
+          <div className="surface-panel p-8">
+            <div className="page-kicker mb-4">Trust and performance</div>
+            <div className="font-caveat text-[34px] font-semibold leading-none text-ink2">
+              Designed to feel premium without losing speed or privacy.
+            </div>
+            <p className="mt-4 max-w-[760px] text-[15px] leading-relaxed text-ink3">
+              The refresh focuses on typography, spacing, depth, and interaction
+              quality so the app feels like a serious product, not a quick UI
+              mock. That means cleaner surfaces, stronger hierarchy, calmer
+              motion, and clearer actions across every page.
+            </p>
+          </div>
+          <div className="surface-panel p-8">
+            <div className="page-kicker mb-4">Always on-brand</div>
+            <div className="font-caveat text-[30px] font-semibold leading-none text-ink2">
+              One visual identity
+            </div>
+            <p className="mt-4 text-[14px] leading-relaxed text-ink3">
+              Home, tools, uploads, analysis, support, and viewing now align
+              around the same material palette and premium layout logic.
+            </p>
+            <div className="mt-6 premium-divider" />
+            <div className="mt-6 text-[13px] font-semibold uppercase tracking-[0.22em] text-ink4">
+              OneDocs
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
