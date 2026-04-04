@@ -1,595 +1,239 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useState, useCallback } from "react";
 import Link from "next/link";
 import { useScripts } from "@/app/hooks/useScripts";
-import {
-  buildEditablePdfDocx,
-  buildLayoutPdfDocx,
-  buildPdfImageZip,
-  extractPdfFile,
-  renderPdfPages,
-} from "@/app/lib/pdf-client";
-import { dlBlob, dlText, parsePageRange, stem } from "@/app/lib/utils";
-import {
-  CCard,
-  CStat,
-  FZone,
-  HBtn,
-  HInput,
-  HSel,
-  SHead,
-  Tip,
-  Toast,
-} from "@/app/components/DocLensUI";
+import { stem, dlBlob, dlText, parsePageRange, esc } from "@/app/lib/utils";
+import { SHead, CCard, FZone, HInput, HSel, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
 import { Emoji } from "@/app/components/Icons";
 
 declare global {
   interface Window {
+    pdfjsLib: any;
+    JSZip: any;
     PDFLib: any;
   }
 }
 
-const PDF_JS_SRC =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
-const PDF_WORKER_SRC =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-const PDF_LIB_SRC =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js";
-const JSZIP_SRC =
-  "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js";
-
-type ToolState = Record<string, Record<string, any>>;
-
 export default function PdfToolsPage() {
-  const ready = useScripts([PDF_JS_SRC, PDF_LIB_SRC, JSZIP_SRC]);
+  const ready = useScripts([
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js",
+    "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js",
+  ]);
 
-  const [st, setSt] = useState<ToolState>({
-    pdfImg: { dpi: "192" },
-    pdfDocx: { mode: "layout", dpi: "216" },
-    rotate: { deg: "90" },
-  });
+  const [st, setSt] = useState<any>({});
   const [toast, setToast] = useState<string | null>(null);
   const showToast = useCallback((msg: string) => setToast(msg), []);
 
-  const g = (key: string) => st[key] || {};
-  const s = (key: string, value: Record<string, any>) =>
-    setSt((prev) => ({ ...prev, [key]: { ...prev[key], ...value } }));
+  const g = (k: string) => st[k] || {};
+  const s = (k: string, v: any) => setSt((p: any) => ({ ...p, [k]: { ...p[k], ...v } }));
 
-  async function run(key: string, fn: () => Promise<string>) {
+  async function run(key: string, fn: any) {
     s(key, { loading: true, status: "", statusType: "" });
     try {
-      const message = await fn();
-      s(key, { loading: false, status: message, statusType: "ok" });
-      showToast(message);
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Something went wrong.";
-      s(key, { loading: false, status: message, statusType: "err" });
+      const msg = await fn();
+      s(key, { loading: false, status: msg, statusType: "ok" });
+      showToast(msg);
+    } catch (e: any) {
+      s(key, { loading: false, status: e.message, statusType: "err" });
     }
   }
 
-  const listMarkup = (files: File[] | undefined, icon: string) =>
+  const pdfjs = () => {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    return window.pdfjsLib;
+  };
+
+  const ML = (files: any[], ico: string) =>
     (files || []).length > 0 && (
-      <div className="mt-1 flex max-h-[100px] flex-col gap-1.5 overflow-y-auto pr-2">
-        {files?.map((file, index) => (
-          <div
-            key={`${file.name}-${index}`}
-            className="flex items-center gap-2 overflow-hidden rounded-lg border border-paper3 bg-paper px-3 py-2 text-xs font-medium text-ink3 shadow-sm"
-          >
-            <Emoji symbol={icon} size={14} />
-            <span className="truncate">{file.name}</span>
+      <div className="flex flex-col gap-[3px] max-h-[70px] overflow-y-auto">
+        {files.map((f, i) => (
+          <div key={i} className="font-patrick text-[12px] text-ink3 bg-paper2 rounded-[2px_6px_3px_5px] py-[3px] px-[9px] whitespace-nowrap overflow-hidden text-ellipsis flex items-center gap-1.5">
+            <Emoji symbol={ico} size={14} /> {f.name}
           </div>
         ))}
       </div>
     );
 
-  const progressBar = (key: string) =>
-    g(key).loading && (g(key).prog || 0) > 0 ? (
-      <div className="h-1.5 overflow-hidden rounded-full border border-paper3 bg-paper3">
-        <div
-          className="h-full rounded-full bg-amber transition-all duration-300"
-          style={{ width: `${g(key).prog || 0}%` }}
-        />
-      </div>
-    ) : null;
-
   const convFns = {
     pdfTxt: async () => {
-      const file = g("pdfTxt").file as File | undefined;
-      if (!file) return;
-
+      const f = g("pdfTxt").file;
+      if (!f) return;
       await run("pdfTxt", async () => {
-        const extraction = await extractPdfFile(file, PDF_WORKER_SRC, {
-          onProgress: (prog) => s("pdfTxt", { prog }),
-        });
-
-        dlText(stem(file.name) + ".txt", extraction.text);
-        return `${extraction.pageCount} pages extracted with cleaner reading order`;
+        const lib = pdfjs(), ab = await f.arrayBuffer(), pdf = await lib.getDocument({ data: ab }).promise;
+        let t = "";
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const p = await pdf.getPage(i), c = await p.getTextContent();
+          t += `--- Page ${i} ---\n` + c.items.map((x: any) => x.str).join(" ") + "\n\n";
+        }
+        dlText(stem(f.name) + ".txt", t.trim());
+        return `${pdf.numPages} pages extracted`;
       });
     },
     pdfImg: async () => {
-      const file = g("pdfImg").file as File | undefined;
-      if (!file) return;
-
-      const dpi = parseInt(g("pdfImg").dpi || "192", 10) || 192;
-
+      const f = g("pdfImg").file;
+      if (!f) return;
+      const dpi = parseInt(g("pdfImg").dpi || "150") || 150;
       await run("pdfImg", async () => {
-        const renderedPages = await renderPdfPages(file, PDF_WORKER_SRC, dpi, {
-          onProgress: (prog) => s("pdfImg", { prog }),
-        });
-        const zipBlob = await buildPdfImageZip(renderedPages);
-        dlBlob(stem(file.name) + "_images.zip", zipBlob);
-        return `${renderedPages.length} pages exported as sharp PNG images`;
+        const lib = pdfjs(), ab = await f.arrayBuffer(), pdf = await lib.getDocument({ data: ab }).promise, zip = new window.JSZip();
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const p = await pdf.getPage(i), vp = p.getViewport({ scale: dpi / 96 }), cv = document.createElement("canvas");
+          cv.width = vp.width; cv.height = vp.height;
+          await p.render({ canvasContext: cv.getContext("2d"), viewport: vp }).promise;
+          const bl: Blob = await new Promise((r: any) => cv.toBlob(r, "image/png"));
+          zip.file(`page-${String(i).padStart(3, "0")}.png`, bl);
+          s("pdfImg", { prog: Math.round(i / pdf.numPages * 100) });
+        }
+        const zb = await zip.generateAsync({ type: "blob" });
+        dlBlob(stem(f.name) + "_images.zip", zb);
+        return `${pdf.numPages} pages → ZIP`;
       });
     },
     merge: async () => {
-      const files = (g("merge").files || []) as File[];
+      const files = g("merge").files || [];
       if (files.length < 2) return;
-
       await run("merge", async () => {
-        const { PDFDocument } = window.PDFLib;
-        const merged = await PDFDocument.create();
-
-        for (const file of files) {
-          const source = await PDFDocument.load(await file.arrayBuffer());
-          const pages = await merged.copyPages(source, source.getPageIndices());
-          pages.forEach((page: unknown) => merged.addPage(page));
+        const { PDFDocument } = window.PDFLib, merged = await PDFDocument.create();
+        for (const f of files) {
+          const ab = await f.arrayBuffer(), src = await PDFDocument.load(ab), pages = await merged.copyPages(src, src.getPageIndices());
+          pages.forEach((p: any) => merged.addPage(p));
         }
-
         const bytes = await merged.save();
-        dlBlob(
-          stem(files[0].name) + "_merged.pdf",
-          new Blob([bytes], { type: "application/pdf" })
-        );
-        return `${files.length} PDFs merged into one file`;
+        dlBlob("merged.pdf", new Blob([bytes], { type: "application/pdf" }));
+        return `${files.length} PDFs merged`;
       });
     },
     split: async () => {
-      const file = g("split").file as File | undefined;
-      const pageRange = (g("split").pages || "") as string;
-      if (!file) return;
-
+      const f = g("split").file, ps = g("split").pages || "";
+      if (!f) return;
       await run("split", async () => {
-        const { PDFDocument } = window.PDFLib;
-        const source = await PDFDocument.load(await file.arrayBuffer());
-        const pages = parsePageRange(pageRange, source.getPageCount());
-
-        if (!pages.length) {
-          throw new Error("Enter at least one valid page or page range.");
-        }
-
-        const output = await PDFDocument.create();
-        const copiedPages = await output.copyPages(
-          source,
-          pages.map((page) => page - 1)
-        );
-        copiedPages.forEach((page: unknown) => output.addPage(page));
-
-        const bytes = await output.save();
-        dlBlob(
-          stem(file.name) + "_split.pdf",
-          new Blob([bytes], { type: "application/pdf" })
-        );
-        return `${pages.length} page(s) extracted successfully`;
+        const { PDFDocument } = window.PDFLib, ab = await f.arrayBuffer(), src = await PDFDocument.load(ab), pages = parsePageRange(ps, src.getPageCount());
+        if (!pages.length) throw new Error("No valid pages");
+        const out = await PDFDocument.create(), copied = await out.copyPages(src, pages.map(p => p - 1));
+        copied.forEach((p: any) => out.addPage(p));
+        const bytes = await out.save();
+        dlBlob(stem(f.name) + "_split.pdf", new Blob([bytes], { type: "application/pdf" }));
+        return `${pages.length} page(s) extracted`;
       });
     },
     imgPdf: async () => {
-      const files = (g("imgPdf").files || []) as File[];
+      const files = g("imgPdf").files || [];
       if (!files.length) return;
-
       await run("imgPdf", async () => {
-        const { PDFDocument } = window.PDFLib;
-        const pdf = await PDFDocument.create();
-        const margin = 24;
-
-        for (const file of files) {
-          const bytes = await file.arrayBuffer();
-          const image = file.type === "image/png"
-            ? await pdf.embedPng(bytes)
-            : await pdf.embedJpg(bytes);
-
-          const landscape = image.width > image.height;
-          const pageWidth = landscape ? 841.89 : 595.28;
-          const pageHeight = landscape ? 595.28 : 841.89;
-          const page = pdf.addPage([pageWidth, pageHeight]);
-
-          const maxWidth = pageWidth - margin * 2;
-          const maxHeight = pageHeight - margin * 2;
-          const scale = Math.min(maxWidth / image.width, maxHeight / image.height);
-          const drawWidth = image.width * scale;
-          const drawHeight = image.height * scale;
-
-          page.drawImage(image, {
-            x: (pageWidth - drawWidth) / 2,
-            y: (pageHeight - drawHeight) / 2,
-            width: drawWidth,
-            height: drawHeight,
-          });
+        const { PDFDocument } = window.PDFLib, pdf = await PDFDocument.create();
+        for (const f of files) {
+          const ab = await f.arrayBuffer();
+          let img;
+          if (f.type === "image/png") img = await pdf.embedPng(ab);
+          else img = await pdf.embedJpg(ab);
+          const page = pdf.addPage([img.width, img.height]);
+          page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
         }
-
         const bytes = await pdf.save();
         dlBlob("images.pdf", new Blob([bytes], { type: "application/pdf" }));
-        return `${files.length} images fitted onto print-friendly PDF pages`;
+        return `${files.length} images → PDF`;
       });
     },
     rotate: async () => {
-      const file = g("rotate").file as File | undefined;
-      if (!file) return;
-
-      const degreesToRotate = parseInt(g("rotate").deg || "90", 10) || 90;
-
+      const f = g("rotate").file;
+      if (!f) return;
+      const deg = parseInt(g("rotate").deg || "90");
       await run("rotate", async () => {
-        const { PDFDocument, degrees } = window.PDFLib;
-        const pdf = await PDFDocument.load(await file.arrayBuffer());
-
-        pdf.getPages().forEach((page: any) => {
-          const current = page.getRotation().angle;
-          page.setRotation(degrees((current + degreesToRotate) % 360));
+        const { PDFDocument, degrees } = window.PDFLib, ab = await f.arrayBuffer(), pdf = await PDFDocument.load(ab);
+        pdf.getPages().forEach((p: any) => {
+          const c = p.getRotation().angle;
+          p.setRotation(degrees((c + deg) % 360));
         });
-
         const bytes = await pdf.save();
-        dlBlob(
-          stem(file.name) + "_rotated.pdf",
-          new Blob([bytes], { type: "application/pdf" })
-        );
-        return `All pages rotated by ${degreesToRotate} degrees`;
+        dlBlob(stem(f.name) + "_rotated.pdf", new Blob([bytes], { type: "application/pdf" }));
+        return `Rotated ${deg}°`;
       });
     },
     pdfDocx: async () => {
-      const file = g("pdfDocx").file as File | undefined;
-      if (!file) return;
-
-      const mode = (g("pdfDocx").mode || "layout") as "layout" | "editable";
-      const dpi = parseInt(g("pdfDocx").dpi || "216", 10) || 216;
-
+      const f = g("pdfDocx").file;
+      if (!f) return;
       await run("pdfDocx", async () => {
-        if (mode === "layout") {
-          const renderedPages = await renderPdfPages(file, PDF_WORKER_SRC, dpi, {
-            onProgress: (prog) => s("pdfDocx", { prog }),
+        const lib = pdfjs(), ab = await f.arrayBuffer(), pdf = await lib.getDocument({ data: ab }).promise;
+        const paragraphs: string[] = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const p = await pdf.getPage(i), c = await p.getTextContent();
+          const lines = c.items.map((x: any) => x.str).join(" ").split(/\n/);
+          lines.forEach((line: string) => {
+            if (line.trim()) paragraphs.push(line.trim());
           });
-          const blob = await buildLayoutPdfDocx(renderedPages);
-          dlBlob(stem(file.name) + "_accurate.docx", blob);
-          return `${renderedPages.length} pages converted to a layout-preserving DOCX`;
+          paragraphs.push("");
+          s("pdfDocx", { prog: Math.round(i / pdf.numPages * 100) });
         }
-
-        const extraction = await extractPdfFile(file, PDF_WORKER_SRC, {
-          onProgress: (prog) => s("pdfDocx", { prog }),
-        });
-        const meaningfulChars = extraction.text.replace(/[\W_]+/g, "").length;
-
-        if (meaningfulChars < 60) {
-          throw new Error(
-            "This PDF looks scanned or image-based. Use Best accuracy mode for a page-perfect DOCX."
-          );
-        }
-
-        const blob = await buildEditablePdfDocx(extraction);
-        dlBlob(stem(file.name) + "_editable.docx", blob);
-        return `${extraction.pageCount} pages converted to an editable DOCX draft`;
+        const bodyXml = paragraphs.map(p => p
+          ? `<w:p><w:r><w:t xml:space="preserve">${esc(p)}</w:t></w:r></w:p>`
+          : `<w:p/>`
+        ).join("\n");
+        const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+  xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+  xmlns:w10="urn:schemas-microsoft-com:office:word"
+  xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+  xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+  mc:Ignorable="w14 wp14">
+  <w:body>
+    ${bodyXml}
+    <w:sectPr><w:pgSz w:w="12240" w:h="15840"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440"/></w:sectPr>
+  </w:body>
+</w:document>`;
+        const contentTypes = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+  <Default Extension="xml" ContentType="application/xml"/>
+  <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>
+</Types>`;
+        const rels = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>
+</Relationships>`;
+        const zip = new window.JSZip();
+        zip.file("[Content_Types].xml", contentTypes);
+        zip.file("_rels/.rels", rels);
+        zip.file("word/document.xml", documentXml);
+        const blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+        dlBlob(stem(f.name) + ".docx", blob);
+        return `${pdf.numPages} pages → DOCX`;
       });
     },
   };
 
   const cards = [
-    {
-      ico: "📄",
-      title: "PDF -> Plain Text",
-      desc: "Extract cleaner text with better reading order and paragraph spacing",
-      col: "#ef4444",
-      tip: "Useful for contracts, reports, essays, and searchable archives",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Drop a PDF here"
-            file={g("pdfTxt").file}
-            onFile={(file: File) => s("pdfTxt", { file })}
-            tip="Choose the PDF you want to extract text from"
-          />
-          {progressBar("pdfTxt")}
-          <CStat msg={g("pdfTxt").status} type={g("pdfTxt").statusType} />
-          <HBtn
-            onClick={convFns.pdfTxt}
-            disabled={!g("pdfTxt").file}
-            loading={g("pdfTxt").loading}
-            label="Extract Text"
-            tip="Downloads a TXT file with page markers"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "🖼️",
-      title: "PDF -> PNG Images",
-      desc: "Render every page as a high-quality PNG and bundle them into a ZIP",
-      col: "#10b981",
-      tip: "Great for previews, design reviews, social posts, and print proofing",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Drop a PDF here"
-            file={g("pdfImg").file}
-            onFile={(file: File) => s("pdfImg", { file })}
-            tip="Choose the PDF you want to turn into images"
-          />
-          <div className="flex items-center gap-2">
-            <HInput
-              type="number"
-              min="96"
-              max="300"
-              value={g("pdfImg").dpi || "192"}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                s("pdfImg", { dpi: event.target.value })
-              }
-              className="max-w-[96px]"
-            />
-            <Tip tip="Higher DPI gives sharper pages but larger files">
-              <span className="text-sm font-medium text-ink4">DPI (96-300)</span>
-            </Tip>
-          </div>
-          {progressBar("pdfImg")}
-          <CStat msg={g("pdfImg").status} type={g("pdfImg").statusType} />
-          <HBtn
-            onClick={convFns.pdfImg}
-            disabled={!g("pdfImg").file}
-            loading={g("pdfImg").loading}
-            label="Export PNG ZIP"
-            tip="Creates one PNG per page"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "🧩",
-      title: "Merge PDFs",
-      desc: "Combine multiple PDFs into a single file in the order you choose",
-      col: "#f59e0b",
-      tip: "Useful for proposals, invoices, chapter bundles, and board packs",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Choose multiple PDFs"
-            multi
-            files={g("merge").files}
-            onFiles={(files: File[]) => s("merge", { files })}
-            tip="Pick at least two PDFs"
-          />
-          {listMarkup(g("merge").files as File[] | undefined, "📄")}
-          <CStat msg={g("merge").status} type={g("merge").statusType} />
-          <HBtn
-            onClick={convFns.merge}
-            disabled={!g("merge").files || g("merge").files.length < 2}
-            loading={g("merge").loading}
-            label="Merge Files"
-            tip="Downloads one merged PDF"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "✂️",
-      title: "Split PDF",
-      desc: "Pull out exact pages or page ranges without changing the originals",
-      col: "#10b981",
-      tip: "Examples: 1-3, 5, 7-9",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Drop a PDF here"
-            file={g("split").file}
-            onFile={(file: File) => s("split", { file })}
-            tip="Choose the PDF you want to split"
-          />
-          <Tip tip="Use commas between separate pages or ranges">
-            <HInput
-              placeholder="Pages: 1-3, 5, 7"
-              value={g("split").pages || ""}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                s("split", { pages: event.target.value })
-              }
-            />
-          </Tip>
-          <CStat msg={g("split").status} type={g("split").statusType} />
-          <HBtn
-            onClick={convFns.split}
-            disabled={!g("split").file || !g("split").pages}
-            loading={g("split").loading}
-            label="Extract Pages"
-            tip="Creates a new PDF from the selected pages"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "🖼️",
-      title: "Images -> PDF",
-      desc: "Fit JPG and PNG files onto clean, print-friendly A4 pages",
-      col: "#3b82f6",
-      tip: "Keeps margins consistent and centers each image neatly",
-      body: (
-        <>
-          <FZone
-            accept="image/png,image/jpeg"
-            label="Choose images (PNG or JPG)"
-            multi
-            files={g("imgPdf").files}
-            onFiles={(files: File[]) => s("imgPdf", { files })}
-            tip="Select one or more images"
-          />
-          {listMarkup(g("imgPdf").files as File[] | undefined, "🖼️")}
-          <CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} />
-          <HBtn
-            onClick={convFns.imgPdf}
-            disabled={!g("imgPdf").files || g("imgPdf").files.length === 0}
-            loading={g("imgPdf").loading}
-            label="Create PDF"
-            tip="Builds a polished image-to-PDF document"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "🔄",
-      title: "Rotate PDF",
-      desc: "Rotate every page by the same angle for cleaner reading and printing",
-      col: "#8b5cf6",
-      tip: "Ideal for scanned PDFs and sideways exports",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Drop a PDF here"
-            file={g("rotate").file}
-            onFile={(file: File) => s("rotate", { file })}
-            tip="Choose the PDF whose pages you want to rotate"
-          />
-          <Tip tip="Applies the chosen angle to every page">
-            <HSel
-              value={g("rotate").deg || "90"}
-              onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                s("rotate", { deg: event.target.value })
-              }
-            >
-              <option value="90">Rotate 90 degrees clockwise</option>
-              <option value="180">Rotate 180 degrees</option>
-              <option value="270">Rotate 270 degrees counter-clockwise</option>
-            </HSel>
-          </Tip>
-          <CStat msg={g("rotate").status} type={g("rotate").statusType} />
-          <HBtn
-            onClick={convFns.rotate}
-            disabled={!g("rotate").file}
-            loading={g("rotate").loading}
-            label="Rotate PDF"
-            tip="Downloads a corrected PDF"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "📝",
-      title: "PDF -> DOCX",
-      desc: "Two output modes: page-perfect accuracy or an editable Word draft",
-      col: "#3b82f6",
-      tip: "Best accuracy keeps the original look. Editable mode rebuilds paragraphs and headings.",
-      body: (
-        <>
-          <FZone
-            accept=".pdf"
-            label="Drop a PDF here"
-            file={g("pdfDocx").file}
-            onFile={(file: File) => s("pdfDocx", { file })}
-            tip="Choose the PDF you want to convert to Word"
-          />
-          <div className="grid gap-2 sm:grid-cols-2">
-            <Tip tip="Best accuracy preserves the page layout. Editable text rebuilds the content as paragraphs.">
-              <HSel
-                value={g("pdfDocx").mode || "layout"}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                  s("pdfDocx", { mode: event.target.value })
-                }
-              >
-                <option value="layout">Best accuracy</option>
-                <option value="editable">Editable text</option>
-              </HSel>
-            </Tip>
-            <Tip tip="Only used in Best accuracy mode. Higher DPI produces sharper page images inside the DOCX.">
-              <HSel
-                value={g("pdfDocx").dpi || "216"}
-                onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
-                  s("pdfDocx", { dpi: event.target.value })
-                }
-              >
-                <option value="144">Balanced quality</option>
-                <option value="216">High accuracy</option>
-                <option value="300">Maximum detail</option>
-              </HSel>
-            </Tip>
-          </div>
-          <div className="rounded-lg border border-paper3 bg-paper px-3 py-2 text-xs leading-relaxed text-ink4">
-            {(g("pdfDocx").mode || "layout") === "layout"
-              ? "Best accuracy creates a page-for-page DOCX that looks very close to the original PDF, including scans."
-              : "Editable text rebuilds headings, bullets, and paragraphs. It is better for editing, but complex layouts can still shift."}
-          </div>
-          {progressBar("pdfDocx")}
-          <CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} />
-          <HBtn
-            onClick={convFns.pdfDocx}
-            disabled={!g("pdfDocx").file}
-            loading={g("pdfDocx").loading}
-            label="Convert to DOCX"
-            tip="Exports either a high-fidelity or editable Word file"
-          />
-        </>
-      ),
-    },
-    {
-      ico: "🔗",
-      title: "PDF -> Link",
-      desc: "Left unchanged for now while the conversion tools are upgraded",
-      col: "#10b981",
-      tip: "You asked to leave this feature alone for the moment",
-      body: (
-        <div className="relative flex flex-col items-center gap-4 py-4">
-          <div className="absolute -right-2 -top-3 rounded-full border border-paper3 bg-paper px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink4">
-            Paused
-          </div>
-          <div className="text-center text-sm font-medium leading-relaxed text-ink4">
-            This feature is staying as-is right now while the PDF conversion flow
-            gets the quality upgrade.
-          </div>
-          <Link
-            href="/pdf-link"
-            className="flex w-full items-center justify-center gap-2 rounded-full bg-amber px-6 py-3 text-[15px] font-bold text-white no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber2 hover:shadow"
-          >
-            <Emoji symbol="🔗" size={18} /> Open PDF Link
-          </Link>
-        </div>
-      ),
-    },
+    { ico: "📄", title: "PDF → Plain Text", desc: "Extract all text, page by page", col: "#b02020", rot: 0.3, tip: "Saves a .txt with every page's text", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfTxt").file} onFile={(f: File) => s("pdfTxt", { file: f })} tip="Click to browse or drag a PDF" /><CStat msg={g("pdfTxt").status} type={g("pdfTxt").statusType} /><HBtn onClick={convFns.pdfTxt} disabled={!g("pdfTxt").file} loading={g("pdfTxt").loading} label="Convert & Download" tip="Extracts text from every page" /></> },
+    { ico: "🖼️", title: "PDF → PNG Images", desc: "Render pages as images, zip download", col: "#1a5c5c", rot: -0.3, tip: "Each page becomes a PNG, bundled in a ZIP", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfImg").file} onFile={(f: File) => s("pdfImg", { file: f })} tip="Click to browse or drag a PDF" /><div className="flex gap-[8px] items-center"><HInput type="number" value={g("pdfImg").dpi || "150"} min="72" max="300" onChange={(e: any) => s("pdfImg", { dpi: e.target.value })} className="max-w-[80px]" /><Tip tip="Higher = sharper image, bigger file size"><span className="font-patrick text-[13px] text-ink4 cursor-help underline decoration-dotted decoration-[from-font]">DPI (72–300)</span></Tip></div>{g("pdfImg").loading && (g("pdfImg").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfImg").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfImg").status} type={g("pdfImg").statusType} /><HBtn onClick={convFns.pdfImg} disabled={!g("pdfImg").file} loading={g("pdfImg").loading} label="Export as ZIP" tip="Creates page-001.png, page-002.png… in a ZIP" /></> },
+    { ico: "🔗", title: "Merge PDFs", desc: "Stitch multiple PDFs into one", col: "#7a4510", rot: 0.2, tip: "Files are merged in the order you pick them", body: <><FZone accept=".pdf" label="Choose multiple PDFs" multi files={g("merge").files} onFiles={(f: File[]) => s("merge", { files: f })} tip="Hold Ctrl/Cmd to select multiple files" />{ML(g("merge").files, "📄")}<CStat msg={g("merge").status} type={g("merge").statusType} /><HBtn onClick={convFns.merge} disabled={!(g("merge").files?.length >= 2)} loading={g("merge").loading} label="Merge & Download" tip="You need at least 2 PDFs to merge" /></> },
+    { ico: "✂️", title: "Split PDF", desc: "Pull out specific page ranges", col: "#1a5c5c", rot: -0.2, tip: 'Enter pages like "1-3, 5, 7" to extract', body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("split").file} onFile={(f: File) => s("split", { file: f })} tip="The PDF you want to extract pages from" /><Tip tip='Examples: "1-3" · "2,4,6" · "1-3,7"'><HInput placeholder="Pages: 1-3, 5, 7" value={g("split").pages || ""} onChange={(e: any) => s("split", { pages: e.target.value })} /></Tip><CStat msg={g("split").status} type={g("split").statusType} /><HBtn onClick={convFns.split} disabled={!g("split").file || !g("split").pages} loading={g("split").loading} label="Extract Pages" tip="Saves only the pages you specified" /></> },
+    { ico: "🖼️", title: "Images → PDF", desc: "Bundle JPG/PNG files into a PDF", col: "#1a3a6a", rot: 0.35, tip: "Images appear as full pages, in selection order", body: <><FZone accept="image/png,image/jpeg" label="Choose images (JPG/PNG)" multi files={g("imgPdf").files} onFiles={(f: File[]) => s("imgPdf", { files: f })} tip="Select multiple images at once" />{ML(g("imgPdf").files, "🖼️")}<CStat msg={g("imgPdf").status} type={g("imgPdf").statusType} /><HBtn onClick={convFns.imgPdf} disabled={!(g("imgPdf").files?.length > 0)} loading={g("imgPdf").loading} label="Create PDF" tip="Each image becomes one full page" /></> },
+    { ico: "🔄", title: "Rotate PDF", desc: "Turn all pages 90°, 180°, or 270°", col: "#c07818", rot: -0.35, tip: "Rotation is applied to every page uniformly", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("rotate").file} onFile={(f: File) => s("rotate", { file: f })} tip="The PDF whose pages you want to rotate" /><Tip tip="Choose rotation angle for all pages"><HSel value={g("rotate").deg || "90"} onChange={(e: any) => s("rotate", { deg: e.target.value })}><option value="90">Rotate 90° clockwise</option><option value="180">Rotate 180°</option><option value="270">Rotate 270° (counter-CW)</option></HSel></Tip><CStat msg={g("rotate").status} type={g("rotate").statusType} /><HBtn onClick={convFns.rotate} disabled={!g("rotate").file} loading={g("rotate").loading} label="Rotate & Download" tip="Applies to every page in the document" /></> },
+    { ico: "📝", title: "PDF → DOCX", desc: "Convert PDF text into an editable Word document", col: "#1a3c7a", rot: 0.25, tip: "Extracts text from each page and builds a real .docx file", body: <><FZone accept=".pdf" label="Drop a PDF here" file={g("pdfDocx").file} onFile={(f: File) => s("pdfDocx", { file: f })} tip="The PDF to convert to Word format" />{g("pdfDocx").loading && (g("pdfDocx").prog || 0) > 0 && <div className="h-[5px] bg-paper3 rounded-[2px_6px] overflow-hidden border border-[rgba(100,70,40,.2)]"><div className="h-full bg-amber transition-[width] duration-300" style={{ width: (g("pdfDocx").prog || 0) + "%" }} /></div>}<CStat msg={g("pdfDocx").status} type={g("pdfDocx").statusType} /><HBtn onClick={convFns.pdfDocx} disabled={!g("pdfDocx").file} loading={g("pdfDocx").loading} label="Convert to DOCX" tip="Creates an editable .docx file from PDF text" /></> },
+    { ico: "🔗", title: "PDF → Link", desc: "Upload & get a shareable viewer link", col: "#1a5c5c", rot: -0.25, tip: "Like Tiiny.host — upload your PDF and share a link", body: <div className="flex flex-col items-center gap-3 py-2 relative"><div className="absolute -top-2 -right-2 bg-amber text-white font-caveat text-[12px] font-bold px-2 py-0.5 rounded-[4px_10px_3px_8px] rotate-[10deg] shadow-sm z-10">Coming Soon</div><div className="font-patrick text-[13px] text-ink4 text-center leading-[1.6]">Upload your PDF and get an instant shareable link that anyone can open to view and download.</div><Link href="/pdf-link" className="py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] hover:shadow-[3px_3px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[6px]"><Emoji symbol="🔗" size={18} /> Go to PDF Link →</Link></div> },
   ];
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-y-auto px-6 py-8 md:px-10 lg:px-20">
+    <div className="flex-1 overflow-y-auto py-6 md:py-[28px] px-4 md:px-[32px] lg:px-16">
       {!ready && (
-        <div className="mb-6 flex items-center justify-center gap-2 rounded-lg border border-amber/10 bg-amber/5 p-3 text-center text-amber">
-          <Emoji symbol="⏳" size={16} />
-          <span className="text-sm font-medium">Loading PDF libraries...</span>
+        <div className="text-center mb-4 flex items-center justify-center gap-[6px]">
+          <Emoji symbol="⏳" size={14} className="text-ink4" />
+          <span className="font-patrick text-[13px] text-ink4 italic">Loading PDF libraries…</span>
         </div>
       )}
-
-      <SHead
-        ico="📄"
-        label="PDF Tools"
-        sub="Higher-fidelity exports, cleaner extraction, and sharper PDF workflows"
-      />
-
-      <div className="mb-6 rounded-2xl border border-paper3 bg-paper2/70 p-5 text-sm leading-relaxed text-ink3 shadow-sm">
-        <div className="mb-2 flex items-center gap-2 text-base font-semibold text-ink2">
-          <Emoji symbol="✨" size={18} /> PDF to DOCX is now quality-first
-        </div>
-        <div>
-          Use <span className="font-semibold text-ink2">Best accuracy</span> for
-          a page-faithful DOCX that mirrors the PDF, or switch to
-          <span className="font-semibold text-ink2"> Editable text</span> when
-          your customers need a Word file they can revise.
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {cards.map(({ ico, title, desc, col, body, tip }) => (
+      <SHead ico="📄" label="PDF Tools" sub="All your PDF conversion and manipulation needs" />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
+        {cards.map(({ ico, title, desc, col, rot, body, tip }) => (
           <Tip key={title} tip={tip} side="top">
-            <CCard ico={ico} title={title} desc={desc} accentCol={col}>
-              {body}
-            </CCard>
+            <CCard ico={ico} title={title} desc={desc} accentCol={col} rot={rot}>{body}</CCard>
           </Tip>
         ))}
       </div>
-
       {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
     </div>
   );

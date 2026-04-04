@@ -10,116 +10,109 @@ const tools = [
     href: "/analyze",
     icon: "🔬",
     title: "Analyse Documents",
-    desc: "Extract cleaner text from PDFs and DOCX files, then explore search, stats, and customer-ready exports.",
-    features: ["Smarter PDF text", "Word frequency", "Full-text search", "Export results"],
-    color: "#3b82f6",
+    desc: "Extract text from PDFs and DOCX files. Get word counts, sentence stats, frequency analysis, and search within documents.",
+    features: ["Text extraction", "Word frequency", "Full-text search", "Export results"],
+    color: "#c07818",
+    rot: 0.3,
   },
   {
     href: "/pdf-tools",
     icon: "📄",
     title: "PDF Tools",
-    desc: "Convert, merge, split, rotate, and export PDFs with a much stronger PDF to DOCX workflow.",
-    features: ["Accurate PDF -> DOCX", "PDF -> Images", "Merge PDFs", "Split pages", "Rotate pages", "Images -> PDF"],
-    color: "#ef4444",
+    desc: "Convert, merge, split, rotate PDFs. Turn images into PDFs or render pages as PNG images.",
+    features: ["PDF → Text", "PDF → Images", "Merge PDFs", "Split pages", "Rotate pages", "Images → PDF"],
+    color: "#b02020",
+    rot: -0.2,
   },
   {
     href: "/docx-tools",
     icon: "📝",
     title: "DOCX Tools",
-    desc: "Convert Word documents into cleaner HTML, text, Markdown, and print-ready PDF previews.",
-    features: ["DOCX -> HTML", "DOCX -> Text", "DOCX -> Markdown", "Print-ready PDF", "CSV -> HTML"],
-    color: "#10b981",
+    desc: "Convert Word documents to HTML, plain text, or Markdown. Also convert TXT/CSV into formatted outputs.",
+    features: ["DOCX → HTML", "DOCX → Text", "DOCX → Markdown", "TXT → PDF", "CSV → HTML"],
+    color: "#1a5c5c",
+    rot: 0.2,
   },
   {
     href: "/support",
     icon: "💬",
     title: "Help & Support",
-    desc: "Browse FAQs, learn tips, or reach out when you need help getting the best output.",
+    desc: "Browse FAQs, learn tips, or get in touch with us. Everything you need to get started.",
     features: ["FAQ", "Quick tips", "Contact form", "Feature requests"],
-    color: "#8b5cf6",
+    color: "#7a5535",
+    rot: -0.3,
   },
 ];
 
 export default function HomePage() {
   return (
     <div className="flex-1 overflow-y-auto">
-      <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 py-16 text-center md:py-24">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-amber/5 to-transparent" />
-        <div className="relative z-10 flex flex-col items-center">
-          <div className="mb-6 inline-block rounded-2xl border border-paper3 bg-paper2 p-4 shadow-sm">
-            <Emoji symbol="📄" size={48} className="text-amber" />
-          </div>
-          <h1 className="mb-6 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-ink md:text-5xl lg:text-6xl">
-            Your documents,
-            <br />
-            <span className="cursor-default bg-gradient-to-r from-amber to-amber2 bg-clip-text text-transparent">
-              converted with care
-            </span>
-          </h1>
-          <p className="mb-10 max-w-[560px] text-base leading-relaxed text-ink3 md:text-lg">
-            Analyze, convert, and manage PDF & DOCX files with higher-fidelity
-            exports. Private, fast, and built for customer-ready results.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Tip tip="Jump into document analysis" side="bottom">
-              <Link
-                href="/analyze"
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-full bg-amber px-8 py-3 text-[15px] font-semibold text-white no-underline shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:bg-amber2 hover:shadow-lg"
-              >
-                <Emoji symbol="🔬" size={18} /> Start Analysing
-              </Link>
-            </Tip>
-            <Tip tip="Browse all conversion tools" side="bottom">
-              <Link
-                href="/pdf-tools"
-                className="flex cursor-pointer items-center justify-center gap-2 rounded-full border border-paper3 bg-paper px-8 py-3 text-[15px] font-semibold text-ink2 no-underline shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:bg-paper2 hover:shadow"
-              >
-                <Emoji symbol="🔄" size={18} /> Convert Files
-              </Link>
-            </Tip>
-          </div>
+      {/* Hero */}
+      <section className="flex flex-col items-center justify-center text-center py-12 md:py-20 px-6">
+        <div className="inline-block animate-wobble-in -rotate-[6deg] mb-4"><Emoji symbol="📄" size={64} className="text-amber" /></div>
+        <h1 className="font-caveat text-[36px] md:text-[48px] font-bold text-ink2 -rotate-[0.5deg] mb-3 leading-tight">
+          Your documents,<br />
+          <span className="text-amber">understood</span>
+        </h1>
+        <p className="font-patrick text-[16px] md:text-[18px] text-ink4 max-w-[480px] leading-[1.75] mb-8">
+          Analyze, convert, and manage PDF & DOCX files. Entirely in your browser.
+          No uploads, no accounts, no limits.
+        </p>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <Tip tip="Jump into document analysis" side="bottom">
+            <Link
+              href="/analyze"
+              className="py-[12px] px-[28px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Emoji symbol="🔬" size={20} /> Start Analysing
+            </Link>
+          </Tip>
+          <Tip tip="Browse all conversion tools" side="bottom">
+            <Link
+              href="/pdf-tools"
+              className="py-[12px] px-[28px] bg-paper hover:bg-paper2 text-ink2 font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-[rgba(60,35,10,.32)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Emoji symbol="🔄" size={20} /> Convert Files
+            </Link>
+          </Tip>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 pb-16 md:px-10 lg:px-20">
-        <div className="mb-8 flex items-center gap-4">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-paper3 bg-paper2 shadow-sm">
-            <Emoji symbol="🧰" size={20} />
+      {/* Tool cards */}
+      <section className="px-4 md:px-8 lg:px-16 pb-16">
+        <div className="flex items-center gap-[14px] mb-6 px-2">
+          <div className="-rotate-[4deg] inline-block"><Emoji symbol="🧰" size={26} /></div>
+          <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
+            All tools
+            <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
+              <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-amber)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+            </svg>
           </div>
-          <div className="text-2xl font-bold text-ink">All tools</div>
-          <div className="mt-1 flex-1 border-t border-paper3" />
+          <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {tools.map((tool) => (
-            <Link key={tool.href} href={tool.href} className="group no-underline outline-none">
-              <SCard>
-                <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-paper3 bg-paper text-ink2 shadow-sm transition-transform duration-300 group-hover:scale-110">
-                    <Emoji symbol={tool.icon} size={24} />
+            <Link key={tool.href} href={tool.href} className="no-underline group">
+              <SCard rotate={tool.rot}>
+                <div className="flex items-start gap-[14px]">
+                  <div className="flex-shrink-0 inline-block group-hover:-rotate-[5deg] transition-transform duration-200">
+                    <Emoji symbol={tool.icon} size={36} />
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-2 flex items-center gap-2 text-xl font-bold text-ink transition-colors group-hover:text-amber">
+                  <div className="flex-1 min-w-0">
+                    <div className="font-caveat text-[22px] font-bold text-ink2 mb-[4px] leading-[1.1] flex items-center gap-2">
                       {tool.title}
-                      <span className="translate-x-[-8px] text-sm font-normal text-ink4 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100">
-                        {"->"}
-                      </span>
+                      <span className="text-[14px] text-ink4 font-patrick font-normal">→</span>
                     </div>
-                    <div className="mb-4 text-[14px] leading-relaxed text-ink4">
-                      {tool.desc}
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {tool.features.map((feature) => (
+                    <div className="font-patrick text-[14px] text-ink4 leading-[1.6] mb-3">{tool.desc}</div>
+                    <div className="flex flex-wrap gap-[6px]">
+                      {tool.features.map((f) => (
                         <span
-                          key={feature}
-                          className="rounded border px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide"
-                          style={{
-                            borderColor: `${tool.color}33`,
-                            color: tool.color,
-                            backgroundColor: `${tool.color}11`,
-                          }}
+                          key={f}
+                          className="font-caveat text-[12px] font-bold py-[2px] px-[10px] rounded-[2px_7px_3px_6px] border-[1.5px] tracking-[0.5px]"
+                          style={{ borderColor: tool.color, color: tool.color }}
                         >
-                          {feature}
+                          {f}
                         </span>
                       ))}
                     </div>
@@ -131,34 +124,21 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 pb-16 md:px-10 lg:px-20">
-        <div className="flex flex-col items-center rounded-2xl border border-teal/20 bg-teal/5 p-8 text-center md:p-12">
-          <div className="mb-4 rounded-full bg-teal/10 p-3">
-            <Emoji symbol="🔒" size={28} className="text-teal" />
-          </div>
-          <div className="mb-3 text-2xl font-bold text-teal">
-            100% Private & Secure
-          </div>
-          <div className="max-w-2xl text-[15px] leading-relaxed text-ink3">
-            Every single operation happens right in your browser. Your files
-            never leave your device - no server uploads, no cloud storage, no
-            tracking. OneDocs stays private while still giving you stronger
-            conversion output.
+      {/* Privacy notice */}
+      <section className="px-4 md:px-8 lg:px-16 pb-16">
+        <div className="bg-[rgba(26,92,92,.06)] border-2 border-teal rounded-[4px_16px_6px_14px] p-6 md:p-8 text-center flex flex-col items-center">
+          <div className="mb-3"><Emoji symbol="🔒" size={36} className="text-teal" /></div>
+          <div className="font-caveat text-[22px] font-bold text-teal mb-2">100% Private & Secure</div>
+          <div className="font-patrick text-[14px] text-ink3 max-w-[500px] mx-auto leading-[1.7]">
+            Every single operation happens right in your browser. Your files never leave your device — no server uploads, no cloud storage, no tracking. DocLens is completely free and always will be.
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-paper3 px-6 py-8 text-center">
-        <div className="text-sm font-medium text-ink4">
-          Made by{" "}
-          <a
-            href="https://x.com/alivldm"
-            className="font-bold text-ink transition-colors hover:text-amber"
-          >
-            Ali
-          </a>{" "}
-          - OneDocs is free, private, and built to make document conversion feel
-          trustworthy.
+      {/* Footer */}
+      <footer className="py-6 px-6 border-t-2 border-dashed border-[rgba(100,70,40,.15)] text-center">
+        <div className="font-caveat text-[15px] text-ink4">
+          Made by <a href="https://x.com/alivldm">Ali</a> — OneDocs is free, open, and privacy-first.
         </div>
       </footer>
     </div>
