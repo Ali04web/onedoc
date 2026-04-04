@@ -21,7 +21,6 @@ import {
   Toast,
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
-import { PageHero } from "@/app/components/PageHero";
 
 function CsvPreview({
   rows,
@@ -474,20 +473,7 @@ export default function DocxToolsPage() {
 
   return (
     <div className="page-shell">
-      <PageHero
-        kicker="DOCX tools"
-        title="Turn Word files into polished outputs without losing readability."
-        copy="The DOCX workspace now feels more visual and more confident while keeping the conversion controls simple."
-        chips={["HTML", "Markdown", "Text", "PDF preview"]}
-        stats={[
-          { label: "Rich export", value: "HTML + MD" },
-          { label: "Text flow", value: "Readable output" },
-          { label: "Print path", value: "PDF preview" },
-        ]}
-        artMode="docx"
-      />
-
-      <section className="surface-panel mt-5 p-6 md:p-8">
+      <section className="surface-panel mt-1 p-5 md:p-8">
         <SHead
           ico={<UIcon name="FileSignature" size={24} />}
           label="DOCX Conversions"

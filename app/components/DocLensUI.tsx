@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { fmtSize } from "../lib/utils";
 import { Emoji } from "./Icons";
 
 export function Tip({ children, tip, side = "top" }: any) {
   const [show, setShow] = useState(false);
+  const hideRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pos: any = {
     top: "bottom-[calc(100%+14px)] left-1/2 -translate-x-1/2",
     bottom: "top-[calc(100%+14px)] left-1/2 -translate-x-1/2",
@@ -12,15 +13,34 @@ export function Tip({ children, tip, side = "top" }: any) {
     left: "right-[calc(100%+14px)] top-1/2 -translate-y-1/2",
   };
 
+  function clearHideTimer() {
+    if (hideRef.current) {
+      clearTimeout(hideRef.current);
+      hideRef.current = null;
+    }
+  }
+
+  function showBrieflyOnTouch() {
+    clearHideTimer();
+    setShow(true);
+    hideRef.current = setTimeout(() => setShow(false), 1600);
+  }
+
+  useEffect(() => () => clearHideTimer(), []);
+
   return (
     <div
-      className="relative inline-flex"
+      className="relative inline-flex max-w-full"
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
+      onFocusCapture={() => setShow(true)}
+      onBlurCapture={() => setShow(false)}
+      onTouchStart={showBrieflyOnTouch}
     >
       {children}
       {show && tip && (
         <div
+          role="tooltip"
           className={`pointer-events-none absolute z-[9000] max-w-[280px] rounded-2xl border border-white/12 bg-[rgba(21,29,56,.94)] px-3.5 py-2 text-[12px] font-medium leading-relaxed text-white shadow-[0_22px_48px_rgba(15,22,44,.34)] backdrop-blur-md animate-slide-down ${pos[side]}`}
         >
           {tip}
@@ -132,6 +152,7 @@ export function FZone({
     <label
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
+      title={tip}
       className={`flex min-h-[84px] cursor-pointer items-center justify-center gap-3 rounded-[22px] border border-dashed px-5 py-4 text-center transition-all duration-200 ${
         has
           ? "border-teal/35 bg-[linear-gradient(135deg,rgba(16,199,162,.1),rgba(110,124,255,.08))] text-teal shadow-[0_18px_34px_rgba(16,199,162,.08)]"
@@ -182,24 +203,30 @@ export function FZone({
   );
 }
 
-export function HInput({ className = "", ...props }: any) {
-  return (
+export function HInput({ className = "", tip, ...props }: any) {
+  const input = (
     <input
       {...props}
+      title={tip}
       className={`w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none transition-all duration-200 placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)] ${className}`}
     />
   );
+
+  return tip ? <Tip tip={tip}>{input}</Tip> : input;
 }
 
-export function HSel({ className = "", children, ...props }: any) {
-  return (
+export function HSel({ className = "", children, tip, ...props }: any) {
+  const select = (
     <select
       {...props}
+      title={tip}
       className={`w-full cursor-pointer rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none transition-all duration-200 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)] ${className}`}
     >
       {children}
     </select>
   );
+
+  return tip ? <Tip tip={tip}>{select}</Tip> : select;
 }
 
 export function CStat({ msg, type }: any) {
@@ -227,6 +254,7 @@ export function HBtn({ onClick, disabled, loading, label, tip }: any) {
     <button
       onClick={onClick}
       disabled={isDisabled}
+      title={tip}
       className={`flex w-full items-center justify-center gap-2 rounded-[20px] px-5 py-3 text-[15px] font-semibold transition-all duration-200 ${
         isDisabled
           ? "cursor-not-allowed border border-[rgba(110,124,255,.1)] bg-[rgba(255,255,255,.48)] text-ink4"

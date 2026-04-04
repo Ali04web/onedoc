@@ -24,7 +24,6 @@ import {
   Toast,
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
-import { PageHero } from "@/app/components/PageHero";
 
 declare global {
   interface Window {
@@ -200,6 +199,7 @@ export default function PdfToolsPage() {
               min="72"
               max="300"
               value={getTool("pdfImg").dpi || "180"}
+              tip="Set the image render DPI. Higher values are sharper and larger."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                 setTool("pdfImg", { dpi: event.target.value })
               }
@@ -264,6 +264,7 @@ export default function PdfToolsPage() {
             </div>
             <HSel
               value={getTool("pdfDocx").mode || "layout"}
+              tip="Choose between page-faithful accuracy and cleaner editable text."
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 setTool("pdfDocx", { mode: event.target.value })
               }
@@ -425,6 +426,7 @@ export default function PdfToolsPage() {
           <HInput
             placeholder="Page range, for example 1-3, 5, 9"
             value={getTool("split").pages || ""}
+            tip="Enter pages or ranges to keep in the split file."
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setTool("split", { pages: event.target.value })
             }
@@ -551,6 +553,7 @@ export default function PdfToolsPage() {
           />
           <HSel
             value={getTool("rotate").deg || "90"}
+            tip="Choose how much rotation to apply to every page."
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
               setTool("rotate", { deg: event.target.value })
             }
@@ -619,20 +622,7 @@ export default function PdfToolsPage() {
 
   return (
     <div className="page-shell">
-      <PageHero
-        kicker="PDF tools"
-        title="Sharper PDF tools with better visual flow and cleaner output."
-        copy="Every main PDF action now sits inside a brighter, easier workspace without slowing down the actual tool work."
-        chips={["PDF to DOCX", "Merge", "Split", "Rotate"]}
-        stats={[
-          { label: "Best result", value: "Accurate DOCX" },
-          { label: "Image export", value: "PNG ZIP" },
-          { label: "Batch work", value: "Merge + split" },
-        ]}
-        artMode="pdf"
-      />
-
-      <section className="surface-panel mt-5 p-6 md:p-8">
+      <section className="surface-panel mt-1 p-5 md:p-8">
         <SHead
           ico={<UIcon name="FileText" size={24} />}
           label="Conversion Tools"
