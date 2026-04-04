@@ -29,6 +29,11 @@ export const metadata: Metadata = {
   title: "OneDocs | Document Conversion Suite",
   description:
     "Fast PDF and DOCX tools for convert, analyze, and share workflows.",
+  icons: {
+    icon: "/onedocs-symbol.svg",
+    shortcut: "/onedocs-symbol.svg",
+    apple: "/onedocs-symbol.svg",
+  },
 };
 
 export default function RootLayout({

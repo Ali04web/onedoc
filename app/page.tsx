@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Emoji } from "./components/Icons";
 import { SCard } from "./components/DocLensUI";
+import { BrandSymbol } from "./components/BrandSymbol";
 
 const tools = [
   {
@@ -41,7 +42,7 @@ export default function HomePage() {
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
         <section className="page-hero p-7 md:p-8">
-          <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="relative z-10 grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-end">
             <div>
               <div className="page-kicker mb-4">Simple, colorful, faster</div>
               <h1 className="page-title max-w-[700px]">
@@ -68,11 +69,22 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3 lg:max-w-[420px] lg:justify-end">
-              <span className="premium-chip">PDF + DOCX</span>
-              <span className="premium-chip">Browser-first</span>
-              <span className="premium-chip">Shareable links</span>
-              <span className="premium-chip">Cleaner outputs</span>
+            <div className="surface-panel flex items-center gap-4 p-5">
+              <div className="rounded-[24px] bg-white/92 p-2 shadow-[0_16px_28px_rgba(93,104,214,.14)]">
+                <BrandSymbol size={74} detailed />
+              </div>
+              <div className="min-w-0">
+                <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
+                  OneDocs mark
+                </div>
+                <div className="mt-2 text-[13px] leading-relaxed text-ink4">
+                  Custom SVG identity built around documents, links, and bright motion.
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="premium-chip">PDF + DOCX</span>
+                  <span className="premium-chip">Readable UI</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -83,8 +95,16 @@ export default function HomePage() {
               <SCard>
                 <div className="flex h-full flex-col gap-4">
                   <div
-                    className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/90"
-                    style={{ color: tool.accent }}
+                    className="flex h-12 w-12 items-center justify-center rounded-2xl"
+                    style={{
+                      color: tool.accent,
+                      background:
+                        tool.title === "PDF Tools"
+                          ? "linear-gradient(135deg, rgba(255,100,116,.14), rgba(255,195,77,.18))"
+                          : tool.title === "DOCX Tools"
+                            ? "linear-gradient(135deg, rgba(255,143,63,.14), rgba(110,124,255,.16))"
+                            : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(22,199,161,.16))",
+                    }}
                   >
                     <Emoji symbol={tool.icon} size={22} />
                   </div>

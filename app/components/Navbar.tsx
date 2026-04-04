@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Emoji } from "./Icons";
+import { BrandSymbol } from "./BrandSymbol";
 
 const navItems = [
   { href: "/", icon: "🏠", label: "Home" },
@@ -22,14 +23,14 @@ export default function Navbar() {
     <header className="sticky top-0 z-[100] px-3 py-3">
       <div className="surface-panel mx-auto flex w-full max-w-[1240px] items-center justify-between px-4 py-3 md:px-5">
         <Link href="/" className="flex items-center gap-3 no-underline">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--color-red),var(--color-amber))] text-white shadow-[0_16px_28px_rgba(240,141,54,.28)]">
-            <Emoji symbol="📄" size={20} />
+          <div className="rounded-[20px] bg-white/86 p-1.5 shadow-[0_16px_28px_rgba(93,104,214,.16)]">
+            <BrandSymbol size={38} />
           </div>
           <div>
             <div className="font-caveat text-[24px] font-semibold leading-none text-ink2">
               OneDocs
             </div>
-            <div className="mt-1 text-[12px] text-ink4">Simple document tools</div>
+            <div className="mt-1 text-[12px] text-ink4">Bright document workspace</div>
           </div>
         </Link>
 
