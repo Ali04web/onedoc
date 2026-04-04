@@ -1,133 +1,534 @@
-import React, { useMemo, useState, useEffect } from "react";
-import { esc, escRe, stem, dlText } from "../lib/utils";
-import { Tip, SCard } from "./DocLensUI";
-import { Emoji } from "./Icons";
+import React, { useEffect, useMemo, useState } from "react";
+import { dlText, esc, escRe, stem } from "../lib/utils";
+import { HBtn, HInput, SCard, Tip } from "./DocLensUI";
+import { UIcon } from "./Icons";
 
-export function TView({ text, searchQ }: any) {
+type StatsShape = {
+  wordCount: number;
+  charCount: number;
+  sentenceCount: number;
+  readingTime: number;
+  topWords: Array<[string, number]>;
+};
+
+type DocShape = {
+  name: string;
+  text: string;
+  stats: StatsShape;
+};
+
+export function TView({
+  text,
+  searchQ,
+}: {
+  text: string;
+  searchQ?: string;
+}) {
   const html = useMemo(() => {
-    const e = esc(text || "");
-    if (!searchQ || searchQ.length < 2) return e;
-    return e.replace(new RegExp(escRe(esc(searchQ)), "gi"), (m: string) => `<mark style="background:rgba(255,215,60,.42);border-radius:2px;padding:0 2px">${m}</mark>`);
-  }, [text, searchQ]);
-  return <div className="flex-1 overflow-y-auto py-5 px-4 md:py-7 md:px-8 font-mono text-[11.5px] md:text-[12.5px] leading-loose text-ink3 whitespace-pre-wrap break-words" dangerouslySetInnerHTML={{ __html: html }} />;
-}
+    const safe = esc(text || "");
+    const withHighlights =
+      searchQ && searchQ.length >= 2
+        ? safe.replace(
+            new RegExp(escRe(esc(searchQ)), "gi"),
+            (match: string) =>
+              `<mark class="rounded-md bg-[rgba(186,138,66,.18)] px-1 py-0.5 text-ink">${match}</mark>`
+          )
+        : safe;
 
-export function StatsView({ stats }: any) {
-  if (!stats) return null;
-  const { wordCount, charCount, sentenceCount, readingTime, topWords } = stats;
-  const max = topWords[0]?.[1] || 1;
-  const cards = [
-    { v: wordCount.toLocaleString(), l: "words", i: "📝", t: "Total word count" },
-    { v: charCount.toLocaleString(), l: "characters", i: "🔤", t: "Total character count" },
-    { v: sentenceCount.toLocaleString(), l: "sentences", i: "📖", t: "Detected sentence count" },
-    { v: `~${readingTime}`, l: "min to read", i: "⏱", t: "At 200 words per minute" },
-    { v: Math.round(wordCount / Math.max(sentenceCount, 1)), l: "words/sentence", i: "📏", t: "Average sentence length" }
-  ];
+    return withHighlights.replace(/\n/g, "<br />");
+  }, [searchQ, text]);
+
+  const lines = useMemo(
+    () => text.split(/\n/).filter((line) => line.trim().length > 0).length,
+    [text]
+  );
+
   return (
-    <div className="flex-1 overflow-y-auto py-5 px-4 md:py-7 md:px-8">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-[14px] mb-[28px]">
-        {cards.map(({ v, l, i, t }, idx) => (
-          <Tip key={l} tip={t}>
-            <div className={`bg-paper2 border-2 border-[rgba(60,35,10,.28)] py-[18px] px-[16px] cursor-default shadow-[2px_2px_0_rgba(30,15,5,.08)] rounded-[${3+idx}px_${8+idx}px_${4+idx}px_${7+idx}px]`} style={{ transform: `rotate(${idx % 2 === 0 ? 0.35 : -0.3}deg)` }}>
-              <div className="font-caveat text-[30px] font-bold text-amber2 leading-none flex items-center gap-[8px]">
-                <Emoji symbol={i} size={28} className="translate-y-[-2px]" />{v}
-              </div>
-              <div className="font-patrick text-[13px] text-ink3 mt-[6px]">{l}</div>
-            </div>
-          </Tip>
-        ))}
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="border-b border-[rgba(42,34,24,.08)] bg-[rgba(255,255,255,.5)] px-5 py-4 md:px-8">
+        <div className="flex flex-wrap items-center gap-3">
+          <span className="premium-chip">
+            <UIcon name="ScanText" size={14} />
+            Extracted text
+          </span>
+          <span className="premium-chip">
+            <UIcon name="Rows3" size={14} />
+            {lines.toLocaleString()} lines
+          </span>
+          <span className="premium-chip">
+            <UIcon name="AlignLeft" size={14} />
+            Browser-safe review
+          </span>
+        </div>
       </div>
-      <div className="font-caveat text-[18px] font-bold text-ink2 mb-[14px] flex items-center gap-[8px]">
-        <Emoji symbol="🏆" size={24} className="text-amber" /> Most frequent words
-        <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.2)] ml-[8px]" />
-      </div>
-      <div className="flex flex-col gap-[9px]">
-        {topWords.map(([word, count]: any, idx: number) => (
-          <Tip key={word} tip={`"${word}" appears ${count} time${count > 1 ? "s" : ""}`} side="right">
-            <div className="flex items-center gap-[12px] cursor-default">
-              <span className="font-caveat text-[12px] text-ink4 min-w-[18px] text-right">{idx + 1}</span>
-              <span className="font-mono text-[12.5px] font-medium min-w-[112px] text-ink2">{word}</span>
-              <div className="flex-1 h-[6px] bg-paper3 rounded-[2px_6px_2px_5px] overflow-hidden border border-[rgba(100,70,40,.15)]">
-                <div className="h-full bg-gradient-to-r from-amber2 to-amber rounded-[2px_6px] transition-[width] duration-800 ease-[cubic-bezier(.4,0,.2,1)]" style={{ width: `${Math.round(count / max * 100)}%` }} />
-              </div>
-              <span className="font-caveat text-[13px] text-ink4 min-w-[24px] text-right">{count}</span>
+      <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 md:px-8 md:py-7">
+        <div className="surface-card min-h-full bg-[linear-gradient(180deg,rgba(255,255,255,.78),rgba(248,244,236,.88))] p-0 shadow-[0_22px_48px_rgba(33,25,16,.08)]">
+          <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-4">
+            <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
+              Review surface
             </div>
-          </Tip>
-        ))}
+            <div className="mt-2 text-[14px] leading-relaxed text-ink4">
+              Clean extraction with preserved paragraph flow for reading, copying,
+              and export.
+            </div>
+          </div>
+          <div
+            className="px-5 py-5 font-mono text-[12px] leading-7 text-ink3 md:px-7 md:py-6"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        </div>
       </div>
     </div>
   );
 }
 
-export function SearchView({ text }: any) {
-  const [q, setQ] = useState("");
-  const [matches, setMatches] = useState<any[]>([]);
-  const [cur, setCur] = useState(0);
+export function StatsView({ stats }: { stats: StatsShape | null }) {
+  if (!stats) return null;
 
-  useEffect(() => {
-    if (!q || q.length < 2) { setMatches([]); return; }
-    const re = new RegExp(escRe(q), "gi");
-    setMatches(text.split("\n").filter((l: string) => l.trim()).filter((l: string) => { const r = re.test(l); re.lastIndex = 0; return r; }).map((t: string) => ({ t })));
-    setCur(0);
-  }, [q, text]);
+  const { wordCount, charCount, sentenceCount, readingTime, topWords } = stats;
+  const longestBar = topWords[0]?.[1] || 1;
+  const cards = [
+    {
+      value: wordCount.toLocaleString(),
+      label: "Words",
+      note: "Total extracted vocabulary",
+      icon: "FileText",
+    },
+    {
+      value: charCount.toLocaleString(),
+      label: "Characters",
+      note: "Useful for sizing and limits",
+      icon: "Type",
+    },
+    {
+      value: sentenceCount.toLocaleString(),
+      label: "Sentences",
+      note: "Based on punctuation detection",
+      icon: "BookText",
+    },
+    {
+      value: `~${readingTime} min`,
+      label: "Reading time",
+      note: "Estimated at 200 words per minute",
+      icon: "Clock3",
+    },
+    {
+      value: Math.max(1, Math.round(wordCount / Math.max(sentenceCount, 1))).toString(),
+      label: "Words / sentence",
+      note: "Quick readability signal",
+      icon: "Ruler",
+    },
+  ];
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden">
-      <div className="py-[16px] px-[26px] border-b-[1.5px] border-dashed border-[rgba(100,70,40,.2)] flex gap-[10px] items-center bg-[rgba(237,229,208,.5)]">
-        <div className="flex-1 flex items-center gap-[10px] bg-paper border-2 border-[rgba(100,70,40,.32)] rounded-[3px_10px_4px_9px] px-[14px] py-[9px]">
-          <Emoji symbol="🔍" size={18} className="text-ink4" />
-          <input value={q} onChange={e => setQ(e.target.value)} placeholder="What are you looking for?" className="flex-1 bg-transparent border-none outline-none text-ink font-patrick text-[14px]" />
-        </div>
-        {matches.length > 0 && <span className="font-caveat text-[15px] text-ink4 whitespace-nowrap">{cur + 1} / {matches.length}</span>}
-        {["↑", "↓"].map((d, i) => (
-          <Tip key={d} tip={i === 0 ? "Previous result" : "Next result"}>
-            <button onClick={() => setCur(c => (c + (i ? 1 : -1) + matches.length) % matches.length)} disabled={!matches.length}
-              className={`w-[34px] h-[34px] bg-paper hover:bg-paper2 border-2 border-[rgba(100,70,40,.32)] rounded-[${3+i}px_${8+i}px_${4+i}px_${7+i}px] flex items-center justify-center font-inherit transition-all duration-150 text-ink3 text-[15px] ${matches.length ? "cursor-pointer opacity-100" : "cursor-not-allowed opacity-[0.4]"}`}>
-              {d}
-            </button>
-          </Tip>
-        ))}
-      </div>
-      <div className="flex-1 overflow-y-auto py-[16px] px-[26px] flex flex-col gap-[10px]">
-        {!q || q.length < 2 ? <div className="text-center text-ink4 font-caveat italic text-[22px] mt-[60px] -rotate-[0.5deg]">Start typing to search…</div>
-         : matches.length === 0 ? <div className="text-center text-red font-caveat text-[20px] mt-[60px] flex items-center justify-center gap-2"><Emoji symbol="✕" size={20} /> Nothing found for "{q}"</div>
-         : matches.map((m, i) => (
-          <div key={i} onClick={() => setCur(i)} className={`border-[1.5px] rounded-[3px_10px_4px_9px] py-[12px] px-[15px] cursor-pointer transition-all duration-150 ${i === cur ? "bg-[rgba(192,120,24,.08)] border-amber rotate-0" : "bg-paper2 border-[rgba(100,70,40,.22)] rotate-[0.15deg]"}`}>
-            <div className="font-caveat text-[12px] text-ink4 mb-[4px]">Result {i + 1}</div>
-            <div className="font-patrick text-[13px] leading-[1.65] text-ink2" dangerouslySetInnerHTML={{ __html: esc(m.t).replace(new RegExp(escRe(esc(q)), "gi"), (t: string) => `<mark style="background:rgba(255,210,55,.42);border-radius:2px;padding:0 2px">${t}</mark>`) }} />
+    <div className="flex h-full min-h-0 flex-col overflow-y-auto px-5 py-6 md:px-8 md:py-7">
+      <div className="grid gap-4 xl:grid-cols-5">
+        {cards.map((card) => (
+          <div key={card.label} className="premium-metric">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                {card.label}
+              </div>
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/80 text-amber">
+                <UIcon name={card.icon as any} size={18} />
+              </div>
+            </div>
+            <div className="mt-5 font-caveat text-[34px] leading-none tracking-[-0.03em] text-ink2">
+              {card.value}
+            </div>
+            <div className="mt-2 text-[13px] leading-relaxed text-ink4">
+              {card.note}
+            </div>
           </div>
         ))}
       </div>
-    </div>
-  );
-}
 
-export function ExportView({ doc }: any) {
-  const items = [
-    { ico: "📄", title: "Plain Text", ext: ".txt", desc: "Raw text, no formatting", col: "rgba(60,30,10,.1)", tip: "Save the extracted text as a .txt file", fn: () => dlText(stem(doc.name) + ".txt", doc.text) },
-    { ico: "📑", title: "Markdown", ext: ".md", desc: "Headings and structure preserved", col: "rgba(26,92,92,.08)", tip: "Export with Markdown heading syntax", fn: () => dlText(stem(doc.name) + ".md", doc.text.split("\n").map((l: string) => l.trim().length > 60 ? l : (l.trim() ? "## " + l.trim() : "")).join("\n")) },
-    { ico: "📊", title: "Analysis Report", ext: ".txt", desc: "Stats, word counts, top words", col: "rgba(192,120,24,.08)", tip: "Full statistical breakdown of your document", fn: () => { const s = doc.stats; dlText(stem(doc.name) + "_report.txt", `Analysis\n========\nFile: ${doc.name}\nWords: ${s.wordCount}\nChars: ${s.charCount}\nSentences: ${s.sentenceCount}\nRead: ~${s.readingTime}min\n\nTop Words\n---------\n${s.topWords.map(([w, c]: any, i: number) => `${i + 1}. ${w}: ${c}`).join("\n")}`) } },
-    { ico: "🔤", title: "CSV Word Frequency", ext: ".csv", desc: "Word counts as a spreadsheet", col: "rgba(26,70,26,.08)", tip: "Open in Excel or Google Sheets to chart frequencies", fn: () => dlText(stem(doc.name) + "_freq.csv", "Word,Count\n" + doc.stats.topWords.map(([w, c]: any) => `"${w}",${c}`).join("\n")) },
-  ];
-  return (
-    <div className="flex-1 overflow-y-auto py-[28px] px-[32px] flex flex-col gap-[14px]">
-      <div className="font-caveat text-[26px] font-bold text-ink2 mb-[4px] -rotate-[0.4deg] flex items-center gap-2">Save your work <Emoji symbol="✍️" size={24} /></div>
-      {items.map((e, i) => (
-        <SCard key={e.title} rotate={i % 2 === 0 ? 0.2 : -0.2}>
-          <div className="flex items-center gap-[15px]">
-            <div className="flex-shrink-0"><Emoji symbol={e.ico} size={36} /></div>
-            <div className="flex-1">
-              <div className="font-caveat text-[18px] font-bold text-ink2 mb-[2px]">
-                {e.title} <span className="font-mono text-[11px] text-ink4 bg-paper2 py-[1px] px-[5px] rounded-[4px]">{e.ext}</span>
-              </div>
-              <div className="font-patrick text-[13px] text-ink3">{e.desc}</div>
+      <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(300px,.65fr)]">
+        <SCard>
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+              <UIcon name="BarChart3" size={18} />
             </div>
-            <Tip tip={e.tip} side="left">
-              <button onClick={e.fn} className="py-[9px] px-[18px] bg-amber hover:bg-amber2 border-2 border-amber2 rounded-[3px_10px_4px_9px] font-caveat text-[16px] font-bold text-white cursor-pointer transition-all duration-150 flex-shrink-0 shadow-[2px_2px_0_rgba(30,15,5,.15)] hover:shadow-[3px_3px_0_rgba(30,15,5,.18)] hover:-translate-x-[1px] hover:-translate-y-[1px]">Export</button>
-            </Tip>
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                Frequency map
+              </div>
+              <div className="mt-1 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
+                Top repeated terms
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-col gap-4">
+            {topWords.length ? (
+              topWords.map(([word, count], index) => (
+                <div key={word} className="grid grid-cols-[28px_minmax(0,120px)_1fr_44px] items-center gap-3">
+                  <div className="text-right text-[12px] font-semibold text-ink4">
+                    {index + 1}
+                  </div>
+                  <div className="truncate text-[14px] font-semibold text-ink2">
+                    {word}
+                  </div>
+                  <div className="h-2.5 overflow-hidden rounded-full bg-[rgba(42,34,24,.08)]">
+                    <div
+                      className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-teal),var(--color-amber))]"
+                      style={{
+                        width: `${Math.max(
+                          12,
+                          Math.round((count / longestBar) * 100)
+                        )}%`,
+                      }}
+                    />
+                  </div>
+                  <div className="text-right text-[13px] text-ink4">{count}</div>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/70 px-4 py-4 text-[14px] leading-relaxed text-ink4">
+                No standout terms were detected in this document.
+              </div>
+            )}
           </div>
         </SCard>
-      ))}
+
+        <SCard>
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2">
+              <UIcon name="Sparkles" size={18} />
+            </div>
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                Reading insight
+              </div>
+              <div className="mt-1 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
+                Quick interpretation
+              </div>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-col gap-3">
+            {[
+              `${sentenceCount.toLocaleString()} detected sentences give this document a ${
+                sentenceCount > 0
+                  ? Math.round(wordCount / Math.max(sentenceCount, 1))
+                  : 0
+              } word average sentence length.`,
+              `Around ${Math.max(1, readingTime)} minute${
+                readingTime === 1 ? "" : "s"
+              } of reading means this is ${
+                readingTime <= 3 ? "quick to scan" : "better treated as a longer read"
+              }.`,
+              topWords[0]
+                ? `The strongest recurring term is "${topWords[0][0]}", which appears ${topWords[0][1]} times.`
+                : "There is not enough repeated vocabulary to identify a dominant topic term.",
+            ].map((line) => (
+              <div
+                key={line}
+                className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4 text-[14px] leading-relaxed text-ink3"
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+        </SCard>
+      </div>
+    </div>
+  );
+}
+
+export function SearchView({ text }: { text: string }) {
+  const [query, setQuery] = useState("");
+  const [matches, setMatches] = useState<Array<{ text: string; line: number }>>(
+    []
+  );
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!query || query.trim().length < 2) {
+      setMatches([]);
+      setCurrent(0);
+      return;
+    }
+
+    const regex = new RegExp(escRe(query.trim()), "i");
+    const nextMatches = text
+      .split("\n")
+      .map((line, index) => ({ text: line.trim(), line: index + 1 }))
+      .filter((entry) => entry.text.length > 0 && regex.test(entry.text));
+
+    setMatches(nextMatches);
+    setCurrent(0);
+  }, [query, text]);
+
+  const selected = matches[current];
+
+  return (
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="border-b border-[rgba(42,34,24,.08)] bg-[rgba(255,255,255,.5)] px-5 py-4 md:px-8">
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+          <div className="flex items-center gap-3 rounded-[22px] border border-[rgba(42,34,24,.1)] bg-white/80 px-4 py-3 shadow-[0_10px_24px_rgba(33,25,16,.05)]">
+            <UIcon name="Search" size={18} className="text-ink4" />
+            <HInput
+              value={query}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setQuery(event.target.value)
+              }
+              placeholder="Search a phrase, heading, or keyword"
+              className="border-none bg-transparent px-0 py-0 shadow-none focus:border-none focus:bg-transparent focus:shadow-none"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="premium-chip">
+              <UIcon name="Target" size={14} />
+              {matches.length} result{matches.length === 1 ? "" : "s"}
+            </span>
+            <button
+              onClick={() =>
+                setCurrent((value) =>
+                  matches.length ? (value - 1 + matches.length) % matches.length : 0
+                )
+              }
+              disabled={!matches.length}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+            >
+              <UIcon name="ChevronUp" size={18} />
+            </button>
+            <button
+              onClick={() =>
+                setCurrent((value) =>
+                  matches.length ? (value + 1) % matches.length : 0
+                )
+              }
+              disabled={!matches.length}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+            >
+              <UIcon name="ChevronDown" size={18} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid min-h-0 flex-1 gap-5 px-5 py-6 md:px-8 md:py-7 xl:grid-cols-[minmax(0,1.15fr)_320px]">
+        <div className="min-h-0 overflow-y-auto">
+          <div className="flex flex-col gap-3">
+            {!query || query.trim().length < 2 ? (
+              <div className="surface-card px-5 py-6 text-[15px] leading-relaxed text-ink4">
+                Start with at least two characters and OneDocs will scan the
+                extracted text for matching lines.
+              </div>
+            ) : matches.length === 0 ? (
+              <div className="surface-card px-5 py-6 text-[15px] leading-relaxed text-red">
+                No matches were found for "{query}".
+              </div>
+            ) : (
+              matches.map((match, index) => {
+                const marked = esc(match.text).replace(
+                  new RegExp(escRe(esc(query.trim())), "gi"),
+                  (chunk: string) =>
+                    `<mark class="rounded-md bg-[rgba(31,90,86,.16)] px-1 py-0.5 text-ink">${chunk}</mark>`
+                );
+
+                return (
+                  <button
+                    key={`${match.line}-${index}`}
+                    onClick={() => setCurrent(index)}
+                    className={`surface-card text-left transition-all duration-200 ${
+                      current === index
+                        ? "border-amber/30 bg-[linear-gradient(180deg,rgba(255,250,243,.96),rgba(249,241,227,.92))] shadow-[0_24px_42px_rgba(186,138,66,.12)]"
+                        : "hover:-translate-y-0.5"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="premium-chip">
+                        <UIcon name="ListOrdered" size={14} />
+                        Line {match.line}
+                      </span>
+                      <span className="text-[12px] font-medium text-ink4">
+                        Match {index + 1}
+                      </span>
+                    </div>
+                    <div
+                      className="mt-4 text-[14px] leading-7 text-ink3"
+                      dangerouslySetInnerHTML={{ __html: marked }}
+                    />
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        <SCard style={{ height: "fit-content" }}>
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+              <UIcon name="LocateFixed" size={18} />
+            </div>
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                Current focus
+              </div>
+              <div className="mt-1 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
+                Match inspector
+              </div>
+            </div>
+          </div>
+
+          {selected ? (
+            <div className="mt-6 rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4">
+              <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
+                Selected line
+              </div>
+              <div className="mt-2 text-[14px] font-semibold text-ink2">
+                Line {selected.line}
+              </div>
+              <div className="mt-4 text-[14px] leading-7 text-ink3">
+                {selected.text}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-6 rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4 text-[14px] leading-relaxed text-ink4">
+              Search results will appear here with quick context for the current
+              selection.
+            </div>
+          )}
+
+          <div className="mt-4 flex flex-col gap-3 text-[13px] leading-relaxed text-ink4">
+            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.78)] px-4 py-3">
+              Search scans the extracted text layer, so scanned-image PDFs may
+              produce fewer results unless they contain selectable text.
+            </div>
+            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.78)] px-4 py-3">
+              Use export after search if you want to save the document as text,
+              markdown, or reporting data.
+            </div>
+          </div>
+        </SCard>
+      </div>
+    </div>
+  );
+}
+
+export function ExportView({ doc }: { doc: DocShape }) {
+  const items = [
+    {
+      title: "Plain text",
+      ext: ".txt",
+      description: "Raw extracted copy for archives, notes, and quick reuse.",
+      icon: "FileText",
+      tip: "Save the extracted text as a plain text file.",
+      onClick: () => dlText(`${stem(doc.name)}.txt`, doc.text),
+    },
+    {
+      title: "Markdown",
+      ext: ".md",
+      description: "Cleaner structure for docs, wikis, and GitHub workflows.",
+      icon: "NotebookPen",
+      tip: "Export as markdown with lightweight heading structure.",
+      onClick: () =>
+        dlText(
+          `${stem(doc.name)}.md`,
+          doc.text
+            .split("\n")
+            .map((line) =>
+              line.trim().length > 60 ? line : line.trim() ? `## ${line.trim()}` : ""
+            )
+            .join("\n")
+        ),
+    },
+    {
+      title: "Analysis report",
+      ext: ".txt",
+      description: "Counts, reading time, and the top repeated terms in one file.",
+      icon: "FileBarChart",
+      tip: "Generate a plain text summary report.",
+      onClick: () => {
+        const stats = doc.stats;
+        dlText(
+          `${stem(doc.name)}_report.txt`,
+          [
+            "OneDocs Analysis Report",
+            "======================",
+            `File: ${doc.name}`,
+            `Words: ${stats.wordCount}`,
+            `Characters: ${stats.charCount}`,
+            `Sentences: ${stats.sentenceCount}`,
+            `Reading time: ~${stats.readingTime} min`,
+            "",
+            "Top Words",
+            "---------",
+            ...stats.topWords.map(
+              ([word, count], index) => `${index + 1}. ${word}: ${count}`
+            ),
+          ].join("\n")
+        );
+      },
+    },
+    {
+      title: "Word frequency CSV",
+      ext: ".csv",
+      description: "Spreadsheet-ready keyword counts for reporting or charting.",
+      icon: "Sheet",
+      tip: "Download keyword frequencies as a CSV table.",
+      onClick: () =>
+        dlText(
+          `${stem(doc.name)}_frequency.csv`,
+          "Word,Count\n" +
+            doc.stats.topWords.map(([word, count]) => `"${word}",${count}`).join("\n")
+        ),
+    },
+  ];
+
+  return (
+    <div className="flex h-full min-h-0 flex-col overflow-y-auto px-5 py-6 md:px-8 md:py-7">
+      <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <div className="page-kicker">Export Studio</div>
+          <div className="mt-3 font-caveat text-[34px] leading-none tracking-[-0.03em] text-ink2">
+            Save the extracted work in the format you need.
+          </div>
+          <div className="mt-3 max-w-[720px] text-[15px] leading-relaxed text-ink4">
+            These exports keep the analysis fast and shareable for editors,
+            researchers, support teams, and operations workflows.
+          </div>
+        </div>
+        <span className="premium-chip">
+          <UIcon name="Lock" size={14} />
+          Generated in-browser
+        </span>
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        {items.map((item) => (
+          <SCard key={item.title}>
+            <div className="flex flex-col gap-5">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(31,90,86,.08)] text-teal">
+                  <UIcon name={item.icon as any} size={20} />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <div className="font-caveat text-[26px] leading-none tracking-[-0.02em] text-ink2">
+                      {item.title}
+                    </div>
+                    <span className="premium-chip">{item.ext}</span>
+                  </div>
+                  <div className="mt-2 text-[14px] leading-relaxed text-ink4">
+                    {item.description}
+                  </div>
+                </div>
+              </div>
+              <Tip tip={item.tip}>
+                <div>
+                  <HBtn
+                    onClick={item.onClick}
+                    label={`Download ${item.ext}`}
+                    loading={false}
+                    disabled={false}
+                  />
+                </div>
+              </Tip>
+            </div>
+          </SCard>
+        ))}
+      </div>
     </div>
   );
 }
