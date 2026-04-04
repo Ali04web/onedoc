@@ -47,13 +47,10 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
     >
       <body className="min-h-full">
-        <div className="premium-ambient" aria-hidden="true" />
         <Navbar />
-        <div
-          className="relative flex min-h-[calc(100dvh-96px)] flex-col overflow-hidden ruled"
-        >
+        <main className="relative flex flex-col min-h-screen">
           {children}
-        </div>
+        </main>
       </body>
     </html>
   );

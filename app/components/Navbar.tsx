@@ -3,17 +3,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrandSymbol } from "./BrandSymbol";
-import { Tip } from "./DocLensUI";
 import { UIcon } from "./Icons";
 
 const navItems = [
-  { href: "/", icon: "Home", label: "Home", tip: "Go back to the main dashboard." },
-  { href: "/analyze", icon: "Microscope", label: "Analyze", tip: "Open document reading, search, and export." },
-  { href: "/pdf-tools", icon: "FileText", label: "PDF", tip: "Open PDF conversion and organization tools." },
-  { href: "/docx-tools", icon: "FileSignature", label: "DOCX", tip: "Open Word document conversion tools." },
-  { href: "/pdf-link", icon: "Link", label: "PDF Link", tip: "Generate a shareable hosted PDF viewer link." },
-  { href: "/support", icon: "MessageCircleHeart", label: "Support", tip: "View help, FAQs, and support contact options." },
+  { href: "/", icon: "Home", label: "Home" },
+  { href: "/analyze", icon: "Microscope", label: "Analyze" },
+  { href: "/pdf-tools", icon: "FileText", label: "PDF Tools" },
+  { href: "/docx-tools", icon: "FileSignature", label: "DOCX Tools" },
+  { href: "/pdf-link", icon: "Link", label: "PDF Link" },
+  { href: "/support", icon: "MessageCircleHeart", label: "Support" },
 ] as const;
 
 export default function Navbar() {
@@ -21,51 +19,54 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-[100] px-3 py-3">
-      <div className="surface-panel mx-auto flex w-full max-w-[1240px] items-center justify-between gap-3 px-4 py-3 md:px-5">
-        <Tip tip="OneDocs home workspace" side="bottom">
-          <Link href="/" className="flex min-w-0 items-center gap-3 no-underline">
-            <div className="rounded-[18px] bg-[linear-gradient(135deg,rgba(255,255,255,.94),rgba(243,248,255,.88))] p-1.5 shadow-[0_18px_30px_rgba(93,104,214,.16)]">
-              <BrandSymbol size={38} />
-            </div>
-            <div className="min-w-0">
-              <div className="truncate font-caveat text-[22px] font-semibold leading-none text-ink2 md:text-[24px]">
-                OneDocs
-              </div>
-              <div className="mt-1 hidden text-[12px] text-ink4 sm:block">
-                Bright document workspace
-              </div>
-            </div>
-          </Link>
-        </Tip>
+    <header className="sticky top-0 z-[100] bg-white/70 backdrop-blur-md border-b border-black/5">
+      <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-4">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group no-underline transition-all active:scale-95">
+          <div className="font-caveat text-[28px] font-bold tracking-tight text-ink2 drop-shadow-sm">
+            OneDocs
+          </div>
+          <span className="rounded-md bg-[#4ba391] px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-white shadow-sm">
+            FREE
+          </span>
+        </Link>
 
-        <nav className="hidden items-center gap-2 lg:flex">
-          {navItems.map(({ href, icon, label, tip }) => {
+        {/* Center Nav */}
+        <nav className="hidden items-center gap-1 lg:flex">
+          {navItems.map(({ href, icon, label }) => {
             const active = pathname === href || (href !== "/" && pathname.startsWith(href));
             return (
-              <Tip key={href} tip={tip} side="bottom">
-                <Link
-                  href={href}
-                  title={tip}
-                  className={`flex items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold no-underline transition-all duration-200 ${
-                    active
-                      ? "bg-[linear-gradient(135deg,rgba(110,124,255,.14),rgba(16,199,162,.12),rgba(255,145,71,.08))] text-ink2 shadow-[inset_0_0_0_1px_rgba(110,124,255,.16),0_12px_24px_rgba(54,74,146,.08)]"
-                      : "text-ink3 hover:bg-white/80 hover:text-ink2"
-                  }`}
-                >
-                  <UIcon name={icon} size={15} />
-                  {label}
-                </Link>
-              </Tip>
+              <Link
+                key={href}
+                href={href}
+                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-[14px] font-semibold no-underline transition-all duration-200 ${
+                  active
+                    ? "bg-[#fdf6e3] text-ink2 shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05),0_2px_4px_rgba(0,0,0,0.03)]"
+                    : "text-ink3 hover:bg-black/5 hover:text-ink2"
+                }`}
+              >
+                <div className="flex h-5 w-5 items-center justify-center opacity-80">
+                  <UIcon name={icon} size={16} />
+                </div>
+                {label}
+              </Link>
             );
           })}
         </nav>
 
-        <Tip tip={mobileOpen ? "Close navigation menu" : "Open navigation menu"} side="bottom">
+        {/* Right Action */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/pdf-link"
+            className="hidden lg:inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white/50 px-4 py-2.5 text-[13px] font-bold text-ink2 no-underline shadow-sm transition-all hover:-translate-y-0.5 hover:bg-white hover:shadow-md active:translate-y-0 md:flex"
+          >
+            Upload PDF & get a shareable link
+          </Link>
+
+          {/* Mobile Toggle */}
           <button
             onClick={() => setMobileOpen((open) => !open)}
-            title={mobileOpen ? "Close navigation menu" : "Open navigation menu"}
-            className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[rgba(91,124,255,.14)] bg-white/82 text-ink2 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-black/5 text-ink2 lg:hidden"
             aria-label="Toggle navigation"
           >
             <svg
@@ -91,33 +92,40 @@ export default function Navbar() {
               )}
             </svg>
           </button>
-        </Tip>
+        </div>
 
+        {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="absolute inset-x-3 top-[82px] surface-panel animate-slide-down lg:hidden">
-            <div className="grid gap-2 p-3">
-              {navItems.map(({ href, icon, label, tip }) => {
+          <div className="absolute inset-x-4 top-[82px] overflow-hidden rounded-2xl bg-white border border-black/5 shadow-2xl animate-fade-in lg:hidden">
+            <div className="grid gap-1 p-3">
+              {navItems.map(({ href, icon, label }) => {
                 const active = pathname === href || (href !== "/" && pathname.startsWith(href));
                 return (
-                  <Tip key={href} tip={tip} side="left">
-                    <Link
-                      href={href}
-                      title={tip}
-                      onClick={() => setMobileOpen(false)}
-                      className={`flex items-center gap-3 rounded-[18px] px-4 py-3 no-underline transition-all duration-200 ${
-                        active
-                          ? "bg-[linear-gradient(135deg,rgba(110,124,255,.14),rgba(16,199,162,.12),rgba(255,145,71,.08))] text-ink2"
-                          : "text-ink3 hover:bg-white/80 hover:text-ink2"
-                      }`}
-                    >
-                      <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/86">
-                        <UIcon name={icon} size={15} />
-                      </div>
-                      <div className="text-[14px] font-semibold">{label}</div>
-                    </Link>
-                  </Tip>
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center gap-3 rounded-xl px-4 py-3 no-underline transition-all duration-200 ${
+                      active
+                        ? "bg-[#fdf6e3] text-ink2"
+                        : "text-ink3 hover:bg-black/5 hover:text-ink2"
+                    }`}
+                  >
+                    <UIcon name={icon} size={15} />
+                    <div className="text-[14px] font-semibold">{label}</div>
+                  </Link>
                 );
               })}
+              <div className="mt-2 border-t border-black/5 pt-2">
+                <Link
+                  href="/pdf-link"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-ink2 py-3 text-[14px] font-semibold text-white no-underline"
+                >
+                  <UIcon name="Link" size={14} />
+                  Get Shareable Link
+                </Link>
+              </div>
             </div>
           </div>
         )}

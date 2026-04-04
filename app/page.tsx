@@ -56,8 +56,7 @@ export default function HomePage() {
               <Tip tip="Open the full PDF conversion workspace." side="bottom">
                 <Link
                   href="/pdf-tools"
-                  title="Open the full PDF conversion workspace."
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white no-underline shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
+                  className="vintage-button vintage-button-primary w-full sm:w-auto no-underline justify-center shadow-lg"
                 >
                   <UIcon name="FileText" size={16} />
                   Open PDF Tools
@@ -66,8 +65,7 @@ export default function HomePage() {
               <Tip tip="Open the document analyzer." side="bottom">
                 <Link
                   href="/analyze"
-                  title="Open the document analyzer."
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-[rgba(110,124,255,.16)] bg-white/88 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 sm:w-auto"
+                  className="vintage-button w-full sm:w-auto no-underline justify-center"
                 >
                   <UIcon name="Microscope" size={16} />
                   Analyze Files
