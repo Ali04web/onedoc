@@ -35,101 +35,428 @@ export default async function ViewPage({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>{meta.originalName} — OneDocs Viewer</title>
+        <title>{meta.originalName} | OneDocs Viewer</title>
         <style
           dangerouslySetInnerHTML={{
             __html: `
-          *{margin:0;padding:0;box-sizing:border-box}
-          html,body{height:100%;overflow:hidden;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
-          body{background:#0f0f1a;color:#fff;display:flex;flex-direction:column}
-          .toolbar{display:flex;align-items:center;gap:14px;padding:12px 24px;background:linear-gradient(135deg,#16213e 0%,#1a1a2e 100%);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;z-index:10}
-          .logo{font-weight:800;font-size:20px;letter-spacing:-0.5px;white-space:nowrap}
-          .logo span{background:linear-gradient(135deg,#c07818,#e8a040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-          .file-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-          .file-name{font-size:14px;font-weight:600;color:rgba(255,255,255,.9);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-          .file-meta{font-size:11px;color:rgba(255,255,255,.4);display:flex;gap:8px;align-items:center}
-          .badge{font-size:10px;padding:3px 10px;border-radius:4px;background:linear-gradient(135deg,#c07818,#a06010);color:#fff;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
-          .dl-btn{font-size:13px;padding:8px 18px;border-radius:8px;background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.12);cursor:pointer;text-decoration:none;transition:all .2s;display:flex;align-items:center;gap:6px;font-weight:500;white-space:nowrap}
-          .dl-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.2);transform:translateY(-1px)}
-          .dl-btn svg{width:16px;height:16px}
-          .viewer{flex:1;display:flex;position:relative;background:#2a2a3a}
-          .viewer iframe,.viewer embed{width:100%;height:100%;border:none}
-          .mobile-fallback{display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:40px;text-align:center;background:linear-gradient(180deg,#0f0f1a,#1a1a2e)}
-          .mobile-fallback .icon{font-size:64px;margin-bottom:8px}
-          .mobile-fallback h2{font-size:22px;font-weight:700;color:#fff}
-          .mobile-fallback p{color:rgba(255,255,255,.5);font-size:14px;max-width:380px;line-height:1.7}
-          .mobile-fallback .open-btn{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:linear-gradient(135deg,#c07818,#e8a040);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:16px;transition:all .2s;box-shadow:0 4px 16px rgba(192,120,24,.3)}
-          .mobile-fallback .open-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(192,120,24,.4)}
-          .powered{position:fixed;bottom:12px;right:16px;font-size:11px;color:rgba(255,255,255,.25);z-index:20}
-          .powered a{color:rgba(255,255,255,.4);text-decoration:none}
-          .powered a:hover{color:rgba(255,255,255,.6)}
-          @media(max-width:768px){
-            .toolbar{padding:10px 14px;gap:10px}
-            .logo{font-size:16px}
-            .badge{display:none}
-            .file-name{font-size:13px}
-            .dl-btn span{display:none}
-            .dl-btn{padding:8px 12px}
-            .viewer iframe,.viewer embed{display:none}
-            .mobile-fallback{display:flex}
-          }
-        `,
+              :root{
+                color-scheme: light;
+                --paper:#f7f3ea;
+                --paper-2:#efe7d8;
+                --paper-3:#fdfbf8;
+                --ink:#1e1911;
+                --muted:#766a57;
+                --line:rgba(36,28,18,.12);
+                --amber:#b48a4b;
+                --amber-2:#8f6732;
+                --teal:#275f5a;
+                --shadow:0 24px 60px rgba(28,21,13,.12);
+              }
+              *{box-sizing:border-box}
+              html,body{height:100%}
+              body{
+                margin:0;
+                font-family:"Segoe UI",Arial,sans-serif;
+                color:var(--ink);
+                background:
+                  radial-gradient(circle at top left, rgba(180,138,75,.18), transparent 30%),
+                  radial-gradient(circle at bottom right, rgba(39,95,90,.14), transparent 32%),
+                  linear-gradient(180deg, #faf7f1 0%, #f3ede1 100%);
+                overflow:hidden;
+              }
+              .shell{
+                min-height:100%;
+                display:flex;
+                flex-direction:column;
+                padding:22px;
+                gap:18px;
+              }
+              .toolbar{
+                display:flex;
+                align-items:center;
+                gap:18px;
+                padding:18px 22px;
+                border:1px solid var(--line);
+                border-radius:28px;
+                background:rgba(253,251,248,.82);
+                backdrop-filter:blur(18px);
+                box-shadow:var(--shadow);
+                flex-shrink:0;
+              }
+              .brand{
+                min-width:0;
+                display:flex;
+                align-items:center;
+                gap:14px;
+              }
+              .brand-mark{
+                width:48px;
+                height:48px;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#fff;
+                background:linear-gradient(135deg,var(--amber),var(--amber-2));
+                box-shadow:0 16px 30px rgba(180,138,75,.26);
+                font-size:18px;
+                font-weight:700;
+              }
+              .brand-copy{
+                min-width:0;
+              }
+              .eyebrow{
+                font-size:11px;
+                letter-spacing:.22em;
+                text-transform:uppercase;
+                color:var(--muted);
+                font-weight:700;
+              }
+              .title{
+                margin-top:6px;
+                font-size:clamp(20px,2vw,28px);
+                line-height:1.05;
+                font-weight:700;
+                white-space:nowrap;
+                overflow:hidden;
+                text-overflow:ellipsis;
+              }
+              .meta{
+                margin-top:8px;
+                display:flex;
+                flex-wrap:wrap;
+                gap:8px;
+              }
+              .chip{
+                display:inline-flex;
+                align-items:center;
+                gap:6px;
+                padding:8px 12px;
+                border-radius:999px;
+                border:1px solid var(--line);
+                background:#fff;
+                color:var(--muted);
+                font-size:12px;
+                font-weight:600;
+              }
+              .actions{
+                margin-left:auto;
+                display:flex;
+                flex-wrap:wrap;
+                gap:10px;
+              }
+              .btn{
+                display:inline-flex;
+                align-items:center;
+                justify-content:center;
+                gap:8px;
+                border-radius:18px;
+                padding:12px 18px;
+                text-decoration:none;
+                font-size:14px;
+                font-weight:700;
+                transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+                white-space:nowrap;
+              }
+              .btn-primary{
+                color:#fff;
+                background:linear-gradient(135deg,var(--amber),var(--amber-2));
+                box-shadow:0 18px 30px rgba(180,138,75,.26);
+              }
+              .btn-secondary{
+                color:var(--ink);
+                background:rgba(255,255,255,.9);
+                border:1px solid var(--line);
+              }
+              .btn:hover{
+                transform:translateY(-1px);
+              }
+              .viewer-shell{
+                min-height:0;
+                flex:1;
+                display:flex;
+                gap:18px;
+              }
+              .viewer-panel{
+                min-width:0;
+                flex:1;
+                display:flex;
+                flex-direction:column;
+                border:1px solid var(--line);
+                border-radius:30px;
+                overflow:hidden;
+                background:rgba(253,251,248,.86);
+                box-shadow:var(--shadow);
+              }
+              .viewer-head{
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:12px;
+                padding:16px 20px;
+                border-bottom:1px solid var(--line);
+                background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(248,244,236,.92));
+              }
+              .viewer-head strong{
+                font-size:14px;
+              }
+              .viewer-head span{
+                color:var(--muted);
+                font-size:12px;
+              }
+              .viewer-frame{
+                min-height:0;
+                flex:1;
+                padding:16px;
+                background:
+                  radial-gradient(circle at top right, rgba(39,95,90,.08), transparent 26%),
+                  linear-gradient(180deg, #efe6d4 0%, #f8f3ea 100%);
+              }
+              .viewer-frame iframe{
+                width:100%;
+                height:100%;
+                border:none;
+                border-radius:22px;
+                background:#fff;
+                box-shadow:0 18px 40px rgba(28,21,13,.12);
+              }
+              .side-panel{
+                width:320px;
+                flex-shrink:0;
+                display:flex;
+                flex-direction:column;
+                gap:14px;
+              }
+              .card{
+                border:1px solid var(--line);
+                border-radius:28px;
+                background:rgba(253,251,248,.84);
+                box-shadow:var(--shadow);
+                padding:20px;
+              }
+              .card h2{
+                margin:0;
+                font-size:24px;
+                line-height:1.05;
+              }
+              .card p{
+                margin:12px 0 0;
+                color:var(--muted);
+                line-height:1.7;
+                font-size:14px;
+              }
+              .list{
+                display:flex;
+                flex-direction:column;
+                gap:10px;
+                margin-top:16px;
+              }
+              .list-item{
+                border:1px solid var(--line);
+                border-radius:18px;
+                background:#fff;
+                padding:14px;
+              }
+              .list-item strong{
+                display:block;
+                font-size:13px;
+                margin-bottom:4px;
+              }
+              .list-item span{
+                color:var(--muted);
+                font-size:13px;
+                line-height:1.6;
+              }
+              .mobile-fallback{
+                display:none;
+                min-height:0;
+                flex:1;
+                border:1px solid var(--line);
+                border-radius:28px;
+                background:rgba(253,251,248,.88);
+                box-shadow:var(--shadow);
+                padding:28px 22px;
+                text-align:center;
+                align-items:center;
+                justify-content:center;
+                flex-direction:column;
+              }
+              .mobile-fallback .icon{
+                width:76px;
+                height:76px;
+                border-radius:50%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                background:rgba(180,138,75,.14);
+                color:var(--amber-2);
+                font-size:30px;
+                font-weight:700;
+              }
+              .mobile-fallback h2{
+                margin:18px 0 0;
+                font-size:28px;
+                line-height:1.05;
+              }
+              .mobile-fallback p{
+                margin:14px 0 0;
+                max-width:360px;
+                color:var(--muted);
+                line-height:1.7;
+                font-size:14px;
+              }
+              .powered{
+                position:fixed;
+                right:20px;
+                bottom:14px;
+                color:rgba(118,106,87,.78);
+                font-size:12px;
+              }
+              .powered a{
+                color:inherit;
+                text-decoration:none;
+              }
+              @media (max-width: 1080px){
+                body{overflow:auto}
+                .shell{padding:16px}
+                .viewer-shell{flex-direction:column}
+                .side-panel{width:auto}
+              }
+              @media (max-width: 768px){
+                body{overflow:auto}
+                .shell{padding:14px}
+                .toolbar{
+                  flex-direction:column;
+                  align-items:flex-start;
+                  gap:16px;
+                }
+                .actions{
+                  margin-left:0;
+                  width:100%;
+                }
+                .actions .btn{
+                  flex:1;
+                }
+                .viewer-shell{
+                  display:none;
+                }
+                .mobile-fallback{
+                  display:flex;
+                }
+                .title{
+                  white-space:normal;
+                }
+                .powered{
+                  position:static;
+                  padding:0 4px 12px;
+                }
+              }
+            `,
           }}
         />
       </head>
       <body>
-        <div className="toolbar">
-          <div className="logo">
-            One<span>Docs</span>
-          </div>
-          <div className="file-info">
-            <div className="file-name">{meta.originalName}</div>
-            <div className="file-meta">
-              <span>{sizeMB} MB</span>
-              <span>·</span>
-              <span>{uploadDate}</span>
+        <div className="shell">
+          <div className="toolbar">
+            <div className="brand">
+              <div className="brand-mark">OD</div>
+              <div className="brand-copy">
+                <div className="eyebrow">OneDocs Shared Viewer</div>
+                <div className="title">{meta.originalName}</div>
+                <div className="meta">
+                  <span className="chip">PDF</span>
+                  <span className="chip">{sizeMB} MB</span>
+                  <span className="chip">Uploaded {uploadDate}</span>
+                </div>
+              </div>
+            </div>
+            <div className="actions">
+              <a className="btn btn-secondary" href="/">
+                Back to OneDocs
+              </a>
+              <a className="btn btn-primary" href={pdfUrl} download={meta.originalName}>
+                Download PDF
+              </a>
             </div>
           </div>
-          <div className="badge">PDF</div>
-          <a className="dl-btn" href={pdfUrl} download={meta.originalName}>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+
+          <div className="viewer-shell">
+            <div className="viewer-panel">
+              <div className="viewer-head">
+                <div>
+                  <strong>Live document view</strong>
+                  <div>
+                    <span>Open, review, and download from one clean surface.</span>
+                  </div>
+                </div>
+                <span>Hosted with OneDocs</span>
+              </div>
+              <div className="viewer-frame">
+                <iframe src={pdfUrl} title={meta.originalName} />
+              </div>
+            </div>
+
+            <div className="side-panel">
+              <div className="card">
+                <div className="eyebrow">Share Experience</div>
+                <h2>Professional presentation for shared PDFs.</h2>
+                <p>
+                  This viewer keeps the file accessible while giving the shared
+                  page a calmer, more trustworthy feel for clients and internal
+                  stakeholders.
+                </p>
+              </div>
+
+              <div className="card">
+                <div className="eyebrow">What You Can Do</div>
+                <div className="list">
+                  <div className="list-item">
+                    <strong>Review in place</strong>
+                    <span>The PDF opens directly inside the page for immediate reading.</span>
+                  </div>
+                  <div className="list-item">
+                    <strong>Download the original</strong>
+                    <span>Use the top action to keep the exact uploaded file.</span>
+                  </div>
+                  <div className="list-item">
+                    <strong>Share confidently</strong>
+                    <span>The page now looks aligned with the rest of the OneDocs product.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mobile-fallback">
+            <div className="icon">PDF</div>
+            <h2>{meta.originalName}</h2>
+            <p>
+              {sizeMB} MB · Uploaded {uploadDate}. Open the document in a new
+              tab or download the original file below.
+            </p>
+            <div
+              style={{
+                display: "flex",
+                width: "100%",
+                maxWidth: "360px",
+                gap: "10px",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                marginTop: "22px",
+              }}
             >
-              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-              <polyline points="7 10 12 15 17 10" />
-              <line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            <span>Download</span>
-          </a>
-        </div>
-        <div className="viewer">
-          <iframe src={pdfUrl} title={meta.originalName} />
-        </div>
-        <div className="mobile-fallback">
-          <div className="icon">📄</div>
-          <h2>{meta.originalName}</h2>
-          <p>
-            {sizeMB} MB · Uploaded {uploadDate}
-          </p>
-          <a className="open-btn" href={pdfUrl} target="_blank" rel="noopener">
-            📄 Open PDF
-          </a>
-          <a
-            className="dl-btn"
-            href={pdfUrl}
-            download={meta.originalName}
-            style={{ marginTop: "8px" }}
-          >
-            ⬇ Download
-          </a>
-        </div>
-        <div className="powered">
-          Powered by <a href="/">OneDocs</a>
+              <a className="btn btn-primary" href={pdfUrl} target="_blank" rel="noopener">
+                Open PDF
+              </a>
+              <a className="btn btn-secondary" href={pdfUrl} download={meta.originalName}>
+                Download
+              </a>
+            </div>
+          </div>
+
+          <div className="powered">
+            Powered by <a href="/">OneDocs</a>
+          </div>
         </div>
       </body>
     </html>
