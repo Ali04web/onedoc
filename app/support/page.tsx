@@ -43,50 +43,50 @@ export default function SupportPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       {/* Hero */}
-      <section className="text-center py-10 md:py-16 px-6">
-        <div className="inline-block animate-wobble-in -rotate-[5deg] mb-3"><Emoji symbol="💬" size={56} className="text-amber" /></div>
-        <h1 className="font-caveat text-[32px] md:text-[42px] font-bold text-ink2 -rotate-[0.5deg] mb-2">
-          Help & Support
-        </h1>
-        <p className="font-patrick text-[15px] md:text-[16px] text-ink4 max-w-[440px] mx-auto leading-[1.7] mb-6">
-          Find answers, learn tips, or reach out to us. We&apos;re here to help you get the most out of DocLens.
-        </p>
-        <div className="flex justify-center">
-          <Tip tip="Follow us on X (Twitter)" side="bottom">
-            <a
-              href="https://x.com/alivldm"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-[10px] px-[20px] bg-paper2 hover:bg-paper3 text-ink2 font-caveat text-[16px] font-bold rounded-[4px_12px_3px_10px] border-2 border-[rgba(100,70,40,.25)] shadow-[2px_2px_0_rgba(30,15,5,.08)] hover:shadow-[3px_3px_0_rgba(30,15,5,.12)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer flex items-center gap-[8px]"
-            >
-              <Emoji symbol="𝕏" size={16} /> Connect on X
-            </a>
-          </Tip>
+      <section className="text-center py-16 md:py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-amber/5 to-transparent pointer-events-none" />
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="inline-block animate-slide-down mb-6 bg-paper2 p-4 rounded-2xl shadow-sm border border-paper3"><Emoji symbol="💬" size={48} className="text-amber" /></div>
+          <h1 className="text-4xl md:text-5xl font-bold text-ink mb-4 max-w-2xl">
+            Help & Support
+          </h1>
+          <p className="text-base md:text-lg text-ink3 max-w-[500px] leading-relaxed mb-8">
+            Find answers, learn tips, or reach out to us. We&apos;re here to help you get the most out of DocLens.
+          </p>
+          <div className="flex justify-center">
+            <Tip tip="Follow us on X (Twitter)" side="bottom">
+              <a
+                href="https://x.com/alivldm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="py-3 px-6 bg-paper2 hover:bg-paper3 text-ink2 text-[15px] font-semibold rounded-full border border-paper3 shadow-sm hover:shadow hover:-translate-y-0.5 transition-all duration-200 no-underline flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Emoji symbol="𝕏" size={16} /> Connect on X
+              </a>
+            </Tip>
+          </div>
         </div>
       </section>
 
-      <div className="px-4 md:px-8 lg:px-16 pb-16 space-y-12">
+      <div className="px-6 md:px-10 lg:px-20 pb-16 max-w-5xl mx-auto space-y-16">
         {/* Quick Tips */}
         <section>
-          <div className="flex items-center gap-[14px] mb-6">
-            <div className="-rotate-[4deg] inline-block"><Emoji symbol="💡" size={26} /></div>
-            <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-paper2 border border-paper3 shadow-sm"><Emoji symbol="💡" size={20} /></div>
+            <div className="text-2xl font-bold text-ink">
               Quick Tips
-              <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
-                <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-amber)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              </svg>
             </div>
-            <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
+            <div className="flex-1 border-t border-paper3 mt-1" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {tips.map((tip, i) => (
               <Tip key={tip.title} tip={tip.desc} side="top">
-                <SCard rotate={i % 2 === 0 ? 0.2 : -0.2}>
-                  <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0"><Emoji symbol={tip.icon} size={28} /></div>
+                <SCard>
+                  <div className="flex items-start gap-4">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-amber/5 border border-amber/10 text-amber flex-shrink-0"><Emoji symbol={tip.icon} size={20} /></div>
                     <div>
-                      <div className="font-caveat text-[18px] font-bold text-ink2 mb-1">{tip.title}</div>
-                      <div className="font-patrick text-[13px] text-ink4 leading-[1.5]">{tip.desc}</div>
+                      <div className="text-lg font-bold text-ink mb-1">{tip.title}</div>
+                      <div className="text-[13px] text-ink4 leading-relaxed">{tip.desc}</div>
                     </div>
                   </div>
                 </SCard>
@@ -97,30 +97,26 @@ export default function SupportPage() {
 
         {/* FAQ */}
         <section>
-          <div className="flex items-center gap-[14px] mb-6">
-            <div className="-rotate-[4deg] inline-block"><Emoji symbol="❓" size={26} /></div>
-            <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-paper2 border border-paper3 shadow-sm"><Emoji symbol="❓" size={20} /></div>
+            <div className="text-2xl font-bold text-ink">
               Frequently Asked Questions
-              <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
-                <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-teal)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              </svg>
             </div>
-            <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
+            <div className="flex-1 border-t border-paper3 mt-1" />
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="border-2 border-[rgba(60,35,10,.22)] rounded-[4px_14px_5px_13px] overflow-hidden bg-paper transition-all duration-200">
+              <div key={i} className="border border-paper3 rounded-xl overflow-hidden bg-paper2 transition-all duration-200">
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full flex items-center gap-3 py-[14px] px-[18px] bg-transparent border-none cursor-pointer text-left"
+                  className="w-full flex items-center gap-4 py-4 px-6 bg-transparent border-none cursor-pointer text-left hover:bg-paper3/50 transition-colors"
                 >
-                  <span className={`text-[14px] text-amber2 font-bold transition-transform duration-200 ${openFaq === i ? "rotate-90" : ""}`}>▶</span>
-                  <span className="font-caveat text-[18px] font-bold text-ink2 flex-1">{faq.q}</span>
-                  <span className="font-patrick text-[12px] text-ink4">{openFaq === i ? "collapse" : "expand"}</span>
+                  <span className={`text-sm text-amber font-bold transition-transform duration-200 ${openFaq === i ? "rotate-90" : ""}`}>▶</span>
+                  <span className="text-lg font-bold text-ink flex-1">{faq.q}</span>
                 </button>
                 {openFaq === i && (
-                  <div className="px-[18px] pb-[16px] pt-0 border-t border-dashed border-[rgba(100,70,40,.15)] animate-fade-up">
-                    <div className="font-patrick text-[14px] text-ink3 leading-[1.7] pt-3">{faq.a}</div>
+                  <div className="px-6 pb-6 pt-0 border-t border-paper3 animate-slide-down">
+                    <div className="text-sm text-ink3 leading-relaxed pt-4">{faq.a}</div>
                   </div>
                 )}
               </div>
@@ -130,51 +126,48 @@ export default function SupportPage() {
 
         {/* Contact Form */}
         <section>
-          <div className="flex items-center gap-[14px] mb-6">
-            <div className="-rotate-[4deg] inline-block"><Emoji symbol="✉️" size={26} /></div>
-            <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-paper2 border border-paper3 shadow-sm"><Emoji symbol="✉️" size={20} /></div>
+            <div className="text-2xl font-bold text-ink">
               Contact Us
-              <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
-                <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-amber)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              </svg>
             </div>
-            <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
+            <div className="flex-1 border-t border-paper3 mt-1" />
           </div>
-          <SCard rotate={0.15}>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <SCard>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-6 p-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="font-caveat text-[15px] font-semibold text-ink2 mb-1 block">Your Name</label>
+                  <label className="text-sm font-semibold text-ink2 mb-2 block">Your Name</label>
                   <Tip tip="How should we address you?" side="top">
                     <input
                       type="text"
                       value={form.name}
                       onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
                       placeholder="Jane Doe"
-                      className="w-full bg-paper2 border-[1.5px] border-[rgba(100,70,40,.38)] rounded-[2px_8px_3px_7px] py-[10px] px-[14px] text-ink font-patrick text-[14px] outline-none"
+                      className="w-full bg-paper border border-paper3 rounded-lg py-3 px-4 text-ink text-sm outline-none focus:border-amber focus:ring-1 focus:ring-amber/50 transition-all duration-200"
                     />
                   </Tip>
                 </div>
                 <div>
-                  <label className="font-caveat text-[15px] font-semibold text-ink2 mb-1 block">Email</label>
+                  <label className="text-sm font-semibold text-ink2 mb-2 block">Email</label>
                   <Tip tip="We'll reply to this address" side="top">
                     <input
                       type="email"
                       value={form.email}
                       onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                       placeholder="jane@example.com"
-                      className="w-full bg-paper2 border-[1.5px] border-[rgba(100,70,40,.38)] rounded-[2px_8px_3px_7px] py-[10px] px-[14px] text-ink font-patrick text-[14px] outline-none"
+                      className="w-full bg-paper border border-paper3 rounded-lg py-3 px-4 text-ink text-sm outline-none focus:border-amber focus:ring-1 focus:ring-amber/50 transition-all duration-200"
                     />
                   </Tip>
                 </div>
               </div>
               <div>
-                <label className="font-caveat text-[15px] font-semibold text-ink2 mb-1 block">Type</label>
+                <label className="text-sm font-semibold text-ink2 mb-2 block">Type</label>
                 <Tip tip="Let us know what this is about" side="right">
                   <select
                     value={form.type}
                     onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
-                    className="w-full bg-paper2 border-[1.5px] border-[rgba(100,70,40,.38)] rounded-[2px_8px_3px_7px] py-[10px] px-[14px] text-ink font-patrick text-[14px] outline-none cursor-pointer"
+                    className="w-full bg-paper border border-paper3 rounded-lg py-3 px-4 text-ink text-sm outline-none cursor-pointer focus:border-amber focus:ring-1 focus:ring-amber/50 transition-all duration-200"
                   >
                     <option value="question">Question</option>
                     <option value="bug">Bug Report</option>
@@ -184,22 +177,22 @@ export default function SupportPage() {
                 </Tip>
               </div>
               <div>
-                <label className="font-caveat text-[15px] font-semibold text-ink2 mb-1 block">Message</label>
+                <label className="text-sm font-semibold text-ink2 mb-2 block">Message</label>
                 <Tip tip="Describe your issue or idea in detail" side="top">
                   <textarea
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                     placeholder="Tell us what's on your mind…"
                     rows={5}
-                    className="w-full bg-paper2 border-[1.5px] border-[rgba(100,70,40,.38)] rounded-[2px_8px_3px_7px] py-[10px] px-[14px] text-ink font-patrick text-[14px] outline-none resize-y"
+                    className="w-full bg-paper border border-paper3 rounded-lg py-3 px-4 text-ink text-sm outline-none resize-y focus:border-amber focus:ring-1 focus:ring-amber/50 transition-all duration-200"
                   />
                 </Tip>
               </div>
               <div className="flex flex-wrap items-center gap-4">
-                <Tip tip="Submit your message — we typically reply within 24 hours" side="top">
+                <Tip tip="Submit your message" side="top">
                   <button
                     type="submit"
-                    className="py-[12px] px-[24px] bg-amber hover:bg-amber2 text-white font-caveat text-[18px] font-bold rounded-[3px_12px_5px_10px] border-2 border-amber2 shadow-[2px_3px_0_rgba(30,15,5,.15)] hover:shadow-[3px_4px_0_rgba(30,15,5,.2)] hover:-translate-y-[1px] transition-all duration-150 cursor-pointer w-full sm:w-auto flex items-center justify-center gap-[8px]"
+                    className="py-3 px-6 bg-amber hover:bg-amber2 text-white text-[15px] font-semibold rounded-lg shadow-sm hover:shadow-md transition-all duration-200 w-full sm:w-auto flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Emoji symbol="✉️" size={18} /> Send Message
                   </button>
@@ -209,7 +202,7 @@ export default function SupportPage() {
                     href="https://x.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-[12px] px-[24px] bg-paper2 hover:bg-paper3 text-ink2 font-caveat text-[18px] font-bold rounded-[4px_10px_3px_12px] border-2 border-[rgba(100,70,40,.28)] shadow-[2px_3px_0_rgba(30,15,5,.1)] hover:shadow-[3px_4px_0_rgba(30,15,5,.15)] hover:-translate-y-[1px] transition-all duration-150 no-underline cursor-pointer w-full sm:w-auto flex items-center justify-center gap-[8px]"
+                    className="py-3 px-6 bg-paper hover:bg-paper3 text-ink2 text-[15px] font-semibold rounded-lg border border-paper3 shadow-sm hover:shadow transition-all duration-200 no-underline cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2"
                   >
                     <Emoji symbol="𝕏" size={18} /> Connect on X
                   </a>
@@ -219,29 +212,26 @@ export default function SupportPage() {
           </SCard>
         </section>
 
-        {/* Keyboard shortcuts */}
+        {/* Formats Grid */}
         <section>
-          <div className="flex items-center gap-[14px] mb-6">
-            <div className="-rotate-[4deg] inline-block"><Emoji symbol="⌨️" size={26} /></div>
-            <div className="font-caveat text-[24px] font-bold text-ink2 leading-none relative inline-block">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-paper2 border border-paper3 shadow-sm"><Emoji symbol="⌨️" size={20} /></div>
+            <div className="text-2xl font-bold text-ink">
               Supported Formats
-              <svg className="absolute -bottom-1 left-0 w-full h-[6px] overflow-visible" viewBox="0 0 100 6" preserveAspectRatio="none">
-                <path d="M2,4 Q25,1 50,3.5 Q75,6 98,2" stroke="var(--color-teal)" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              </svg>
             </div>
-            <div className="flex-1 border-t-[1.5px] border-dashed border-[rgba(100,70,40,.22)] mt-[2px]" />
+            <div className="flex-1 border-t border-paper3 mt-1" />
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto bg-paper2 rounded-xl border border-paper3 shadow-sm">
             <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="font-caveat text-[16px] font-bold text-ink2 text-left py-3 px-4 border-b-2 border-[rgba(60,35,10,.2)]">Format</th>
-                  <th className="font-caveat text-[16px] font-bold text-ink2 text-left py-3 px-4 border-b-2 border-[rgba(60,35,10,.2)]">Input</th>
-                  <th className="font-caveat text-[16px] font-bold text-ink2 text-left py-3 px-4 border-b-2 border-[rgba(60,35,10,.2)]">Output</th>
-                  <th className="font-caveat text-[16px] font-bold text-ink2 text-left py-3 px-4 border-b-2 border-[rgba(60,35,10,.2)]">Page</th>
+                  <th className="text-sm font-bold text-ink2 text-left py-4 px-6 border-b border-paper3">Format</th>
+                  <th className="text-sm font-bold text-ink2 text-left py-4 px-6 border-b border-paper3">Input</th>
+                  <th className="text-sm font-bold text-ink2 text-left py-4 px-6 border-b border-paper3">Output</th>
+                  <th className="text-sm font-bold text-ink2 text-left py-4 px-6 border-b border-paper3">Page</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-paper3">
                 {[
                   ["PDF", ["✓", " Analyse, Convert"], ["✓", " From Images, Text"], "PDF Tools"],
                   ["DOCX", ["✓", " Analyse, Convert"], "—", "DOCX Tools"],
@@ -251,15 +241,15 @@ export default function SupportPage() {
                   ["CSV", ["✓", " Convert to HTML"], ["✓", " Word frequency"], "DOCX Tools"],
                   ["PNG/JPG", ["✓", " Bundle to PDF"], ["✓", " From PDF pages"], "PDF Tools"],
                 ].map(([fmt, inp, out, pg]) => (
-                  <tr key={fmt as string} className="border-b border-dashed border-[rgba(100,70,40,.12)] hover:bg-[rgba(192,120,24,.04)] transition-colors duration-150">
-                    <td className="font-caveat text-[15px] font-bold text-amber2 py-3 px-4">{fmt}</td>
-                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">
-                      {Array.isArray(inp) ? <span className="flex items-center gap-1"><Emoji symbol={inp[0]} size={14} />{inp[1]}</span> : inp}
+                  <tr key={fmt as string} className="hover:bg-paper3/50 transition-colors duration-150">
+                    <td className="text-sm font-bold text-amber py-3 px-6">{fmt}</td>
+                    <td className="text-sm text-ink3 py-3 px-6">
+                      {Array.isArray(inp) ? <span className="flex items-center gap-1.5"><Emoji symbol={inp[0]} size={14} className="text-teal" />{inp[1]}</span> : inp}
                     </td>
-                    <td className="font-patrick text-[13px] text-ink3 py-3 px-4">
-                      {Array.isArray(out) ? <span className="flex items-center gap-1"><Emoji symbol={out[0]} size={14} />{out[1]}</span> : out}
+                    <td className="text-sm text-ink3 py-3 px-6">
+                      {Array.isArray(out) ? <span className="flex items-center gap-1.5"><Emoji symbol={out[0]} size={14} className="text-teal" />{out[1]}</span> : out}
                     </td>
-                    <td className="font-patrick text-[13px] text-ink4 py-3 px-4">{pg}</td>
+                    <td className="text-[13px] text-ink4 py-3 px-6 uppercase tracking-wider font-semibold">{pg}</td>
                   </tr>
                 ))}
               </tbody>
