@@ -16,17 +16,17 @@ interface UploadedFile {
 const steps = [
   {
     title: "Upload",
-    desc: "Choose the PDF you want to turn into a shareable link.",
+    desc: "Choose your PDF.",
     icon: "📂",
   },
   {
     title: "Generate",
-    desc: "OneDocs creates a dedicated viewer link for that document.",
+    desc: "Create the viewer link.",
     icon: "🔗",
   },
   {
     title: "Share",
-    desc: "Send a clean viewing experience instead of a raw file attachment.",
+    desc: "Send the link anywhere.",
     icon: "🌐",
   },
 ];
@@ -128,47 +128,24 @@ export default function PdfLinkPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="page-hero p-8 md:p-10 xl:p-14">
-          <div className="relative z-10 grid gap-10 xl:grid-cols-[minmax(0,1.1fr)_380px]">
+        <section className="page-hero p-6 md:p-7">
+          <div className="relative z-10 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <div className="page-kicker mb-5">Presentation and Sharing</div>
-              <h1 className="page-title max-w-[760px]">
-                Turn a PDF into a premium viewing link.
-              </h1>
-              <p className="page-copy mt-6">
-                Instead of dropping a plain file into chat or email, create a
-                dedicated viewer page that looks more intentional and feels more
-                shareable.
+              <div className="page-kicker mb-4">PDF link</div>
+              <h1 className="page-title max-w-[760px]">Upload a PDF and share the link.</h1>
+              <p className="page-copy mt-3">
+                A simple viewer page with download support.
               </p>
-              <div className="mt-7 flex flex-wrap gap-2">
-                <span className="premium-chip">No sign-up</span>
-                <span className="premium-chip">20 MB max</span>
-                <span className="premium-chip">Viewer and download</span>
-              </div>
             </div>
-            <div className="surface-panel p-7">
-              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-                Why it feels better
-              </div>
-              <div className="mt-5 grid gap-4">
-                <div className="premium-metric">
-                  <strong>Cleaner</strong>
-                  <span>Send a dedicated viewer experience instead of a raw attachment.</span>
-                </div>
-                <div className="premium-metric">
-                  <strong>Faster</strong>
-                  <span>Generate a shareable link in a single upload flow.</span>
-                </div>
-                <div className="premium-metric">
-                  <strong>More polished</strong>
-                  <span>Presentation matters when you are sharing with customers.</span>
-                </div>
-              </div>
+            <div className="flex flex-wrap gap-3 lg:justify-end">
+              <span className="premium-chip">No sign-up</span>
+              <span className="premium-chip">20 MB max</span>
+              <span className="premium-chip">Viewer + download</span>
             </div>
           </div>
         </section>
 
-        <section className="mt-10 grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <section className="mt-5 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div className="surface-panel p-8">
             {!uploaded ? (
               <>
@@ -330,10 +307,8 @@ export default function PdfLinkPage() {
           </div>
 
           <div className="grid gap-6">
-            <div className="surface-panel p-7">
-              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
-                Sharing flow
-              </div>
+            <div className="surface-panel p-6">
+              <div className="page-kicker mb-4">How it works</div>
               <div className="mt-5 grid gap-4">
                 {steps.map((step, index) => (
                   <div key={step.title} className="rounded-[24px] border border-[rgba(42,34,24,.08)] bg-white/68 p-4">

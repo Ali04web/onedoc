@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Emoji } from "@/app/components/Icons";
-import { SCard, Tip, Toast } from "@/app/components/DocLensUI";
+import { Tip, Toast } from "@/app/components/DocLensUI";
 
 const faqs = [
   {
