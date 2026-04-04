@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { dlText, esc, escRe, stem } from "../lib/utils";
 import { HBtn, HInput, SCard, Tip } from "./DocLensUI";
 import { UIcon } from "./Icons";
@@ -92,31 +92,31 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
       value: wordCount.toLocaleString(),
       label: "Words",
       note: "Total extracted vocabulary",
-      icon: "FileText",
+      icon: "FileText" as React.ComponentProps<typeof UIcon>["name"],
     },
     {
       value: charCount.toLocaleString(),
       label: "Characters",
       note: "Useful for sizing and limits",
-      icon: "Type",
+      icon: "Type" as React.ComponentProps<typeof UIcon>["name"],
     },
     {
       value: sentenceCount.toLocaleString(),
       label: "Sentences",
       note: "Based on punctuation detection",
-      icon: "BookText",
+      icon: "BookText" as React.ComponentProps<typeof UIcon>["name"],
     },
     {
       value: `~${readingTime} min`,
       label: "Reading time",
       note: "Estimated at 200 words per minute",
-      icon: "Clock3",
+      icon: "Clock3" as React.ComponentProps<typeof UIcon>["name"],
     },
     {
       value: Math.max(1, Math.round(wordCount / Math.max(sentenceCount, 1))).toString(),
       label: "Words / sentence",
       note: "Quick readability signal",
-      icon: "Ruler",
+      icon: "Ruler" as React.ComponentProps<typeof UIcon>["name"],
     },
   ];
 
@@ -130,7 +130,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
                 {card.label}
               </div>
               <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/80 text-amber">
-                <UIcon name={card.icon as any} size={18} />
+                <UIcon name={card.icon} size={18} />
               </div>
             </div>
             <div className="mt-5 font-caveat text-[34px] leading-none tracking-[-0.03em] text-ink2">
@@ -236,29 +236,22 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
 
 export function SearchView({ text }: { text: string }) {
   const [query, setQuery] = useState("");
-  const [matches, setMatches] = useState<Array<{ text: string; line: number }>>(
-    []
-  );
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
+  const matches = useMemo(() => {
     if (!query || query.trim().length < 2) {
-      setMatches([]);
-      setCurrent(0);
-      return;
+      return [];
     }
 
     const regex = new RegExp(escRe(query.trim()), "i");
-    const nextMatches = text
+    return text
       .split("\n")
       .map((line, index) => ({ text: line.trim(), line: index + 1 }))
       .filter((entry) => entry.text.length > 0 && regex.test(entry.text));
-
-    setMatches(nextMatches);
-    setCurrent(0);
   }, [query, text]);
 
-  const selected = matches[current];
+  const currentIndex = matches.length ? current % matches.length : 0;
+  const selected = matches[currentIndex];
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -268,9 +261,10 @@ export function SearchView({ text }: { text: string }) {
             <UIcon name="Search" size={18} className="text-ink4" />
             <HInput
               value={query}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                setQuery(event.target.value)
-              }
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setQuery(event.target.value);
+                setCurrent(0);
+              }}
               placeholder="Search a phrase, heading, or keyword"
               className="border-none bg-transparent px-0 py-0 shadow-none focus:border-none focus:bg-transparent focus:shadow-none"
             />
@@ -316,7 +310,7 @@ export function SearchView({ text }: { text: string }) {
               </div>
             ) : matches.length === 0 ? (
               <div className="surface-card px-5 py-6 text-[15px] leading-relaxed text-red">
-                No matches were found for "{query}".
+                {`No matches were found for "${query}".`}
               </div>
             ) : (
               matches.map((match, index) => {
@@ -331,7 +325,7 @@ export function SearchView({ text }: { text: string }) {
                     key={`${match.line}-${index}`}
                     onClick={() => setCurrent(index)}
                     className={`surface-card text-left transition-all duration-200 ${
-                      current === index
+                      currentIndex === index
                         ? "border-amber/30 bg-[linear-gradient(180deg,rgba(255,250,243,.96),rgba(249,241,227,.92))] shadow-[0_24px_42px_rgba(186,138,66,.12)]"
                         : "hover:-translate-y-0.5"
                     }`}
@@ -420,7 +414,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       title: "Plain text",
       ext: ".txt",
       description: "Raw extracted copy for archives, notes, and quick reuse.",
-      icon: "FileText",
+      icon: "FileText" as React.ComponentProps<typeof UIcon>["name"],
       tip: "Save the extracted text as a plain text file.",
       onClick: () => dlText(`${stem(doc.name)}.txt`, doc.text || ""),
     },
@@ -428,7 +422,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       title: "Markdown",
       ext: ".md",
       description: "Cleaner structure for docs, wikis, and GitHub workflows.",
-      icon: "NotebookPen",
+      icon: "NotebookPen" as React.ComponentProps<typeof UIcon>["name"],
       tip: "Export as markdown with lightweight heading structure.",
       onClick: () =>
         dlText(
@@ -445,7 +439,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       title: "Analysis report",
       ext: ".txt",
       description: "Counts, reading time, and the top repeated terms in one file.",
-      icon: "FileBarChart",
+      icon: "FileBarChart" as React.ComponentProps<typeof UIcon>["name"],
       tip: "Generate a plain text summary report.",
       onClick: () => {
         dlText(
@@ -472,7 +466,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
       title: "Word frequency CSV",
       ext: ".csv",
       description: "Spreadsheet-ready keyword counts for reporting or charting.",
-      icon: "Sheet",
+      icon: "Sheet" as React.ComponentProps<typeof UIcon>["name"],
       tip: "Download keyword frequencies as a CSV table.",
       onClick: () =>
         dlText(
@@ -508,7 +502,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
             <div className="flex flex-col gap-5">
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(31,90,86,.08)] text-teal">
-                  <UIcon name={item.icon as any} size={20} />
+                  <UIcon name={item.icon} size={20} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-3">

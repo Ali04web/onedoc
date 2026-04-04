@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useCallback, useState } from "react";
 import { useScripts } from "@/app/hooks/useScripts";
