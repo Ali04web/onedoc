@@ -1,15 +1,56 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useScripts } from "../hooks/useScripts";
 import { extractPdfFile } from "../lib/pdf-client";
 import { computeStats } from "../lib/utils";
-import { Tip, Toast, DItem } from "./DocLensUI";
-import { TView, StatsView, SearchView, ExportView } from "./AnalyzeViews";
-import { Emoji } from "./Icons";
+import { DItem, Tip, Toast } from "./DocLensUI";
+import { ExportView, SearchView, StatsView, TView } from "./AnalyzeViews";
+import { UIcon } from "./Icons";
+
+declare global {
+  interface Window {
+    mammoth: {
+      extractRawText(input: { arrayBuffer: ArrayBuffer }): Promise<{ value: string }>;
+    };
+  }
+}
+
+type DocType = "pdf" | "docx";
+
+type DocRecord = {
+  id: number;
+  name: string;
+  size: number;
+  type: DocType;
+  text: string | null;
+  pages: number | null;
+  stats: ReturnType<typeof computeStats> | null;
+};
 
 const PDF_WORKER_SRC =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+
+const heroPoints = [
+  {
+    title: "Premium reading surface",
+    description:
+      "Document review, search, and export live in one calm workspace that feels polished instead of improvised.",
+    icon: "PanelsTopLeft",
+  },
+  {
+    title: "Private by default",
+    description:
+      "Analysis runs in the browser so customers can trust the experience with sensitive files.",
+    icon: "ShieldCheck",
+  },
+  {
+    title: "Better PDF extraction",
+    description:
+      "The analyzer uses the stronger PDF parsing flow, which makes search and export more dependable.",
+    icon: "Sparkles",
+  },
+];
 
 export default function DocLens() {
   const ready = useScripts([
@@ -17,165 +58,506 @@ export default function DocLens() {
     "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js",
   ]);
 
-  const [docs, setDocs] = useState<any[]>([]);
-  const [activeId, setActiveId] = useState<any>(null);
-  const [tab, setTab] = useState("text");
+  const [docs, setDocs] = useState<DocRecord[]>([]);
+  const [activeId, setActiveId] = useState<number | null>(null);
+  const [tab, setTab] = useState<"text" | "stats" | "search" | "export">("text");
   const [loading, setLoading] = useState(false);
   const [drag, setDrag] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const active = docs.find(d => d.id === activeId) || null;
-  const showToast = useCallback((msg: string) => setToast(msg), []);
+  const active = docs.find((doc) => doc.id === activeId) || null;
+  const showToast = useCallback((message: string) => setToast(message), []);
+
+  const workspaceMetrics = useMemo(() => {
+    if (!active?.stats) {
+      return [
+        { label: "Formats", value: "PDF + DOCX" },
+        { label: "Processing", value: "In browser" },
+        { label: "Exports", value: "TXT, MD, CSV" },
+      ];
+    }
+
+    return [
+      {
+        label: "Words",
+        value: active.stats.wordCount.toLocaleString(),
+      },
+      {
+        label: "Read time",
+        value: `~${active.stats.readingTime} min`,
+      },
+      {
+        label: "Pages",
+        value: active.pages ? active.pages.toString() : active.type.toUpperCase(),
+      },
+    ];
+  }, [active]);
 
   async function processFile(file: File) {
-    if (!file.name.endsWith(".pdf") && !file.name.endsWith(".docx")) return;
-    const type = file.name.endsWith(".pdf") ? "pdf" : "docx", id = Date.now() + Math.random();
-    const doc: any = { id, name: file.name, size: file.size, type, text: null, pages: null, stats: null };
-    setDocs(p => [...p, doc]);
+    const isPdf = /\.pdf$/i.test(file.name);
+    const isDocx = /\.docx$/i.test(file.name);
+
+    if (!isPdf && !isDocx) {
+      showToast("Only PDF and DOCX files are supported here.");
+      return;
+    }
+
+    const id = Date.now() + Math.round(Math.random() * 1000);
+    const type: DocType = isPdf ? "pdf" : "docx";
+    const nextDoc: DocRecord = {
+      id,
+      name: file.name,
+      size: file.size,
+      type,
+      text: null,
+      pages: null,
+      stats: null,
+    };
+
+    setDocs((previous) => [...previous, nextDoc]);
     setActiveId(id);
     setLoading(true);
+
     try {
-      if (!ready) await new Promise(r => setTimeout(r, 1500));
+      if (!ready) {
+        await new Promise((resolve) => window.setTimeout(resolve, 1200));
+      }
+
       let text = "";
+
       if (type === "pdf") {
         const extraction = await extractPdfFile(file, PDF_WORKER_SRC);
-        doc.pages = extraction.pageCount;
+        nextDoc.pages = extraction.pageCount;
         text = extraction.text;
       } else {
-        const ab = await file.arrayBuffer(), r = await window.mammoth.extractRawText({ arrayBuffer: ab });
-        text = r.value;
+        const arrayBuffer = await file.arrayBuffer();
+        const result = await window.mammoth.extractRawText({ arrayBuffer });
+        text = result.value;
       }
-      doc.text = text.trim() || "This file does not appear to contain extractable text.";
-      doc.stats = computeStats(doc.text);
-    } catch (e) {
-      doc.text = "⚠️ Could not extract text from this file.";
+
+      nextDoc.text =
+        text.trim() || "This file does not appear to contain extractable text.";
+      nextDoc.stats = computeStats(nextDoc.text);
+    } catch {
+      nextDoc.text =
+        "We could not extract usable text from this file. Please try another document.";
+      nextDoc.stats = computeStats(nextDoc.text);
     }
-    setDocs(p => p.map(d => d.id === id ? { ...doc } : d));
+
+    setDocs((previous) =>
+      previous.map((doc) => (doc.id === id ? { ...nextDoc } : doc))
+    );
     setLoading(false);
     setTab("text");
     setSidebarOpen(false);
   }
 
-  function handleFiles(files: FileList | null) { Array.from(files || []).forEach(processFile); }
-  function removeDoc(id: string) { setDocs(p => p.filter(d => d.id !== id)); if (activeId === id) setActiveId(docs.filter(d => d.id !== id)[0]?.id || null); }
+  function handleFiles(files: FileList | null) {
+    Array.from(files || []).forEach(processFile);
+  }
 
-  const innerTabs = [
-    { id: "text", ico: "📄", l: "Text", t: "Read the extracted document text" },
-    { id: "stats", ico: "📊", l: "Stats", t: "Word counts and frequency analysis" },
-    { id: "search", ico: "🔍", l: "Search", t: "Find any word in the document" },
-    { id: "export", ico: "💾", l: "Export", t: "Download in different file formats" },
+  function removeDoc(id: number) {
+    setDocs((previous) => {
+      const next = previous.filter((doc) => doc.id !== id);
+      setActiveId((current) => (current === id ? next[0]?.id ?? null : current));
+      return next;
+    });
+  }
+
+  const tabs = [
+    {
+      id: "text" as const,
+      label: "Read",
+      tip: "Review the extracted text surface.",
+      icon: "FileText",
+    },
+    {
+      id: "stats" as const,
+      label: "Insights",
+      tip: "Word counts, frequency, and readability signals.",
+      icon: "BarChart3",
+    },
+    {
+      id: "search" as const,
+      label: "Search",
+      tip: "Find exact terms inside the extracted text.",
+      icon: "Search",
+    },
+    {
+      id: "export" as const,
+      label: "Export",
+      tip: "Download text and reporting formats.",
+      icon: "Download",
+    },
   ];
 
-  const qTools = [
-    { i: "📋", l: "Copy all", t: "Copy full text to clipboard", f: () => navigator.clipboard.writeText(active?.text || "").then(() => showToast("Text copied!")) },
-    { i: "📊", l: "Stats", t: "View word statistics", f: () => setTab("stats") },
-    { i: "🔍", l: "Search", t: "Search within the document", f: () => setTab("search") },
-    { i: "💾", l: "Export", t: "Save in various formats", f: () => setTab("export") },
+  const quickActions = [
+    {
+      label: "Copy text",
+      tip: "Copy the full extracted text to your clipboard.",
+      icon: "Clipboard",
+      onClick: () =>
+        navigator.clipboard
+          .writeText(active?.text || "")
+          .then(() => showToast("Extracted text copied.")),
+    },
+    {
+      label: "Open insights",
+      tip: "Jump directly to the analysis tab.",
+      icon: "ChartColumn",
+      onClick: () => setTab("stats"),
+    },
+    {
+      label: "Search",
+      tip: "Switch into document search mode.",
+      icon: "ScanSearch",
+      onClick: () => setTab("search"),
+    },
+    {
+      label: "Export",
+      tip: "Jump into download options.",
+      icon: "FileOutput",
+      onClick: () => setTab("export"),
+    },
   ];
 
   return (
-    <div className="flex flex-1 overflow-hidden min-h-0 relative">
-      {/* Mobile sidebar toggle */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed bottom-5 right-5 z-[90] bg-amber text-white border-2 border-amber2 rounded-full w-[52px] h-[52px] flex items-center justify-center shadow-[3px_4px_0_rgba(30,15,5,.2)] cursor-pointer text-[22px]"
-        aria-label="Toggle sidebar"
-      >
-        {sidebarOpen ? <Emoji symbol="✕" size={24} /> : <Emoji symbol="📂" size={24} />}
-      </button>
-
-      {/* Sidebar overlay for mobile */}
-      {sidebarOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-[rgba(28,17,10,.3)] z-[79]"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar */}
-      <aside className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:relative z-[80] w-[280px] md:w-[264px] border-r-2 border-dashed border-[rgba(100,70,40,.18)] flex flex-col overflow-hidden bg-paper md:bg-[rgba(237,229,208,.45)] flex-shrink-0 h-full transition-transform duration-200`}>
-        <div className="md:hidden flex items-center justify-between px-[14px] py-[10px] border-b border-[rgba(100,70,40,.15)]">
-          <span className="font-caveat text-[18px] font-bold text-ink2 flex items-center gap-[6px]"><Emoji symbol="📂" size={18} /> Documents</span>
-          <button onClick={() => setSidebarOpen(false)} className="bg-transparent border-none text-ink4 cursor-pointer text-[18px] flex items-center justify-center p-[4px]"><Emoji symbol="✕" size={18} /></button>
-        </div>
-
-        <label onDragOver={e => { e.preventDefault(); setDrag(true); }} onDragLeave={() => setDrag(false)} onDrop={e => { e.preventDefault(); setDrag(false); handleFiles(e.dataTransfer.files); }}
-          className={`m-[14px] border-[2.5px] border-dashed rounded-[4px_16px_6px_14px] py-[20px] px-[14px] text-center cursor-pointer transition-all duration-200 relative block ${drag ? "border-amber bg-[rgba(192,120,24,.07)] scale-[1.02]" : "border-[rgba(100,70,40,.3)] bg-[rgba(255,255,255,.28)] scale-100"}`}>
-          <input type="file" accept=".pdf,.docx" multiple className="hidden" onChange={e => handleFiles(e.target.files)} />
-          <div className="mb-[10px] inline-block -rotate-5"><Emoji symbol="📂" size={42} className="text-amber2" /></div>
-          <div className="font-caveat text-[17px] font-bold text-ink2 mb-[4px]">Drop files here</div>
-          <div className="font-patrick text-[12px] text-ink4 mb-[12px]">or click to browse</div>
-          <div className="flex gap-[7px] justify-center">
-            {[["PDF", "var(--color-red)"], ["DOCX", "var(--color-teal)"]].map(([lbl, col]) => (
-              <Tip key={lbl} tip={`Upload a ${lbl} file`} side="bottom"><span className="font-caveat text-[12px] font-bold py-[2px] px-[10px] rounded-[2px_7px_3px_6px] border-[1.5px] tracking-[0.5px]" style={{ borderColor: col, color: col }}>{lbl}</span></Tip>
-            ))}
-          </div>
-        </label>
-        <div className="font-caveat text-[14px] font-semibold text-ink4 px-[18px] pt-[4px] pb-[6px] tracking-[0.5px]">→ your documents</div>
-        <div className="flex-1 overflow-y-auto px-[10px] pb-[10px]">
-          {docs.length === 0 ? <div className="font-caveat text-[17px] italic text-ink4 text-center py-[16px] px-[8px] -rotate-[0.5deg]">Nothing here yet…</div>
-            : docs.map(doc => <DItem key={doc.id} doc={doc} active={doc.id === activeId} onSelect={() => { setActiveId(doc.id); setSidebarOpen(false); }} onRemove={() => removeDoc(doc.id)} />)}
-        </div>
-        <div className="py-[12px] px-[13px] border-t-[1.5px] border-dashed border-[rgba(100,70,40,.18)]">
-          <div className="font-caveat text-[14px] font-semibold text-ink4 mb-[9px] tracking-[0.4px]">→ quick tools</div>
-          <div className="grid grid-cols-2 gap-[7px]">
-            {qTools.map(({ i, l, t, f }) => (
-              <Tip key={l} tip={t}>
-                <button onClick={() => active && f()} disabled={!active} className={`flex items-center gap-[7px] py-[8px] px-[10px] rounded-[2px_9px_3px_8px] font-caveat text-[15px] font-semibold text-ink2 transition-all duration-150 w-full ${active ? "cursor-pointer bg-[rgba(255,255,255,.5)] border-[1.5px] border-[rgba(100,70,40,.28)] opacity-100 hover:bg-[rgba(192,120,24,.1)] hover:border-amber hover:rotate-[0.3deg]" : "cursor-not-allowed bg-[rgba(255,255,255,.5)] border-[1.5px] border-[rgba(100,70,40,.28)] opacity-[0.4]"}`}>
-                  <Emoji symbol={i} size={16} />{l}
-                </button>
-              </Tip>
-            ))}
+    <div className="page-shell">
+      <section className="page-hero">
+        <div>
+          <div className="page-kicker">Premium Analysis Workspace</div>
+          <h1 className="page-title">
+            Review, search, and export documents in a workspace that feels
+            carefully crafted.
+          </h1>
+          <p className="page-copy">
+            OneDocs keeps analysis private, readable, and fast. Upload PDFs or
+            DOCX files, inspect the text, surface patterns, and export what you
+            need without sending documents away.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <span className="premium-chip">
+              <UIcon name="ShieldCheck" size={14} />
+              Browser-first privacy
+            </span>
+            <span className="premium-chip">
+              <UIcon name="FileSearch" size={14} />
+              Rich document search
+            </span>
+            <span className="premium-chip">
+              <UIcon name="Download" size={14} />
+              Quick export paths
+            </span>
           </div>
         </div>
-      </aside>
 
-      {/* Main content */}
-      <main className="flex flex-col flex-1 overflow-hidden bg-transparent min-w-0">
-        {loading && <div className="h-[3px] bg-gradient-to-r from-amber via-teal to-amber bg-[length:300%_100%] animate-ink-load" />}
-        {!ready && <div className="px-4 py-2 text-center"><span className="font-patrick text-[12px] text-ink4 italic">Loading libraries…</span></div>}
-        {!active ? (
-          <div className="flex-1 flex flex-col items-center justify-center gap-[14px] p-8 md:p-[48px] text-center relative overflow-hidden">
-            <div className="inline-block font-sans animate-wobble-in -rotate-[8deg]"><Emoji symbol="📄" size={64} className="text-ink3" /></div>
-            <div className="font-caveat text-[24px] md:text-[28px] font-bold text-ink3 -rotate-[0.5deg]">No document open yet</div>
-            <div className="font-patrick text-[14px] md:text-[15px] text-ink4 max-w-[280px] leading-[1.75]">
-              Drop a PDF or DOCX into the sidebar. Everything runs in your browser — no uploads, no accounts.
+        <div className="surface-panel flex flex-col gap-5 p-6 md:p-7">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
+                Workspace promise
+              </div>
+              <div className="mt-2 font-caveat text-[30px] leading-none tracking-[-0.03em] text-ink2">
+                Better confidence for every upload
+              </div>
             </div>
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="md:hidden mt-4 py-[10px] px-[22px] bg-amber hover:bg-amber2 text-white font-caveat text-[16px] font-bold rounded-[3px_10px_4px_9px] border-2 border-amber2 shadow-[2px_2px_0_rgba(30,15,5,.12)] cursor-pointer transition-all duration-150 flex items-center gap-[8px]"
-            >
-              <Emoji symbol="📂" size={18} /> Open Sidebar
-            </button>
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2">
+              <UIcon name="Sparkles" size={20} />
+            </div>
           </div>
-        ) : (
-          <>
-            <div className="flex items-center border-b-[1.5px] border-dashed border-[rgba(100,70,40,.2)] px-4 md:px-[24px] bg-[rgba(237,229,208,.4)] flex-shrink-0 h-[46px] gap-[2px] overflow-x-auto">
-              {innerTabs.map(t => (
-                <Tip key={t.id} tip={t.t} side="bottom">
-                  <button onClick={() => setTab(t.id)} className={`px-[10px] md:px-[13px] h-[46px] text-[13px] md:text-[14px] font-bold cursor-pointer bg-transparent border-none border-b-[3px] font-caveat tracking-[0.3px] transition-all duration-150 whitespace-nowrap flex items-center gap-[5px] ${tab === t.id ? "border-amber text-amber2 rotate-0" : "border-transparent text-ink4 rotate-[0.3deg]"}`}>
-                    <Emoji symbol={t.ico} size={16} />{t.l}
-                  </button>
-                </Tip>
-              ))}
-              <div className="flex-1" />
-              <Tip tip={`${active.name}${active.pages ? ` · ${active.pages} pages` : ""}`} side="left">
-                <div className="flex items-center gap-[8px] cursor-default">
-                  <span className="font-patrick text-[12px] text-ink4 max-w-[120px] md:max-w-[220px] overflow-hidden text-ellipsis whitespace-nowrap">{active.name}</span>
-                  {active.pages && <span className="font-caveat text-[12px] font-bold py-[2px] px-[8px] rounded-[2px_7px_3px_6px] border-[1.5px] border-teal text-teal">{active.pages}p</span>}
+          <div className="premium-divider" />
+          <div className="grid gap-3">
+            {heroPoints.map((point) => (
+              <div
+                key={point.title}
+                className="rounded-[22px] border border-[rgba(42,34,24,.08)] bg-white/70 px-4 py-4"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+                    <UIcon name={point.icon as any} size={16} />
+                  </div>
+                  <div className="text-[15px] font-semibold text-ink2">
+                    {point.title}
+                  </div>
                 </div>
-              </Tip>
-            </div>
-            <div className="flex-1 overflow-hidden flex flex-col">
-              {tab === "text" && <TView text={active.text || ""} searchQ="" />}
-              {tab === "stats" && <StatsView stats={active.stats} />}
-              {tab === "search" && <SearchView text={active.text || ""} />}
-              {tab === "export" && <ExportView doc={active} />}
-            </div>
-          </>
+                <div className="mt-3 text-[14px] leading-relaxed text-ink4">
+                  {point.description}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="surface-panel relative overflow-hidden p-0">
+        <button
+          onClick={() => setSidebarOpen((value) => !value)}
+          className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-amber2/35 bg-gradient-to-br from-amber to-amber2 text-white shadow-[0_18px_34px_rgba(186,138,66,.3)] transition-transform duration-200 hover:scale-[1.02] md:hidden"
+          aria-label="Toggle document sidebar"
+        >
+          <UIcon name={sidebarOpen ? "X" : "PanelsLeftBottom"} size={22} />
+        </button>
+
+        {sidebarOpen && (
+          <div
+            className="fixed inset-0 z-[79] bg-[rgba(24,18,12,.34)] backdrop-blur-sm md:hidden"
+            onClick={() => setSidebarOpen(false)}
+          />
         )}
-      </main>
+
+        <div className="grid min-h-[760px] lg:grid-cols-[312px_minmax(0,1fr)]">
+          <aside
+            className={`fixed inset-y-0 left-0 z-[80] flex w-[312px] max-w-[88vw] flex-col border-r border-[rgba(42,34,24,.08)] bg-[linear-gradient(180deg,rgba(251,247,240,.98),rgba(246,240,228,.98))] transition-transform duration-200 lg:static lg:w-auto lg:max-w-none ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+            }`}
+          >
+            <div className="flex items-center justify-between border-b border-[rgba(42,34,24,.08)] px-5 py-5">
+              <div>
+                <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                  Document queue
+                </div>
+                <div className="mt-2 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
+                  Analyzer
+                </div>
+              </div>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.08)] bg-white/80 text-ink3 lg:hidden"
+              >
+                <UIcon name="X" size={16} />
+              </button>
+            </div>
+
+            <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-5">
+              <label
+                onDragOver={(event) => {
+                  event.preventDefault();
+                  setDrag(true);
+                }}
+                onDragLeave={() => setDrag(false)}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  setDrag(false);
+                  handleFiles(event.dataTransfer.files);
+                }}
+                className={`block cursor-pointer rounded-[28px] border border-dashed px-5 py-6 text-center transition-all duration-200 ${
+                  drag
+                    ? "border-amber/45 bg-[rgba(186,138,66,.08)] shadow-[0_22px_38px_rgba(186,138,66,.12)]"
+                    : "border-[rgba(42,34,24,.14)] bg-white/72"
+                }`}
+              >
+                <input
+                  type="file"
+                  accept=".pdf,.docx"
+                  multiple
+                  className="hidden"
+                  onChange={(event) => handleFiles(event.target.files)}
+                />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+                  <UIcon name="FolderUp" size={22} />
+                </div>
+                <div className="mt-4 text-[16px] font-semibold text-ink2">
+                  Drop PDF or DOCX files
+                </div>
+                <div className="mt-2 text-[13px] leading-relaxed text-ink4">
+                  Click to browse or drag documents directly into the workspace.
+                </div>
+                <div className="mt-4 flex flex-wrap justify-center gap-2">
+                  <span className="premium-chip">PDF</span>
+                  <span className="premium-chip">DOCX</span>
+                  <span className="premium-chip">Multi-file queue</span>
+                </div>
+              </label>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-4 py-5">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                  Recent documents
+                </div>
+                <span className="premium-chip">{docs.length}</span>
+              </div>
+              {docs.length === 0 ? (
+                <div className="rounded-[24px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-5 text-[14px] leading-relaxed text-ink4">
+                  Your uploaded files will appear here. Keep multiple documents
+                  ready and switch between them without leaving the analyzer.
+                </div>
+              ) : (
+                docs.map((doc) => (
+                  <DItem
+                    key={doc.id}
+                    doc={doc}
+                    active={doc.id === activeId}
+                    onSelect={() => {
+                      setActiveId(doc.id);
+                      setSidebarOpen(false);
+                    }}
+                    onRemove={() => removeDoc(doc.id)}
+                  />
+                ))
+              )}
+            </div>
+
+            <div className="border-t border-[rgba(42,34,24,.08)] px-5 py-5">
+              <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
+                Workspace details
+              </div>
+              <div className="mt-4 grid gap-3">
+                {workspaceMetrics.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-3"
+                  >
+                    <div className="text-[12px] font-semibold uppercase tracking-[0.16em] text-ink4">
+                      {item.label}
+                    </div>
+                    <div className="mt-2 text-[16px] font-semibold text-ink2">
+                      {item.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+
+          <main className="min-w-0 bg-[linear-gradient(180deg,rgba(255,255,255,.45),rgba(248,244,236,.6))]">
+            {loading && (
+              <div className="h-[3px] bg-[linear-gradient(90deg,var(--color-amber),var(--color-teal),var(--color-amber2))] bg-[length:240%_100%] animate-ink-load" />
+            )}
+
+            {!ready && (
+              <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-3 text-[13px] text-ink4 md:px-8">
+                Loading document libraries. The workspace will be ready in a
+                moment.
+              </div>
+            )}
+
+            {!active ? (
+              <div className="flex h-full flex-col justify-center px-5 py-10 md:px-8 md:py-14">
+                <div className="mx-auto flex w-full max-w-[860px] flex-col items-center text-center">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2 shadow-[0_20px_42px_rgba(186,138,66,.16)]">
+                    <UIcon name="FileSearch" size={30} />
+                  </div>
+                  <div className="mt-6 font-caveat text-[40px] leading-none tracking-[-0.04em] text-ink2">
+                    No document is open yet.
+                  </div>
+                  <div className="mt-4 max-w-[620px] text-[16px] leading-relaxed text-ink4">
+                    Start by uploading a PDF or DOCX. Once a file is loaded you
+                    can review the text, inspect document statistics, search
+                    across the content, and export polished outputs.
+                  </div>
+                  <div className="mt-8 grid w-full gap-4 md:grid-cols-3">
+                    {[
+                      {
+                        title: "Read clearly",
+                        description:
+                          "A calmer text surface makes it easier to validate extraction quality.",
+                        icon: "FileText",
+                      },
+                      {
+                        title: "Search quickly",
+                        description:
+                          "Jump to the exact line you need without scrolling through the whole file.",
+                        icon: "Search",
+                      },
+                      {
+                        title: "Export cleanly",
+                        description:
+                          "Take plain text, markdown, and reporting formats in a few clicks.",
+                        icon: "Download",
+                      },
+                    ].map((item) => (
+                      <div key={item.title} className="surface-card text-left">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+                          <UIcon name={item.icon as any} size={18} />
+                        </div>
+                        <div className="mt-5 font-caveat text-[28px] leading-none tracking-[-0.03em] text-ink2">
+                          {item.title}
+                        </div>
+                        <div className="mt-3 text-[14px] leading-relaxed text-ink4">
+                          {item.description}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex h-full min-h-0 flex-col">
+                <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-5 md:px-8">
+                  <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+                    <div>
+                      <div className="page-kicker">Active Document</div>
+                      <div className="mt-3 font-caveat text-[36px] leading-none tracking-[-0.04em] text-ink2">
+                        {active.name}
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-3">
+                        <span className="premium-chip">
+                          <UIcon
+                            name={active.type === "pdf" ? "FileText" : "FileSignature"}
+                            size={14}
+                          />
+                          {active.type.toUpperCase()}
+                        </span>
+                        <span className="premium-chip">
+                          <UIcon name="HardDrive" size={14} />
+                          {(active.size / 1048576).toFixed(1)} MB
+                        </span>
+                        {active.pages ? (
+                          <span className="premium-chip">
+                            <UIcon name="Layers3" size={14} />
+                            {active.pages} pages
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+
+                    <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+                      {quickActions.map((action) => (
+                        <Tip key={action.label} tip={action.tip}>
+                          <button
+                            onClick={() => active && action.onClick()}
+                            className="flex items-center justify-center gap-2 rounded-[20px] border border-[rgba(42,34,24,.1)] bg-white/78 px-4 py-3 text-[14px] font-semibold text-ink3 transition-all duration-200 hover:-translate-y-0.5 hover:border-amber/35 hover:bg-white"
+                          >
+                            <UIcon name={action.icon as any} size={16} />
+                            {action.label}
+                          </button>
+                        </Tip>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {tabs.map((item) => (
+                      <Tip key={item.id} tip={item.tip}>
+                        <button
+                          onClick={() => setTab(item.id)}
+                          className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-[14px] font-semibold transition-all duration-200 ${
+                            tab === item.id
+                              ? "border-amber/35 bg-[rgba(186,138,66,.1)] text-amber2 shadow-[0_12px_24px_rgba(186,138,66,.12)]"
+                              : "border-[rgba(42,34,24,.08)] bg-white/72 text-ink4 hover:border-[rgba(42,34,24,.14)] hover:bg-white"
+                          }`}
+                        >
+                          <UIcon name={item.icon as any} size={16} />
+                          {item.label}
+                        </button>
+                      </Tip>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="min-h-0 flex-1">
+                  {tab === "text" && <TView text={active.text || ""} searchQ="" />}
+                  {tab === "stats" && <StatsView stats={active.stats} />}
+                  {tab === "search" && <SearchView text={active.text || ""} />}
+                  {tab === "export" && <ExportView doc={active} />}
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      </div>
 
       {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
     </div>
