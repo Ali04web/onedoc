@@ -33,15 +33,15 @@ function CsvPreview({
   const [header, ...body] = rows;
 
   return (
-    <div className="overflow-hidden rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72">
-      <div className="grid grid-cols-1 border-b border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.85)] px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
+    <div className="overflow-hidden rounded-[20px] border border-[rgba(110,124,255,.1)] bg-white/76">
+      <div className="grid grid-cols-1 border-b border-[rgba(110,124,255,.1)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(16,199,162,.06))] px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
         {header.join(" · ")}
       </div>
       <div className="max-h-[140px] overflow-auto">
         {body.slice(0, 4).map((row, index) => (
           <div
             key={`${row.join("|")}-${index}`}
-            className="grid grid-cols-1 gap-1 border-b border-[rgba(42,34,24,.06)] px-4 py-3 text-[13px] text-ink3 last:border-b-0"
+            className="grid grid-cols-1 gap-1 border-b border-[rgba(110,124,255,.08)] px-4 py-3 text-[13px] text-ink3 last:border-b-0"
           >
             {row.join(" · ")}
           </div>

@@ -207,10 +207,10 @@ export function CStat({ msg, type }: any) {
 
   const styles =
     type === "ok"
-      ? "border-teal/20 bg-[rgba(31,90,86,.07)] text-teal"
+      ? "border-teal/20 bg-[linear-gradient(135deg,rgba(16,199,162,.08),rgba(110,124,255,.06))] text-teal"
       : type === "err"
-        ? "border-red/20 bg-[rgba(163,75,66,.08)] text-red"
-        : "border-amber/20 bg-[rgba(186,138,66,.07)] text-amber2";
+        ? "border-red/20 bg-[rgba(255,102,120,.08)] text-red"
+        : "border-[rgba(110,124,255,.16)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(255,145,71,.06))] text-[var(--color-violet)]";
 
   return (
     <div className={`flex items-start gap-2 rounded-[18px] border px-4 py-3 text-[13px] leading-relaxed ${styles}`}>

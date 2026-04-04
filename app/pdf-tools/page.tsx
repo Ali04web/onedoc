@@ -45,14 +45,14 @@ function ProgressBar({
   if (!progress) return null;
 
   return (
-    <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-white/70 p-3">
+    <div className="rounded-[18px] border border-[rgba(110,124,255,.1)] bg-white/74 p-3">
       <div className="mb-2 flex items-center justify-between gap-3 text-[12px] text-ink4">
         <span>{label || "Working..."}</span>
         <span>{progress}%</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-[rgba(42,34,24,.08)]">
+      <div className="h-2 overflow-hidden rounded-full bg-[rgba(110,124,255,.08)]">
         <div
-          className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-teal),var(--color-amber))] transition-[width] duration-300"
+          className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-red),var(--color-violet),var(--color-teal))] transition-[width] duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -74,7 +74,7 @@ function FileListPreview({
       {files.map((file) => (
         <div
           key={`${file.name}-${file.size}`}
-          className="flex items-center gap-2 rounded-[16px] border border-[rgba(42,34,24,.08)] bg-white/72 px-3 py-2 text-[13px] text-ink3"
+          className="flex items-center gap-2 rounded-[16px] border border-[rgba(110,124,255,.1)] bg-white/76 px-3 py-2 text-[13px] text-ink3"
         >
           <UIcon name={icon as any} size={14} />
           <span className="truncate">{file.name}</span>
