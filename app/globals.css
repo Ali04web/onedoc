@@ -1,97 +1,368 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f7f0e3;
-  --color-paper2: #ede5d0;
-  --color-paper3: #e3d8be;
-  --color-ink: #1c110a;
-  --color-ink2: #3d2510;
-  --color-ink3: #7a5535;
-  --color-ink4: #b89060;
-  --color-red: #b02020;
-  --color-teal: #1a5c5c;
-  --color-amber: #c07818;
-  --color-amber2: #9a5e10;
-  
-  --color-rule: rgba(100, 70, 40, 0.13);
-  --color-sketch: rgba(30, 15, 5, 0.5);
+  --color-paper: #f4efe7;
+  --color-paper2: #fcfaf7;
+  --color-paper3: #e6ddd0;
+  --color-ink: #17130e;
+  --color-ink2: #2a2218;
+  --color-ink3: #5e5448;
+  --color-ink4: #978b7d;
+  --color-red: #a34b42;
+  --color-teal: #1f5a56;
+  --color-amber: #ba8a42;
+  --color-amber2: #8c6933;
+  --color-line: rgba(42, 34, 24, 0.12);
+  --color-line-strong: rgba(42, 34, 24, 0.2);
+  --color-glow: rgba(186, 138, 66, 0.14);
+  --color-rule: rgba(66, 52, 36, 0.045);
 
-  --font-caveat: 'Caveat', cursive;
-  --font-patrick: 'Patrick Hand', cursive;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-caveat: var(--font-display-ui);
+  --font-patrick: var(--font-body-ui);
+  --font-mono: var(--font-code-ui);
 
-  --animate-stamp-in: stampIn 0.35s ease forwards;
-  --animate-wobble-in: wobbleIn 0.5s 0.1s both;
-  --animate-spin-slow: spin 0.8s linear infinite;
-  --animate-ink-load: inkLoad 1.4s ease-in-out infinite;
-  --animate-slide-down: slideDown 0.15s ease forwards;
-  --animate-fade-up: fadeUp 0.15s ease forwards;
+  --animate-stamp-in: stampIn 0.32s ease-out forwards;
+  --animate-wobble-in: floatIn 0.55s ease-out both;
+  --animate-spin-slow: spin 1s linear infinite;
+  --animate-ink-load: inkLoad 1.6s ease-in-out infinite;
+  --animate-slide-down: slideDown 0.22s ease-out forwards;
+  --animate-fade-up: fadeUp 0.24s ease-out forwards;
 
   @keyframes stampIn {
-    0% { transform: scale(1.4) rotate(-6deg); opacity: 0; }
-    60% { transform: scale(0.93) rotate(1deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0); opacity: 1; }
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
-  @keyframes wobbleIn {
-    0% { transform: scale(0.88) rotate(-3deg); opacity: 0; }
-    70% { transform: scale(1.03) rotate(0.5deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0); opacity: 1; }
+
+  @keyframes floatIn {
+    from {
+      opacity: 0;
+      transform: translateY(22px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
+
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
+
   @keyframes inkLoad {
-    0% { background-position: 200% center; }
-    100% { background-position: -200% center; }
+    0% {
+      background-position: 200% center;
+    }
+    100% {
+      background-position: -200% center;
+    }
   }
+
   @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-6px) scale(0.97); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
+
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
 :root {
-  --background: #f7f0e3;
-  --foreground: #1c110a;
+  color-scheme: light;
+  --background: #f4efe7;
+  --foreground: #17130e;
 }
 
-@media (prefers-color-scheme: dark) {
-  /* the original has no dark mode, so let's keep paper as light */
-  :root {
-    --background: #f7f0e3;
-    --foreground: #1c110a;
-  }
-}
-
-html, body {
+html {
   height: 100%;
-  background-color: var(--color-paper);
+  background: linear-gradient(180deg, #f6f1e8 0%, #f2ece3 100%);
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+  background:
+    radial-gradient(circle at top left, rgba(186, 138, 66, 0.08), transparent 28%),
+    radial-gradient(circle at top right, rgba(31, 90, 86, 0.07), transparent 24%),
+    linear-gradient(180deg, #f6f1e8 0%, #f2ece3 100%);
   color: var(--color-ink);
   font-family: var(--font-patrick);
+  text-rendering: optimizeLegibility;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
 }
-::-webkit-scrollbar-track {
-  background: var(--color-paper2);
+
+body::before {
+  background:
+    linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent),
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.7), transparent 32%),
+    radial-gradient(circle at 82% 10%, rgba(255, 255, 255, 0.55), transparent 26%);
+  opacity: 0.65;
 }
-::-webkit-scrollbar-thumb {
-  background: var(--color-paper3);
-  border-radius: 3px;
+
+body::after {
+  background-image:
+    linear-gradient(var(--color-rule) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-rule) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.22), transparent 78%);
 }
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-paper3) var(--color-paper2);
+
+.premium-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 24% 28%, rgba(186, 138, 66, 0.12), transparent 16%),
+    radial-gradient(circle at 82% 20%, rgba(31, 90, 86, 0.1), transparent 18%),
+    radial-gradient(circle at 64% 78%, rgba(163, 75, 66, 0.08), transparent 18%);
+  filter: blur(22px);
+  opacity: 0.8;
 }
 
 .ruled {
-  background-color: var(--color-paper);
-  background-image: repeating-linear-gradient(transparent, transparent 27px, var(--color-rule) 27px, var(--color-rule) 28px), 
-                    linear-gradient(90deg, transparent 56px, rgba(180, 100, 80, 0.1) 56px, rgba(180, 100, 80, 0.1) 57px, transparent 57px);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), transparent 30%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 65%);
+}
+
+.page-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1280px, calc(100vw - 32px));
+  margin: 0 auto;
+  padding: 20px 0 64px;
+}
+
+.page-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid var(--color-line-strong);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(252, 248, 241, 0.94)),
+    linear-gradient(180deg, rgba(186, 138, 66, 0.06), transparent);
+  box-shadow:
+    0 30px 80px rgba(33, 25, 16, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(20px);
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top right, rgba(186, 138, 66, 0.16), transparent 24%),
+    radial-gradient(circle at bottom left, rgba(31, 90, 86, 0.08), transparent 26%);
+  pointer-events: none;
+}
+
+.surface-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid var(--color-line);
+  background: rgba(252, 250, 247, 0.82);
+  box-shadow:
+    0 18px 60px rgba(33, 25, 16, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(18px);
+}
+
+.surface-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 26px;
+  border: 1px solid var(--color-line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(250, 246, 240, 0.94));
+  box-shadow:
+    0 18px 48px rgba(33, 25, 16, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.surface-card::before,
+.surface-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.3), transparent 24%),
+    radial-gradient(circle at top right, rgba(186, 138, 66, 0.08), transparent 22%);
+  pointer-events: none;
+}
+
+.page-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 34, 24, 0.12);
+  background: rgba(255, 255, 255, 0.68);
+  padding: 8px 14px;
+  font-family: var(--font-patrick);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-ink3);
+}
+
+.page-kicker::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--color-amber), var(--color-teal));
+  box-shadow: 0 0 0 4px rgba(186, 138, 66, 0.12);
+}
+
+.page-title {
+  font-family: var(--font-caveat);
+  font-size: clamp(2.8rem, 6vw, 4.8rem);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: var(--color-ink2);
+}
+
+.page-copy {
+  max-width: 620px;
+  color: var(--color-ink3);
+  font-size: clamp(1rem, 2vw, 1.08rem);
+  line-height: 1.8;
+}
+
+.premium-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(42, 34, 24, 0.14),
+    transparent
+  );
+}
+
+.premium-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.premium-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(42, 34, 24, 0.12);
+  background: rgba(255, 255, 255, 0.76);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink3);
+}
+
+.premium-metric {
+  border-radius: 24px;
+  border: 1px solid var(--color-line);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 18px 20px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.premium-metric strong {
+  display: block;
+  font-family: var(--font-caveat);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-ink2);
+}
+
+.premium-metric span {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--color-ink4);
+}
+
+::selection {
+  background: rgba(186, 138, 66, 0.22);
+  color: var(--color-ink);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(42, 34, 24, 0.2);
+  border-radius: 999px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(42, 34, 24, 0.2) rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 768px) {
+  .page-shell {
+    width: min(100vw - 20px, 1280px);
+    padding-top: 12px;
+    padding-bottom: 44px;
+  }
+
+  .page-hero,
+  .surface-panel,
+  .surface-card {
+    border-radius: 24px;
+  }
+
+  .page-kicker {
+    letter-spacing: 0.18em;
+  }
 }
