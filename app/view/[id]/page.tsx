@@ -1,8 +1,16 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import fs from "fs/promises";
 import path from "path";
 import { notFound } from "next/navigation";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
+
+type UploadMeta = {
+  originalName: string;
+  storedName: string;
+  size: number;
+  uploadedAt: string;
+};
 
 export default async function ViewPage({
   params,
@@ -11,7 +19,7 @@ export default async function ViewPage({
 }) {
   const { id } = await params;
 
-  let meta: any;
+  let meta: UploadMeta;
   try {
     const metaRaw = await fs.readFile(
       path.join(UPLOAD_DIR, `${id}.json`),

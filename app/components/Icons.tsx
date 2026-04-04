@@ -1,4 +1,5 @@
 import React from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as Lucide from "lucide-react";
 
 const emojiToLucide: Record<string, keyof typeof Lucide | "XBrand"> = {
