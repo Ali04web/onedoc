@@ -164,10 +164,10 @@ export default function PdfLinkPage() {
                   }}
                   className={`flex min-h-[280px] cursor-pointer flex-col items-center justify-center rounded-[30px] border border-dashed px-8 py-10 text-center transition-all duration-200 ${
                     drag
-                      ? "border-amber/45 bg-[rgba(186,138,66,.06)]"
+                      ? "border-[rgba(110,124,255,.28)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(16,199,162,.08))]"
                       : file
-                        ? "border-teal/35 bg-[rgba(31,90,86,.06)]"
-                        : "border-[rgba(42,34,24,.14)] bg-white/58 hover:border-amber/35 hover:bg-[rgba(186,138,66,.04)]"
+                        ? "border-teal/35 bg-[linear-gradient(135deg,rgba(16,199,162,.08),rgba(110,124,255,.06))]"
+                        : "border-[rgba(110,124,255,.16)] bg-white/60 hover:border-[rgba(110,124,255,.22)] hover:bg-[linear-gradient(135deg,rgba(110,124,255,.04),rgba(255,145,71,.05))]"
                   }`}
                 >
                   <input
@@ -180,7 +180,7 @@ export default function PdfLinkPage() {
                       if (selected) handleFile(selected);
                     }}
                   />
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[rgba(42,34,24,.08)] bg-white/85 text-amber shadow-[0_18px_32px_rgba(33,25,16,.08)]">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[rgba(110,124,255,.12)] bg-white/88 text-[var(--color-violet)] shadow-[0_18px_32px_rgba(34,48,94,.1)]">
                     <Emoji symbol={file ? "📄" : "📂"} size={28} />
                   </div>
                   <div className="mt-5 font-caveat text-[34px] font-semibold leading-none text-ink2">
@@ -198,7 +198,7 @@ export default function PdfLinkPage() {
                         e.stopPropagation();
                         reset();
                       }}
-                      className="mt-5 inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-4 py-2 text-[13px] font-semibold text-ink3 transition-all duration-200 hover:bg-white"
+                    className="mt-5 inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-4 py-2 text-[13px] font-semibold text-ink3 transition-all duration-200 hover:bg-white"
                     >
                       <Emoji symbol="✕" size={14} />
                       Remove file
@@ -213,9 +213,9 @@ export default function PdfLinkPage() {
                 )}
 
                 {uploading && (
-                  <div className="mt-5 overflow-hidden rounded-full border border-[rgba(42,34,24,.08)] bg-white/60">
+                  <div className="mt-5 overflow-hidden rounded-full border border-[rgba(110,124,255,.1)] bg-white/60">
                     <div
-                      className="h-2 rounded-full bg-gradient-to-r from-amber via-amber2 to-teal transition-all duration-500"
+                      className="h-2 rounded-full bg-[linear-gradient(90deg,var(--color-red),var(--color-violet),var(--color-teal))] transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
@@ -228,7 +228,7 @@ export default function PdfLinkPage() {
                     className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-semibold transition-all duration-200 ${
                       !file || uploading
                         ? "cursor-not-allowed border border-[rgba(42,34,24,.08)] bg-[rgba(255,255,255,.45)] text-ink4"
-                        : "border border-amber2/30 bg-gradient-to-r from-amber to-amber2 text-white shadow-[0_18px_30px_rgba(186,138,66,.24)] hover:-translate-y-0.5"
+                        : "border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] hover:-translate-y-0.5"
                     }`}
                   >
                     <Emoji symbol={uploading ? "⏳" : "🔗"} size={16} />
@@ -236,7 +236,7 @@ export default function PdfLinkPage() {
                   </button>
                   <button
                     onClick={() => inputRef.current?.click()}
-                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-6 py-3.5 text-[15px] font-semibold text-ink2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-6 py-3.5 text-[15px] font-semibold text-ink2 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
                   >
                     <Emoji symbol="📎" size={16} />
                     Choose file
@@ -250,9 +250,9 @@ export default function PdfLinkPage() {
                   <div className="premium-divider flex-1" />
                 </div>
 
-                <div className="rounded-[28px] border border-teal/18 bg-[rgba(31,90,86,.06)] p-6">
+                <div className="rounded-[28px] border border-teal/18 bg-[linear-gradient(135deg,rgba(16,199,162,.08),rgba(110,124,255,.06))] p-6">
                   <div className="flex items-start gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-teal/18 bg-white/78 text-teal">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full border border-teal/18 bg-white/82 text-teal">
                       <Emoji symbol="✅" size={24} />
                     </div>
                     <div>
@@ -276,7 +276,7 @@ export default function PdfLinkPage() {
                   <div className="mt-4 flex flex-wrap gap-3">
                     <button
                       onClick={copyLink}
-                      className="inline-flex items-center gap-2 rounded-full border border-amber2/30 bg-gradient-to-r from-amber to-amber2 px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(186,138,66,.24)] transition-all duration-200 hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
                     >
                       <Emoji symbol={copied ? "✓" : "📋"} size={15} />
                       {copied ? "Copied" : "Copy link"}
@@ -285,14 +285,14 @@ export default function PdfLinkPage() {
                       href={uploaded.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
                     >
                       <Emoji symbol="↗" size={14} />
                       Open viewer
                     </a>
                     <button
                       onClick={reset}
-                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(42,34,24,.12)] bg-white/78 px-5 py-3 text-[14px] font-semibold text-ink3 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                      className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink3 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
                     >
                       <Emoji symbol="📂" size={15} />
                       Upload another

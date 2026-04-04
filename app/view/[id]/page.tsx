@@ -2,6 +2,8 @@
 import fs from "fs/promises";
 import path from "path";
 import { notFound } from "next/navigation";
+import { BrandSymbol } from "@/app/components/BrandSymbol";
+import { DocumentHeroArt } from "@/app/components/DocumentHeroArt";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
@@ -49,16 +51,17 @@ export default async function ViewPage({
             __html: `
               :root{
                 color-scheme: light;
-                --paper:#f7f3ea;
-                --paper-2:#efe7d8;
-                --paper-3:#fdfbf8;
-                --ink:#1e1911;
-                --muted:#766a57;
-                --line:rgba(36,28,18,.12);
-                --amber:#b48a4b;
-                --amber-2:#8f6732;
-                --teal:#275f5a;
-                --shadow:0 24px 60px rgba(28,21,13,.12);
+                --paper:#f4f8ff;
+                --paper-2:#eaf2ff;
+                --paper-3:#ffffff;
+                --ink:#162340;
+                --muted:#68799a;
+                --line:rgba(74,98,181,.14);
+                --amber:#ffc95a;
+                --amber-2:#ff9147;
+                --teal:#10c7a2;
+                --violet:#6e7cff;
+                --shadow:0 28px 60px rgba(34,48,94,.16);
               }
               *{box-sizing:border-box}
               html,body{height:100%}
@@ -67,9 +70,10 @@ export default async function ViewPage({
                 font-family:"Segoe UI",Arial,sans-serif;
                 color:var(--ink);
                 background:
-                  radial-gradient(circle at top left, rgba(180,138,75,.18), transparent 30%),
-                  radial-gradient(circle at bottom right, rgba(39,95,90,.14), transparent 32%),
-                  linear-gradient(180deg, #faf7f1 0%, #f3ede1 100%);
+                  radial-gradient(circle at top left, rgba(110,124,255,.24), transparent 30%),
+                  radial-gradient(circle at top right, rgba(16,199,162,.16), transparent 26%),
+                  radial-gradient(circle at bottom right, rgba(255,145,71,.14), transparent 32%),
+                  linear-gradient(180deg, #f7f9ff 0%, #edf6ff 100%);
                 overflow:hidden;
               }
               .shell{
@@ -98,17 +102,14 @@ export default async function ViewPage({
                 gap:14px;
               }
               .brand-mark{
-                width:48px;
-                height:48px;
+                width:56px;
+                height:56px;
                 border-radius:50%;
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                color:#fff;
-                background:linear-gradient(135deg,var(--amber),var(--amber-2));
-                box-shadow:0 16px 30px rgba(180,138,75,.26);
-                font-size:18px;
-                font-weight:700;
+                background:rgba(255,255,255,.82);
+                box-shadow:0 18px 32px rgba(34,48,94,.14);
               }
               .brand-copy{
                 min-width:0;
@@ -142,7 +143,7 @@ export default async function ViewPage({
                 padding:8px 12px;
                 border-radius:999px;
                 border:1px solid var(--line);
-                background:#fff;
+                background:rgba(255,255,255,.92);
                 color:var(--muted);
                 font-size:12px;
                 font-weight:600;
@@ -168,8 +169,8 @@ export default async function ViewPage({
               }
               .btn-primary{
                 color:#fff;
-                background:linear-gradient(135deg,var(--amber),var(--amber-2));
-                box-shadow:0 18px 30px rgba(180,138,75,.26);
+                background:linear-gradient(135deg,var(--amber-2),var(--violet),var(--teal));
+                box-shadow:0 18px 30px rgba(54,74,146,.24);
               }
               .btn-secondary{
                 color:var(--ink);
@@ -217,8 +218,9 @@ export default async function ViewPage({
                 flex:1;
                 padding:16px;
                 background:
-                  radial-gradient(circle at top right, rgba(39,95,90,.08), transparent 26%),
-                  linear-gradient(180deg, #efe6d4 0%, #f8f3ea 100%);
+                  radial-gradient(circle at top right, rgba(16,199,162,.08), transparent 26%),
+                  radial-gradient(circle at bottom left, rgba(110,124,255,.08), transparent 26%),
+                  linear-gradient(180deg, #edf4ff 0%, #f8fbff 100%);
               }
               .viewer-frame iframe{
                 width:100%;
@@ -238,7 +240,7 @@ export default async function ViewPage({
               .card{
                 border:1px solid var(--line);
                 border-radius:28px;
-                background:rgba(253,251,248,.84);
+                background:rgba(255,255,255,.84);
                 box-shadow:var(--shadow);
                 padding:20px;
               }
@@ -252,6 +254,23 @@ export default async function ViewPage({
                 color:var(--muted);
                 line-height:1.7;
                 font-size:14px;
+              }
+              .art-card{
+                overflow:hidden;
+              }
+              .art-frame{
+                margin:-4px -4px 18px;
+                border-radius:24px;
+                background:
+                  radial-gradient(circle at top left, rgba(110,124,255,.14), transparent 28%),
+                  linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.08));
+                border:1px solid rgba(110,124,255,.14);
+                padding:10px;
+              }
+              .art-frame svg{
+                display:block;
+                width:100%;
+                height:auto;
               }
               .list{
                 display:flex;
@@ -290,16 +309,18 @@ export default async function ViewPage({
                 flex-direction:column;
               }
               .mobile-fallback .icon{
-                width:76px;
-                height:76px;
+                width:86px;
+                height:86px;
                 border-radius:50%;
                 display:flex;
                 align-items:center;
                 justify-content:center;
-                background:rgba(180,138,75,.14);
-                color:var(--amber-2);
-                font-size:30px;
-                font-weight:700;
+                background:rgba(255,255,255,.88);
+                box-shadow:0 20px 38px rgba(34,48,94,.14);
+              }
+              .mobile-fallback .icon svg{
+                width:52px;
+                height:52px;
               }
               .mobile-fallback h2{
                 margin:18px 0 0;
@@ -367,7 +388,9 @@ export default async function ViewPage({
         <div className="shell">
           <div className="toolbar">
             <div className="brand">
-              <div className="brand-mark">OD</div>
+              <div className="brand-mark">
+                <BrandSymbol size={48} />
+              </div>
               <div className="brand-copy">
                 <div className="eyebrow">OneDocs Shared Viewer</div>
                 <div className="title">{meta.originalName}</div>
@@ -405,7 +428,10 @@ export default async function ViewPage({
             </div>
 
             <div className="side-panel">
-              <div className="card">
+              <div className="card art-card">
+                <div className="art-frame">
+                  <DocumentHeroArt mode="viewer" />
+                </div>
                 <div className="eyebrow">Share Experience</div>
                 <h2>Professional presentation for shared PDFs.</h2>
                 <p>
@@ -436,7 +462,9 @@ export default async function ViewPage({
           </div>
 
           <div className="mobile-fallback">
-            <div className="icon">PDF</div>
+            <div className="icon">
+              <BrandSymbol size={52} />
+            </div>
             <h2>{meta.originalName}</h2>
             <p>
               {sizeMB} MB · Uploaded {uploadDate}. Open the document in a new

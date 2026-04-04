@@ -87,15 +87,15 @@ export default function SupportPage() {
                     key={faq.q}
                     className={`rounded-[24px] border transition-all duration-200 ${
                       open
-                        ? "border-amber/25 bg-[rgba(186,138,66,.07)]"
-                        : "border-[rgba(42,34,24,.08)] bg-white/68"
+                        ? "border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(16,199,162,.06))]"
+                        : "border-[rgba(110,124,255,.1)] bg-white/72"
                     }`}
                   >
                     <button
                       onClick={() => setOpenFaq(open ? null : index)}
                       className="flex w-full items-center gap-4 px-5 py-5 text-left"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.08)] bg-white/75 text-amber">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(110,124,255,.1)] bg-white/80 text-[var(--color-violet)]">
                         <Emoji symbol={open ? "✓" : "❓"} size={16} />
                       </div>
                       <div className="min-w-0 flex-1">
@@ -131,19 +131,19 @@ export default function SupportPage() {
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="Your name"
-                className="w-full rounded-[18px] border border-[rgba(42,34,24,.12)] bg-white/78 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-amber/40 focus:bg-white focus:shadow-[0_0_0_4px_rgba(186,138,66,.12)]"
+                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="Email address"
-                className="w-full rounded-[18px] border border-[rgba(42,34,24,.12)] bg-white/78 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-amber/40 focus:bg-white focus:shadow-[0_0_0_4px_rgba(186,138,66,.12)]"
+                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <select
                 value={form.type}
                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                className="w-full rounded-[18px] border border-[rgba(42,34,24,.12)] bg-white/78 px-4 py-3 text-[14px] text-ink outline-none focus:border-amber/40 focus:bg-white focus:shadow-[0_0_0_4px_rgba(186,138,66,.12)]"
+                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               >
                 <option value="question">Question</option>
                 <option value="bug">Bug report</option>
@@ -155,13 +155,13 @@ export default function SupportPage() {
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                 placeholder="Tell us what your users need, what feels off, or what you want improved."
-                className="w-full resize-y rounded-[18px] border border-[rgba(42,34,24,.12)] bg-white/78 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-amber/40 focus:bg-white focus:shadow-[0_0_0_4px_rgba(186,138,66,.12)]"
+                className="w-full resize-y rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
 
               <div className="flex flex-wrap gap-3">
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 rounded-full border border-amber2/30 bg-gradient-to-r from-amber to-amber2 px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(186,138,66,.24)] transition-all duration-200 hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
                 >
                   <Emoji symbol="✉️" size={16} />
                   Send message

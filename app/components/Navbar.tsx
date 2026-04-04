@@ -23,7 +23,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-[100] px-3 py-3">
       <div className="surface-panel mx-auto flex w-full max-w-[1240px] items-center justify-between px-4 py-3 md:px-5">
         <Link href="/" className="flex items-center gap-3 no-underline">
-          <div className="rounded-[20px] bg-white/86 p-1.5 shadow-[0_16px_28px_rgba(93,104,214,.16)]">
+          <div className="rounded-[20px] bg-[linear-gradient(135deg,rgba(255,255,255,.94),rgba(243,248,255,.88))] p-1.5 shadow-[0_18px_30px_rgba(93,104,214,.16)]">
             <BrandSymbol size={38} />
           </div>
           <div>
@@ -43,7 +43,7 @@ export default function Navbar() {
                 href={href}
                 className={`flex items-center gap-2 rounded-full px-4 py-2 text-[14px] font-semibold no-underline transition-all duration-200 ${
                   active
-                    ? "bg-[linear-gradient(135deg,rgba(91,124,255,.14),rgba(23,184,151,.1))] text-ink2 shadow-[inset_0_0_0_1px_rgba(91,124,255,.16)]"
+                    ? "bg-[linear-gradient(135deg,rgba(110,124,255,.14),rgba(16,199,162,.12),rgba(255,145,71,.08))] text-ink2 shadow-[inset_0_0_0_1px_rgba(110,124,255,.16),0_12px_24px_rgba(54,74,146,.08)]"
                     : "text-ink3 hover:bg-white/80 hover:text-ink2"
                 }`}
               >
@@ -95,7 +95,7 @@ export default function Navbar() {
                     onClick={() => setMobileOpen(false)}
                     className={`flex items-center gap-3 rounded-[18px] px-4 py-3 no-underline transition-all duration-200 ${
                       active
-                        ? "bg-[linear-gradient(135deg,rgba(91,124,255,.14),rgba(23,184,151,.1))] text-ink2"
+                        ? "bg-[linear-gradient(135deg,rgba(110,124,255,.14),rgba(16,199,162,.12),rgba(255,145,71,.08))] text-ink2"
                         : "text-ink3 hover:bg-white/80 hover:text-ink2"
                     }`}
                   >
