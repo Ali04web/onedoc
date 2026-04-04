@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import {
-  Cormorant_Garamond,
+  DM_Sans,
   IBM_Plex_Mono,
-  Manrope,
+  Sora,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 
-const display = Cormorant_Garamond({
+const display = Sora({
   variable: "--font-display-ui",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
 });
 
-const body = Manrope({
+const body = DM_Sans({
   variable: "--font-body-ui",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
@@ -28,7 +28,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "OneDocs | Document Conversion Suite",
   description:
-    "Premium-feeling PDF and DOCX tools for analysis, conversion, sharing, and polished exports.",
+    "Fast PDF and DOCX tools for convert, analyze, and share workflows.",
 };
 
 export default function RootLayout({
