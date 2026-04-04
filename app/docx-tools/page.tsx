@@ -43,7 +43,7 @@ export default function DocxToolsPage() {
       if (!f) return;
       await run("docxHtml", async () => {
         const ab = await f.arrayBuffer(), r = await window.mammoth.convertToHtml({ arrayBuffer: ab });
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Georgia,serif;max-width:820px;margin:44px auto;padding:0 28px;line-height:1.8;color:#1a1a1a}table{border-collapse:collapse;width:100%}td,th{border:1px solid #ccc;padding:9px}</style></head><body>${r.value}</body></html>`;
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;max-width:820px;margin:44px auto;padding:0 28px;line-height:1.6;color:#18181b}table{border-collapse:collapse;width:100%;margin-top:1rem;margin-bottom:1rem}td,th{border:1px solid #e4e4e7;padding:12px;text-align:left}th{background:#f4f4f5}h1,h2,h3{color:#09090b}img{max-width:100%;height:auto}</style></head><body>${r.value}</body></html>`;
         dlText(stem(f.name) + ".html", html);
         return "DOCX → HTML";
       });
@@ -112,7 +112,7 @@ export default function DocxToolsPage() {
         const rows = text.split("\n").map((r: string) => r.split(",").map((c: string) => c.replace(/^"|"$/g, "").trim())).filter((r: string[]) => r.some((c: string) => c));
         if (!rows.length) throw new Error("Empty CSV");
         const [header, ...body] = rows;
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:'Patrick Hand',cursive;padding:32px;background:#f7f0e3;color:#1c110a}h2{margin-bottom:20px;font-size:20px;font-family:'Caveat',cursive}table{border-collapse:collapse;width:100%;border-radius:8px;overflow:hidden}th{background:#1c110a;color:#f7f0e3;padding:11px 14px;text-align:left;font-size:14px}td{padding:10px 14px;border-bottom:1px solid #e3d8be;font-size:13px}tr:nth-child(even) td{background:#ede5d0}</style></head><body><h2>${esc(f.name)} — ${body.length} rows</h2><table><thead><tr>${header.map((h: string) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body.map((row: string[]) => `<tr>${row.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></body></html>`;
+        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:32px;background:#ffffff;color:#18181b}h2{margin-bottom:20px;font-size:24px;color:#09090b}table{border-collapse:collapse;width:100%;border-radius:8px;overflow:hidden;border:1px solid #e4e4e7}th{background:#f4f4f5;color:#18181b;padding:12px 16px;text-align:left;font-size:14px;font-weight:600;border-bottom:2px solid #e4e4e7}td{padding:10px 16px;border-bottom:1px solid #e4e4e7;font-size:14px}tr:nth-child(even) td{background:#fafafa}tr:hover td{background:#f4f4f5}</style></head><body><h2>${esc(f.name)} — ${body.length} rows</h2><table><thead><tr>${header.map((h: string) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body.map((row: string[]) => `<tr>${row.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></body></html>`;
         dlText(stem(f.name) + ".html", html);
         return `${body.length} rows converted`;
       });
@@ -199,43 +199,43 @@ export default function DocxToolsPage() {
   };
 
   const docxCards = [
-    { ico: "🌐", title: "DOCX → HTML", desc: "Word doc into a styled webpage", col: "#1a5c5c", rot: 0.3, tip: "Preserves headings, bold, italic, and tables", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxHtml").file} onFile={(f: File) => s("docxHtml", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxHtml").status} type={g("docxHtml").statusType} /><HBtn onClick={convFns.docxHtml} disabled={!g("docxHtml").file} loading={g("docxHtml").loading} label="Convert & Download" tip="Downloads a self-contained .html file" /></> },
-    { ico: "📄", title: "DOCX → TXT", desc: "Strip formatting, keep the text", col: "#5c1a1a", rot: -0.2, tip: "Plain text only — no bold, no structure", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxTxt").file} onFile={(f: File) => s("docxTxt", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxTxt").status} type={g("docxTxt").statusType} /><HBtn onClick={convFns.docxTxt} disabled={!g("docxTxt").file} loading={g("docxTxt").loading} label="Convert & Download" tip="Saves a clean .txt file" /></> },
-    { ico: "📑", title: "DOCX → Markdown", desc: "Word to clean .md format", col: "#1a3c7a", rot: 0.2, tip: "Headings and formatting become Markdown syntax", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxMd").file} onFile={(f: File) => s("docxMd", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxMd").status} type={g("docxMd").statusType} /><HBtn onClick={convFns.docxMd} disabled={!g("docxMd").file} loading={g("docxMd").loading} label="Convert & Download" tip="Great for GitHub READMEs and note apps" /></> },
-    { ico: "📄", title: "DOCX → PDF", desc: "Convert Word document into a clean PDF", col: "#b02020", rot: -0.3, tip: "Extracts text and creates a properly formatted PDF with Helvetica font", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxPdf").file} onFile={(f: File) => s("docxPdf", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxPdf").status} type={g("docxPdf").statusType} /><HBtn onClick={convFns.docxPdf} disabled={!g("docxPdf").file} loading={g("docxPdf").loading} label="Convert to PDF" tip="Creates an A4 PDF with title and clean formatting" /></> },
+    { ico: "🌐", title: "DOCX → HTML", desc: "Word doc into a styled webpage", col: "#10b981", tip: "Preserves headings, bold, italic, and tables", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxHtml").file} onFile={(f: File) => s("docxHtml", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxHtml").status} type={g("docxHtml").statusType} /><HBtn onClick={convFns.docxHtml} disabled={!g("docxHtml").file} loading={g("docxHtml").loading} label="Convert & Download" tip="Downloads a self-contained .html file" /></> },
+    { ico: "📄", title: "DOCX → TXT", desc: "Strip formatting, keep the text", col: "#ef4444", tip: "Plain text only — no bold, no structure", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxTxt").file} onFile={(f: File) => s("docxTxt", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxTxt").status} type={g("docxTxt").statusType} /><HBtn onClick={convFns.docxTxt} disabled={!g("docxTxt").file} loading={g("docxTxt").loading} label="Convert & Download" tip="Saves a clean .txt file" /></> },
+    { ico: "📑", title: "DOCX → Markdown", desc: "Word to clean .md format", col: "#3b82f6", tip: "Headings and formatting become Markdown syntax", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxMd").file} onFile={(f: File) => s("docxMd", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxMd").status} type={g("docxMd").statusType} /><HBtn onClick={convFns.docxMd} disabled={!g("docxMd").file} loading={g("docxMd").loading} label="Convert & Download" tip="Great for GitHub READMEs and note apps" /></> },
+    { ico: "📄", title: "DOCX → PDF", desc: "Convert Word document into a clean PDF", col: "#8b5cf6", tip: "Extracts text and creates a properly formatted PDF with Helvetica font", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxPdf").file} onFile={(f: File) => s("docxPdf", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxPdf").status} type={g("docxPdf").statusType} /><HBtn onClick={convFns.docxPdf} disabled={!g("docxPdf").file} loading={g("docxPdf").loading} label="Convert to PDF" tip="Creates an A4 PDF with title and clean formatting" /></> },
   ];
 
   const textCards = [
-    { ico: "📜", title: "TXT → PDF", desc: "Turn any text or Markdown into a PDF", col: "#5c1a1a", rot: 0.3, tip: "Long lines wrap automatically across pages", body: <><FZone accept=".txt,.md" label="Choose a TXT or MD file" file={g("txtPdf").file} onFile={(f: File) => s("txtPdf", { file: f })} tip="Plain text or Markdown files supported" /><CStat msg={g("txtPdf").status} type={g("txtPdf").statusType} /><HBtn onClick={convFns.txtPdf} disabled={!g("txtPdf").file} loading={g("txtPdf").loading} label="Create PDF" tip="Generates a clean A4 PDF from your text" /></> },
-    { ico: "📊", title: "CSV → HTML Table", desc: "Spreadsheet data as a styled webpage", col: "#1a5c20", rot: -0.3, tip: "Builds a readable HTML page from any CSV", body: <><FZone accept=".csv" label="Choose a CSV file" file={g("csvHtml").file} onFile={(f: File) => s("csvHtml", { file: f })} tip="Standard comma-separated files only" /><CStat msg={g("csvHtml").status} type={g("csvHtml").statusType} /><HBtn onClick={convFns.csvHtml} disabled={!g("csvHtml").file} loading={g("csvHtml").loading} label="Convert & Download" tip="Downloads a styled, self-contained HTML table" /></> },
+    { ico: "📜", title: "TXT → PDF", desc: "Turn any text or Markdown into a PDF", col: "#ef4444", tip: "Long lines wrap automatically across pages", body: <><FZone accept=".txt,.md" label="Choose a TXT or MD file" file={g("txtPdf").file} onFile={(f: File) => s("txtPdf", { file: f })} tip="Plain text or Markdown files supported" /><CStat msg={g("txtPdf").status} type={g("txtPdf").statusType} /><HBtn onClick={convFns.txtPdf} disabled={!g("txtPdf").file} loading={g("txtPdf").loading} label="Create PDF" tip="Generates a clean A4 PDF from your text" /></> },
+    { ico: "📊", title: "CSV → HTML Table", desc: "Spreadsheet data as a styled webpage", col: "#10b981", tip: "Builds a readable HTML page from any CSV", body: <><FZone accept=".csv" label="Choose a CSV file" file={g("csvHtml").file} onFile={(f: File) => s("csvHtml", { file: f })} tip="Standard comma-separated files only" /><CStat msg={g("csvHtml").status} type={g("csvHtml").statusType} /><HBtn onClick={convFns.csvHtml} disabled={!g("csvHtml").file} loading={g("csvHtml").loading} label="Convert & Download" tip="Downloads a styled, self-contained HTML table" /></> },
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto py-6 md:py-[28px] px-4 md:px-[32px] lg:px-16">
+    <div className="flex-1 overflow-y-auto py-8 px-6 md:px-10 lg:px-20 max-w-7xl mx-auto w-full">
       {!ready && (
-        <div className="text-center mb-4 flex items-center justify-center gap-[6px]">
-          <Emoji symbol="⏳" size={14} className="text-ink4" />
-          <span className="font-patrick text-[13px] text-ink4 italic">Loading libraries…</span>
+        <div className="text-center mb-6 flex items-center justify-center gap-2 p-3 bg-amber/5 text-amber rounded-lg border border-amber/10">
+          <Emoji symbol="⏳" size={16} />
+          <span className="text-sm font-medium">Loading libraries…</span>
         </div>
       )}
 
-      <div className="mb-[36px]">
+      <div className="mb-12">
         <SHead ico="📝" label="DOCX Conversions" sub="Convert Word documents to various formats" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
-          {docxCards.map(({ ico, title, desc, col, rot, body, tip }) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+          {docxCards.map(({ ico, title, desc, col, body, tip }) => (
             <Tip key={title} tip={tip} side="top">
-              <CCard ico={ico} title={title} desc={desc} accentCol={col} rot={rot}>{body}</CCard>
+              <CCard ico={ico} title={title} desc={desc} accentCol={col}>{body}</CCard>
             </Tip>
           ))}
         </div>
       </div>
 
-      <div className="mb-[36px]">
+      <div className="mb-12">
         <SHead ico="✏️" label="Text & Data" sub="Convert plain text and spreadsheet data" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[16px]">
-          {textCards.map(({ ico, title, desc, col, rot, body, tip }) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {textCards.map(({ ico, title, desc, col, body, tip }) => (
             <Tip key={title} tip={tip} side="top">
-              <CCard ico={ico} title={title} desc={desc} accentCol={col} rot={rot}>{body}</CCard>
+              <CCard ico={ico} title={title} desc={desc} accentCol={col}>{body}</CCard>
             </Tip>
           ))}
         </div>
