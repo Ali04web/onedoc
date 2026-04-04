@@ -1,241 +1,432 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useScripts } from "@/app/hooks/useScripts";
-import { stem, dlBlob, dlText, esc } from "@/app/lib/utils";
-import { SHead, CCard, FZone, CStat, HBtn, Tip, Toast } from "@/app/components/DocLensUI";
+import {
+  buildStandaloneHtml,
+  convertDocxToRichHtml,
+  htmlToMarkdown,
+  openPrintPreviewWindow,
+  parseCsv,
+  type MammothLike,
+} from "@/app/lib/rich-exports";
+import { dlBlob, dlText, esc, stem } from "@/app/lib/utils";
+import {
+  CCard,
+  CStat,
+  FZone,
+  HBtn,
+  SHead,
+  Tip,
+  Toast,
+} from "@/app/components/DocLensUI";
 import { Emoji } from "@/app/components/Icons";
 
 declare global {
   interface Window {
-    mammoth: any;
+    mammoth: MammothLike;
     PDFLib: any;
   }
 }
 
-export default function DocxToolsPage() {
-  const ready = useScripts([
-    "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js",
-  ]);
+const MAMMOTH_SRC =
+  "https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js";
+const PDF_LIB_SRC =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js";
 
-  const [st, setSt] = useState<any>({});
+function normalizePlainText(text: string): string {
+  return text.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+export default function DocxToolsPage() {
+  const ready = useScripts([MAMMOTH_SRC, PDF_LIB_SRC]);
+
+  const [st, setSt] = useState<Record<string, Record<string, any>>>({});
   const [toast, setToast] = useState<string | null>(null);
   const showToast = useCallback((msg: string) => setToast(msg), []);
 
-  const g = (k: string) => st[k] || {};
-  const s = (k: string, v: any) => setSt((p: any) => ({ ...p, [k]: { ...p[k], ...v } }));
+  const g = (key: string) => st[key] || {};
+  const s = (key: string, value: Record<string, any>) =>
+    setSt((prev) => ({ ...prev, [key]: { ...prev[key], ...value } }));
 
-  async function run(key: string, fn: any) {
+  async function run(key: string, fn: () => Promise<string>) {
     s(key, { loading: true, status: "", statusType: "" });
     try {
-      const msg = await fn();
-      s(key, { loading: false, status: msg, statusType: "ok" });
-      showToast(msg);
-    } catch (e: any) {
-      s(key, { loading: false, status: e.message, statusType: "err" });
+      const message = await fn();
+      s(key, { loading: false, status: message, statusType: "ok" });
+      showToast(message);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Something went wrong.";
+      s(key, { loading: false, status: message, statusType: "err" });
     }
   }
 
   const convFns = {
     docxHtml: async () => {
-      const f = g("docxHtml").file;
-      if (!f) return;
+      const file = g("docxHtml").file as File | undefined;
+      if (!file) return;
+
       await run("docxHtml", async () => {
-        const ab = await f.arrayBuffer(), r = await window.mammoth.convertToHtml({ arrayBuffer: ab });
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;max-width:820px;margin:44px auto;padding:0 28px;line-height:1.6;color:#18181b}table{border-collapse:collapse;width:100%;margin-top:1rem;margin-bottom:1rem}td,th{border:1px solid #e4e4e7;padding:12px;text-align:left}th{background:#f4f4f5}h1,h2,h3{color:#09090b}img{max-width:100%;height:auto}</style></head><body>${r.value}</body></html>`;
-        dlText(stem(f.name) + ".html", html);
-        return "DOCX → HTML";
+        const html = await convertDocxToRichHtml(
+          window.mammoth,
+          await file.arrayBuffer()
+        );
+        dlText(stem(file.name) + ".html", buildStandaloneHtml(file.name, html));
+        return "DOCX exported as a styled HTML page with embedded images";
       });
     },
     docxTxt: async () => {
-      const f = g("docxTxt").file;
-      if (!f) return;
+      const file = g("docxTxt").file as File | undefined;
+      if (!file) return;
+
       await run("docxTxt", async () => {
-        const ab = await f.arrayBuffer(), r = await window.mammoth.extractRawText({ arrayBuffer: ab });
-        dlText(stem(f.name) + ".txt", r.value);
-        return "Text extracted";
+        const result = await window.mammoth.extractRawText({
+          arrayBuffer: await file.arrayBuffer(),
+        });
+        dlText(stem(file.name) + ".txt", normalizePlainText(result.value));
+        return "DOCX text extracted and cleaned up";
       });
     },
     docxMd: async () => {
-      const f = g("docxMd").file;
-      if (!f) return;
+      const file = g("docxMd").file as File | undefined;
+      if (!file) return;
+
       await run("docxMd", async () => {
-        const ab = await f.arrayBuffer(), r = await window.mammoth.convertToHtml({ arrayBuffer: ab });
-        const md = r.value
-          .replace(/<h1[^>]*>(.*?)<\/h1>/gi, "# $1\n")
-          .replace(/<h2[^>]*>(.*?)<\/h2>/gi, "## $1\n")
-          .replace(/<h3[^>]*>(.*?)<\/h3>/gi, "### $1\n")
-          .replace(/<strong[^>]*>(.*?)<\/strong>/gi, "**$1**")
-          .replace(/<em[^>]*>(.*?)<\/em>/gi, "*$1*")
-          .replace(/<li[^>]*>(.*?)<\/li>/gi, "- $1\n")
-          .replace(/<br\s*\/?>/gi, "\n")
-          .replace(/<p[^>]*>(.*?)<\/p>/gi, "$1\n\n")
-          .replace(/<[^>]+>/g, "")
-          .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, " ")
-          .replace(/\n{3,}/g, "\n\n").trim();
-        dlText(stem(f.name) + ".md", md);
-        return "DOCX → Markdown";
+        const html = await convertDocxToRichHtml(
+          window.mammoth,
+          await file.arrayBuffer()
+        );
+        dlText(stem(file.name) + ".md", htmlToMarkdown(html));
+        return "DOCX converted to cleaner Markdown";
       });
     },
     txtPdf: async () => {
-      const f = g("txtPdf").file;
-      if (!f) return;
+      const file = g("txtPdf").file as File | undefined;
+      if (!file) return;
+
       await run("txtPdf", async () => {
-        const { PDFDocument, rgb } = window.PDFLib;
-        const text = await f.text(), pdf = await PDFDocument.create();
-        const fs = 11, lh = 15, mg = 50, pw = 595, ph = 842;
-        const cpl = Math.floor((pw - mg * 2) / (fs * 0.55));
-        const allLines: string[] = [];
-        text.split("\n").forEach((line: string) => {
-          if (!line.trim()) { allLines.push(""); return; }
-          let l = line;
-          while (l.length > cpl) { allLines.push(l.substring(0, cpl)); l = l.substring(cpl); }
-          allLines.push(l);
-        });
-        let page = pdf.addPage([pw, ph]), y = ph - mg;
-        for (const line of allLines) {
-          if (y < mg + lh) { page = pdf.addPage([pw, ph]); y = ph - mg; }
-          if (line) page.drawText(line, { x: mg, y, size: fs, color: rgb(0.1, 0.1, 0.1) });
-          y -= lh;
-        }
-        const bytes = await pdf.save();
-        dlBlob(stem(f.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
-        return "PDF created";
-      });
-    },
-    csvHtml: async () => {
-      const f = g("csvHtml").file;
-      if (!f) return;
-      await run("csvHtml", async () => {
-        const text = await f.text();
-        const rows = text.split("\n").map((r: string) => r.split(",").map((c: string) => c.replace(/^"|"$/g, "").trim())).filter((r: string[]) => r.some((c: string) => c));
-        if (!rows.length) throw new Error("Empty CSV");
-        const [header, ...body] = rows;
-        const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:32px;background:#ffffff;color:#18181b}h2{margin-bottom:20px;font-size:24px;color:#09090b}table{border-collapse:collapse;width:100%;border-radius:8px;overflow:hidden;border:1px solid #e4e4e7}th{background:#f4f4f5;color:#18181b;padding:12px 16px;text-align:left;font-size:14px;font-weight:600;border-bottom:2px solid #e4e4e7}td{padding:10px 16px;border-bottom:1px solid #e4e4e7;font-size:14px}tr:nth-child(even) td{background:#fafafa}tr:hover td{background:#f4f4f5}</style></head><body><h2>${esc(f.name)} — ${body.length} rows</h2><table><thead><tr>${header.map((h: string) => `<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${body.map((row: string[]) => `<tr>${row.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></body></html>`;
-        dlText(stem(f.name) + ".html", html);
-        return `${body.length} rows converted`;
-      });
-    },
-    docxPdf: async () => {
-      const f = g("docxPdf").file;
-      if (!f) return;
-      await run("docxPdf", async () => {
-        const ab = await f.arrayBuffer();
-        const result = await window.mammoth.extractRawText({ arrayBuffer: ab });
-        const text = result.value;
-        if (!text.trim()) throw new Error("No text content found in DOCX");
         const { PDFDocument, rgb, StandardFonts } = window.PDFLib;
+        const text = await file.text();
         const pdf = await PDFDocument.create();
-        const font = await pdf.embedFont(StandardFonts.Helvetica);
-        const boldFont = await pdf.embedFont(StandardFonts.HelveticaBold);
-        const fontSize = 11;
-        const lineHeight = 16;
-        const margin = 54;
-        const pageWidth = 595;
-        const pageHeight = 842;
-        const maxTextWidth = pageWidth - margin * 2;
-        const allLines: string[] = [];
-        text.split("\n").forEach((line: string) => {
-          if (!line.trim()) {
-            allLines.push("");
-            return;
-          }
-          const words = line.split(/\s+/);
-          let currentLine = "";
-          for (const word of words) {
-            const test = currentLine ? currentLine + " " + word : word;
-            const width = font.widthOfTextAtSize(test, fontSize);
-            if (width > maxTextWidth && currentLine) {
-              allLines.push(currentLine);
-              currentLine = word;
-            } else {
-              currentLine = test;
+        const font = await pdf.embedFont(StandardFonts.Courier);
+        const fontSize = 10.5;
+        const lineHeight = 15;
+        const margin = 48;
+        const pageWidth = 595.28;
+        const pageHeight = 841.89;
+        const maxWidth = pageWidth - margin * 2;
+        const lines: string[] = [];
+
+        normalizePlainText(text)
+          .split("\n")
+          .forEach((line: string) => {
+            if (!line.trim()) {
+              lines.push("");
+              return;
             }
-          }
-          if (currentLine) allLines.push(currentLine);
-        });
+
+            let current = "";
+            line.split(/\s+/).forEach((word) => {
+              const candidate = current ? `${current} ${word}` : word;
+              const width = font.widthOfTextAtSize(candidate, fontSize);
+              if (width > maxWidth && current) {
+                lines.push(current);
+                current = word;
+              } else {
+                current = candidate;
+              }
+            });
+
+            if (current) lines.push(current);
+          });
+
         let page = pdf.addPage([pageWidth, pageHeight]);
         let y = pageHeight - margin;
-        // Add title
-        page.drawText(f.name.replace(/\.docx$/i, ""), {
-          x: margin,
-          y,
-          size: 18,
-          font: boldFont,
-          color: rgb(0.12, 0.07, 0.04),
-        });
-        y -= 28;
-        // Draw separator line
-        page.drawLine({
-          start: { x: margin, y },
-          end: { x: pageWidth - margin, y },
-          thickness: 0.8,
-          color: rgb(0.8, 0.75, 0.68),
-        });
-        y -= 18;
-        for (const line of allLines) {
+
+        for (const line of lines) {
           if (y < margin + lineHeight) {
             page = pdf.addPage([pageWidth, pageHeight]);
             y = pageHeight - margin;
           }
+
           if (line) {
             page.drawText(line, {
               x: margin,
               y,
               size: fontSize,
-              font: font,
+              font,
               color: rgb(0.1, 0.1, 0.1),
             });
           }
+
           y -= lineHeight;
         }
+
         const bytes = await pdf.save();
-        dlBlob(stem(f.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
-        const pageCount = pdf.getPageCount();
-        return `DOCX → PDF (${pageCount} page${pageCount > 1 ? "s" : ""})`;
+        dlBlob(stem(file.name) + ".pdf", new Blob([bytes], { type: "application/pdf" }));
+        return "Text laid out as a clean, readable PDF";
+      });
+    },
+    csvHtml: async () => {
+      const file = g("csvHtml").file as File | undefined;
+      if (!file) return;
+
+      await run("csvHtml", async () => {
+        const rows = parseCsv(await file.text());
+        if (!rows.length) {
+          throw new Error("The CSV file is empty.");
+        }
+
+        const [header, ...body] = rows;
+        const tableHtml = `<h2>${esc(file.name)} - ${body.length} rows</h2><table><thead><tr>${header
+          .map((cell) => `<th>${esc(cell)}</th>`)
+          .join("")}</tr></thead><tbody>${body
+          .map(
+            (row) =>
+              `<tr>${row
+                .map((cell) => `<td>${esc(cell)}</td>`)
+                .join("")}</tr>`
+          )
+          .join("")}</tbody></table>`;
+
+        dlText(stem(file.name) + ".html", buildStandaloneHtml(file.name, tableHtml));
+        return `${body.length} CSV row(s) converted with quoted fields handled correctly`;
+      });
+    },
+    docxPdf: async () => {
+      const file = g("docxPdf").file as File | undefined;
+      if (!file) return;
+
+      await run("docxPdf", async () => {
+        const preview = openPrintPreviewWindow(stem(file.name));
+        const html = await convertDocxToRichHtml(
+          window.mammoth,
+          await file.arrayBuffer()
+        );
+        const documentHtml = buildStandaloneHtml(file.name, html);
+        let printed = false;
+        const printOnce = () => {
+          if (printed) return;
+          printed = true;
+          preview.print();
+        };
+
+        preview.document.open();
+        preview.document.write(documentHtml);
+        preview.document.close();
+        preview.onload = printOnce;
+        setTimeout(printOnce, 450);
+
+        return "Print-ready DOCX preview opened with formatting preserved";
       });
     },
   };
 
   const docxCards = [
-    { ico: "🌐", title: "DOCX → HTML", desc: "Word doc into a styled webpage", col: "#10b981", tip: "Preserves headings, bold, italic, and tables", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxHtml").file} onFile={(f: File) => s("docxHtml", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxHtml").status} type={g("docxHtml").statusType} /><HBtn onClick={convFns.docxHtml} disabled={!g("docxHtml").file} loading={g("docxHtml").loading} label="Convert & Download" tip="Downloads a self-contained .html file" /></> },
-    { ico: "📄", title: "DOCX → TXT", desc: "Strip formatting, keep the text", col: "#ef4444", tip: "Plain text only — no bold, no structure", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxTxt").file} onFile={(f: File) => s("docxTxt", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxTxt").status} type={g("docxTxt").statusType} /><HBtn onClick={convFns.docxTxt} disabled={!g("docxTxt").file} loading={g("docxTxt").loading} label="Convert & Download" tip="Saves a clean .txt file" /></> },
-    { ico: "📑", title: "DOCX → Markdown", desc: "Word to clean .md format", col: "#3b82f6", tip: "Headings and formatting become Markdown syntax", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxMd").file} onFile={(f: File) => s("docxMd", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxMd").status} type={g("docxMd").statusType} /><HBtn onClick={convFns.docxMd} disabled={!g("docxMd").file} loading={g("docxMd").loading} label="Convert & Download" tip="Great for GitHub READMEs and note apps" /></> },
-    { ico: "📄", title: "DOCX → PDF", desc: "Convert Word document into a clean PDF", col: "#8b5cf6", tip: "Extracts text and creates a properly formatted PDF with Helvetica font", body: <><FZone accept=".docx" label="Drop a DOCX here" file={g("docxPdf").file} onFile={(f: File) => s("docxPdf", { file: f })} tip="Click to browse Word documents" /><CStat msg={g("docxPdf").status} type={g("docxPdf").statusType} /><HBtn onClick={convFns.docxPdf} disabled={!g("docxPdf").file} loading={g("docxPdf").loading} label="Convert to PDF" tip="Creates an A4 PDF with title and clean formatting" /></> },
+    {
+      ico: "🌐",
+      title: "DOCX -> HTML",
+      desc: "Export Word documents as polished, self-contained HTML pages",
+      col: "#10b981",
+      tip: "Better for publishing, previews, and client reviews",
+      body: (
+        <>
+          <FZone
+            accept=".docx"
+            label="Drop a DOCX here"
+            file={g("docxHtml").file}
+            onFile={(file: File) => s("docxHtml", { file })}
+            tip="Choose the Word document you want to publish as HTML"
+          />
+          <CStat msg={g("docxHtml").status} type={g("docxHtml").statusType} />
+          <HBtn
+            onClick={convFns.docxHtml}
+            disabled={!g("docxHtml").file}
+            loading={g("docxHtml").loading}
+            label="Export HTML"
+            tip="Downloads a styled HTML file"
+          />
+        </>
+      ),
+    },
+    {
+      ico: "📄",
+      title: "DOCX -> TXT",
+      desc: "Strip away formatting and keep a cleaner plain-text version",
+      col: "#ef4444",
+      tip: "Ideal for AI prompts, indexing, and content cleanup",
+      body: (
+        <>
+          <FZone
+            accept=".docx"
+            label="Drop a DOCX here"
+            file={g("docxTxt").file}
+            onFile={(file: File) => s("docxTxt", { file })}
+            tip="Choose the Word document you want to flatten into text"
+          />
+          <CStat msg={g("docxTxt").status} type={g("docxTxt").statusType} />
+          <HBtn
+            onClick={convFns.docxTxt}
+            disabled={!g("docxTxt").file}
+            loading={g("docxTxt").loading}
+            label="Extract Text"
+            tip="Downloads a TXT file"
+          />
+        </>
+      ),
+    },
+    {
+      ico: "📑",
+      title: "DOCX -> Markdown",
+      desc: "Convert Word content into cleaner Markdown with headings and tables",
+      col: "#3b82f6",
+      tip: "Great for docs, READMEs, knowledge bases, and CMS pipelines",
+      body: (
+        <>
+          <FZone
+            accept=".docx"
+            label="Drop a DOCX here"
+            file={g("docxMd").file}
+            onFile={(file: File) => s("docxMd", { file })}
+            tip="Choose the Word document you want to turn into Markdown"
+          />
+          <CStat msg={g("docxMd").status} type={g("docxMd").statusType} />
+          <HBtn
+            onClick={convFns.docxMd}
+            disabled={!g("docxMd").file}
+            loading={g("docxMd").loading}
+            label="Export Markdown"
+            tip="Downloads a .md file"
+          />
+        </>
+      ),
+    },
+    {
+      ico: "🖨️",
+      title: "DOCX -> PDF",
+      desc: "Open a print-ready preview that preserves far more formatting",
+      col: "#ef4444",
+      tip: "Better visual fidelity than flattening DOCX into plain text first",
+      body: (
+        <>
+          <FZone
+            accept=".docx"
+            label="Drop a DOCX here"
+            file={g("docxPdf").file}
+            onFile={(file: File) => s("docxPdf", { file })}
+            tip="Choose the Word document you want to print as PDF"
+          />
+          <div className="rounded-lg border border-paper3 bg-paper px-3 py-2 text-xs leading-relaxed text-ink4">
+            This opens a print-ready preview in a new tab so your browser can
+            save it as PDF with much better formatting retention.
+          </div>
+          <CStat msg={g("docxPdf").status} type={g("docxPdf").statusType} />
+          <HBtn
+            onClick={convFns.docxPdf}
+            disabled={!g("docxPdf").file}
+            loading={g("docxPdf").loading}
+            label="Open Print Preview"
+            tip="Use your browser's Save as PDF option"
+          />
+        </>
+      ),
+    },
   ];
 
   const textCards = [
-    { ico: "📜", title: "TXT → PDF", desc: "Turn any text or Markdown into a PDF", col: "#ef4444", tip: "Long lines wrap automatically across pages", body: <><FZone accept=".txt,.md" label="Choose a TXT or MD file" file={g("txtPdf").file} onFile={(f: File) => s("txtPdf", { file: f })} tip="Plain text or Markdown files supported" /><CStat msg={g("txtPdf").status} type={g("txtPdf").statusType} /><HBtn onClick={convFns.txtPdf} disabled={!g("txtPdf").file} loading={g("txtPdf").loading} label="Create PDF" tip="Generates a clean A4 PDF from your text" /></> },
-    { ico: "📊", title: "CSV → HTML Table", desc: "Spreadsheet data as a styled webpage", col: "#10b981", tip: "Builds a readable HTML page from any CSV", body: <><FZone accept=".csv" label="Choose a CSV file" file={g("csvHtml").file} onFile={(f: File) => s("csvHtml", { file: f })} tip="Standard comma-separated files only" /><CStat msg={g("csvHtml").status} type={g("csvHtml").statusType} /><HBtn onClick={convFns.csvHtml} disabled={!g("csvHtml").file} loading={g("csvHtml").loading} label="Convert & Download" tip="Downloads a styled, self-contained HTML table" /></> },
+    {
+      ico: "📝",
+      title: "TXT -> PDF",
+      desc: "Lay out plain text and Markdown content into a readable PDF",
+      col: "#ef4444",
+      tip: "Uses wrapped text and a monospaced font for a cleaner result",
+      body: (
+        <>
+          <FZone
+            accept=".txt,.md"
+            label="Choose a TXT or MD file"
+            file={g("txtPdf").file}
+            onFile={(file: File) => s("txtPdf", { file })}
+            tip="Plain text and Markdown files are both supported"
+          />
+          <CStat msg={g("txtPdf").status} type={g("txtPdf").statusType} />
+          <HBtn
+            onClick={convFns.txtPdf}
+            disabled={!g("txtPdf").file}
+            loading={g("txtPdf").loading}
+            label="Create PDF"
+            tip="Downloads a clean PDF"
+          />
+        </>
+      ),
+    },
+    {
+      ico: "📊",
+      title: "CSV -> HTML Table",
+      desc: "Turn spreadsheet data into a cleaner HTML table, even with quoted commas",
+      col: "#10b981",
+      tip: "Safer than naive CSV splitting for customer exports",
+      body: (
+        <>
+          <FZone
+            accept=".csv"
+            label="Choose a CSV file"
+            file={g("csvHtml").file}
+            onFile={(file: File) => s("csvHtml", { file })}
+            tip="Standard CSV files are supported, including quoted cells"
+          />
+          <CStat msg={g("csvHtml").status} type={g("csvHtml").statusType} />
+          <HBtn
+            onClick={convFns.csvHtml}
+            disabled={!g("csvHtml").file}
+            loading={g("csvHtml").loading}
+            label="Export HTML"
+            tip="Downloads a styled HTML table"
+          />
+        </>
+      ),
+    },
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto py-8 px-6 md:px-10 lg:px-20 max-w-7xl mx-auto w-full">
+    <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col overflow-y-auto px-6 py-8 md:px-10 lg:px-20">
       {!ready && (
-        <div className="text-center mb-6 flex items-center justify-center gap-2 p-3 bg-amber/5 text-amber rounded-lg border border-amber/10">
+        <div className="mb-6 flex items-center justify-center gap-2 rounded-lg border border-amber/10 bg-amber/5 p-3 text-center text-amber">
           <Emoji symbol="⏳" size={16} />
-          <span className="text-sm font-medium">Loading libraries…</span>
+          <span className="text-sm font-medium">Loading document libraries...</span>
         </div>
       )}
 
-      <div className="mb-12">
-        <SHead ico="📝" label="DOCX Conversions" sub="Convert Word documents to various formats" />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+      <div className="mb-10">
+        <SHead
+          ico="📝"
+          label="DOCX Conversions"
+          sub="Cleaner exports, better formatting retention, and sturdier data handling"
+        />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {docxCards.map(({ ico, title, desc, col, body, tip }) => (
             <Tip key={title} tip={tip} side="top">
-              <CCard ico={ico} title={title} desc={desc} accentCol={col}>{body}</CCard>
+              <CCard ico={ico} title={title} desc={desc} accentCol={col}>
+                {body}
+              </CCard>
             </Tip>
           ))}
         </div>
       </div>
 
-      <div className="mb-12">
-        <SHead ico="✏️" label="Text & Data" sub="Convert plain text and spreadsheet data" />
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mb-10">
+        <SHead
+          ico="✏️"
+          label="Text and Data"
+          sub="Sharper output for plain text, Markdown, and CSV conversions"
+        />
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {textCards.map(({ ico, title, desc, col, body, tip }) => (
             <Tip key={title} tip={tip} side="top">
-              <CCard ico={ico} title={title} desc={desc} accentCol={col}>{body}</CCard>
+              <CCard ico={ico} title={title} desc={desc} accentCol={col}>
+                {body}
+              </CCard>
             </Tip>
           ))}
         </div>

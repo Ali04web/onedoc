@@ -199,7 +199,7 @@ export default function SupportPage() {
                 </Tip>
                 <Tip tip="Contact us on X (Twitter)" side="top">
                   <a
-                    href="https://x.com"
+                    href="https://x.com/alivldm"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-3 px-6 bg-paper hover:bg-paper3 text-ink2 text-[15px] font-semibold rounded-lg border border-paper3 shadow-sm hover:shadow transition-all duration-200 no-underline cursor-pointer w-full sm:w-auto flex items-center justify-center gap-2"

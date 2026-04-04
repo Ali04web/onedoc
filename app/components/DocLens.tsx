@@ -2,10 +2,14 @@
 
 import React, { useState, useCallback } from "react";
 import { useScripts } from "../hooks/useScripts";
+import { extractPdfFile } from "../lib/pdf-client";
 import { computeStats } from "../lib/utils";
 import { Tip, Toast, DItem } from "./DocLensUI";
 import { TView, StatsView, SearchView, ExportView } from "./AnalyzeViews";
 import { Emoji } from "./Icons";
+
+const PDF_WORKER_SRC =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 export default function DocLens() {
   const ready = useScripts([
@@ -35,18 +39,14 @@ export default function DocLens() {
       if (!ready) await new Promise(r => setTimeout(r, 1500));
       let text = "";
       if (type === "pdf") {
-        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-        const ab = await file.arrayBuffer(), pdf = await window.pdfjsLib.getDocument({ data: ab }).promise;
-        doc.pages = pdf.numPages;
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const p = await pdf.getPage(i), c = await p.getTextContent();
-          text += c.items.map((x: any) => x.str).join(" ") + "\n\n";
-        }
+        const extraction = await extractPdfFile(file, PDF_WORKER_SRC);
+        doc.pages = extraction.pageCount;
+        text = extraction.text;
       } else {
         const ab = await file.arrayBuffer(), r = await window.mammoth.extractRawText({ arrayBuffer: ab });
         text = r.value;
       }
-      doc.text = text.trim();
+      doc.text = text.trim() || "This file does not appear to contain extractable text.";
       doc.stats = computeStats(doc.text);
     } catch (e) {
       doc.text = "⚠️ Could not extract text from this file.";

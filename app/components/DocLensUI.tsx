@@ -103,8 +103,8 @@ export function HInput(props: any) {
   return <input {...props} className={`bg-paper border border-paper3 focus:border-amber focus:ring-1 focus:ring-amber/50 rounded-lg py-2.5 px-3 text-ink text-sm outline-none w-full transition-all duration-200 ${props.className || ""}`} />;
 }
 
-export function HSel({ value, onChange, children, className }: any) {
-  return <select value={value} onChange={onChange} className={`bg-paper border border-paper3 focus:border-amber focus:ring-1 focus:ring-amber/50 rounded-lg py-2.5 px-3 text-ink text-sm outline-none w-full cursor-pointer transition-all duration-200 ${className || ""}`}>{children}</select>;
+export function HSel({ className, children, ...props }: any) {
+  return <select {...props} className={`bg-paper border border-paper3 focus:border-amber focus:ring-1 focus:ring-amber/50 rounded-lg py-2.5 px-3 text-ink text-sm outline-none w-full cursor-pointer transition-all duration-200 ${className || ""}`}>{children}</select>;
 }
 
 export function CStat({ msg, type }: any) {
