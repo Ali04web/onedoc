@@ -620,6 +620,61 @@ export default function PdfToolsPage() {
     },
   ];
 
+  const securityCards = [
+    {
+      title: "Lock PDF",
+      description: "Secure your document by requiring a password to open it.",
+      accent: "#b33f3f",
+      icon: <UIcon name="Lock" size={24} />,
+      tip: "Encrypts the PDF so nobody can open it without the password.",
+      body: (
+        <>
+          <FZone accept=".pdf" label="Choose a PDF" file={getTool("lock").file} onFile={(file: File) => setTool("lock", { file })} tip="Upload the PDF you want to lock." />
+          <HInput type="password" placeholder="Enter a secure password" value={getTool("lock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("lock", { password: e.target.value })} tip="Choose the password required to open the file." />
+          <CStat msg={getTool("lock").status} type={getTool("lock").statusType} />
+          <HBtn onClick={async () => {
+             const file = getTool("lock").file;
+             const password = getTool("lock").password;
+             if (!file || !password) return;
+             await run("lock", async () => {
+                const pdfLibEncrypt = await import("pdf-lib-plus-encrypt");
+                const pdf = await pdfLibEncrypt.PDFDocument.load(await file.arrayBuffer());
+                const bytes = await pdf.save({ userPassword: password, ownerPassword: password });
+                dlBlob(`${stem(file.name)}_locked.pdf`, new Blob([bytes], { type: "application/pdf" }));
+                return "PDF locked successfully.";
+             });
+          }} disabled={!getTool("lock").file || !getTool("lock").password} loading={getTool("lock").loading} label="Lock PDF" tip="Downloads the encrypted copy." />
+       </>
+      ),
+    },
+    {
+      title: "Unlock PDF",
+      description: "Remove the password from an encrypted document permanently.",
+      accent: "#3f90b3",
+      icon: <UIcon name="Unlock" size={24} />,
+      tip: "You must know the current password to unlock it.",
+      body: (
+        <>
+          <FZone accept=".pdf" label="Choose locked PDF" file={getTool("unlock").file} onFile={(file: File) => setTool("unlock", { file })} tip="Upload the encrypted PDF." />
+          <HInput type="password" placeholder="Enter the current password" value={getTool("unlock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("unlock", { password: e.target.value })} tip="You need to provide the original password to unlock it." />
+          <CStat msg={getTool("unlock").status} type={getTool("unlock").statusType} />
+          <HBtn onClick={async () => {
+             const file = getTool("unlock").file;
+             const password = getTool("unlock").password;
+             if (!file || !password) return;
+             await run("unlock", async () => {
+                const pdfLibEncrypt = await import("pdf-lib-plus-encrypt");
+                const pdf = await pdfLibEncrypt.PDFDocument.load(await file.arrayBuffer(), { password });
+                const bytes = await pdf.save();
+                dlBlob(`${stem(file.name)}_unlocked.pdf`, new Blob([bytes], { type: "application/pdf" }));
+                return "PDF unlocked permanently.";
+             });
+          }} disabled={!getTool("unlock").file || !getTool("unlock").password} loading={getTool("unlock").loading} label="Unlock PDF" tip="Downloads a completely unprotected copy." />
+       </>
+      ),
+    }
+  ];
+
   return (
     <div className="page-shell">
       <section className="surface-panel mt-1 p-5 md:p-8">
@@ -652,6 +707,28 @@ export default function PdfToolsPage() {
         />
         <div className="grid gap-4 xl:grid-cols-3">
           {organizeCards.map((card) => (
+            <Tip key={card.title} tip={card.tip} side="top">
+              <CCard
+                ico={card.icon}
+                title={card.title}
+                desc={card.description}
+                accentCol={card.accent}
+              >
+                {card.body}
+              </CCard>
+            </Tip>
+          ))}
+        </div>
+      </section>
+
+      <section className="surface-panel p-6 md:p-8">
+        <SHead
+          ico={<UIcon name="ShieldCheck" size={24} />}
+          label="Security Tools"
+          sub="Lock and unlock your PDF files securely."
+        />
+        <div className="grid gap-4 xl:grid-cols-2">
+          {securityCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
               <CCard
                 ico={card.icon}
