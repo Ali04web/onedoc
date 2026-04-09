@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import {
-  DM_Sans,
+  Caveat,
+  Patrick_Hand,
   IBM_Plex_Mono,
-  Sora,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 
-const display = Sora({
+const display = Caveat({
   variable: "--font-display-ui",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const body = DM_Sans({
+const body = Patrick_Hand({
   variable: "--font-body-ui",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400"],
 });
 
 const mono = IBM_Plex_Mono({
