@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import {
-  Caveat,
-  Patrick_Hand,
+  Space_Grotesk,
+  Outfit,
   IBM_Plex_Mono,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 
-const display = Caveat({
+const display = Space_Grotesk({
   variable: "--font-display-ui",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
 });
 
-const body = Patrick_Hand({
+const body = Outfit({
   variable: "--font-body-ui",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600"],
 });
 
 const mono = IBM_Plex_Mono({

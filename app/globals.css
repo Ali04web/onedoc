@@ -16,8 +16,8 @@
   --color-line: rgba(74, 98, 181, 0.08);
   --color-rule: rgba(0, 0, 0, 0.05);
 
-  --font-caveat: var(--font-display-ui);
-  --font-patrick: var(--font-body-ui);
+  --font-display: var(--font-display-ui);
+  --font-body: var(--font-body-ui);
   --font-mono: var(--font-code-ui);
 }
 
@@ -37,7 +37,7 @@ body {
   background-image: linear-gradient(var(--color-rule) 1px, transparent 1px);
   background-size: 100% 32px;
   color: var(--color-ink);
-  font-family: var(--font-patrick);
+  font-family: var(--font-body);
 }
 
 body::after {
@@ -101,7 +101,7 @@ body::after {
 }
 
 .vintage-title, .page-title {
-  font-family: var(--font-caveat);
+  font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw, 4rem);
   color: var(--color-ink2);
   line-height: 1.1;
