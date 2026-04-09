@@ -80,12 +80,11 @@ export function buildStandaloneHtml(title: string, bodyHtml: string): string {
     * { box-sizing: border-box; }
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at top left, rgba(180, 138, 75, 0.18), transparent 28%),
-        radial-gradient(circle at bottom right, rgba(39, 95, 90, 0.14), transparent 32%),
-        linear-gradient(180deg, #faf7f1 0%, #f3ede1 100%);
+      background-color: #fdf6e3;
+      background-image: linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+      background-size: 100% 32px;
       color: var(--ink);
-      font-family: "Segoe UI", Arial, sans-serif;
+      font-family: "Patrick Hand", "Segoe UI", Arial, sans-serif;
     }
     main {
       width: min(900px, calc(100vw - 32px));
@@ -352,7 +351,7 @@ export function openPrintPreviewWindow(title: string): Window {
 
   preview.document.write(`<!DOCTYPE html><html><head><title>${escapeHtml(
     title
-  )}</title><style>body{margin:0;font-family:Segoe UI,Arial,sans-serif;padding:32px;color:#1e1911;background:radial-gradient(circle at top left, rgba(180,138,75,.18), transparent 28%),linear-gradient(180deg,#faf7f1 0%,#f3ede1 100%)} .status{max-width:560px;margin:12vh auto;border:1px solid rgba(36,28,18,.12);border-radius:28px;padding:28px;background:rgba(253,251,248,.92);box-shadow:0 28px 70px rgba(28,21,13,.12)} .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#766a57;font-weight:700} h1{margin:12px 0 12px;font-size:34px;line-height:1.04;letter-spacing:-.03em;font-family:Georgia,'Times New Roman',serif} p{margin:0;color:#766a57;line-height:1.8}</style></head><body><div class="status"><div class="eyebrow">OneDocs Preview</div><h1>Preparing your document...</h1><p>OneDocs is building a print-ready preview with the original formatting preserved as closely as possible.</p></div></body></html>`);
+  )}</title><style>body{margin:0;font-family:Segoe UI,Arial,sans-serif;padding:32px;color:#1e1911;background:#fdf6e3} .status{max-width:560px;margin:12vh auto;border:1px solid rgba(36,28,18,.12);border-radius:28px;padding:28px;background:rgba(253,251,248,.92);box-shadow:0 28px 70px rgba(28,21,13,.12)} .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#766a57;font-weight:700} h1{margin:12px 0 12px;font-size:34px;line-height:1.04;letter-spacing:-.03em;font-family:Georgia,'Times New Roman',serif} p{margin:0;color:#766a57;line-height:1.8}</style></head><body><div class="status"><div class="eyebrow">OneDocs Preview</div><h1>Preparing your document...</h1><p>OneDocs is building a print-ready preview with the original formatting preserved as closely as possible.</p></div></body></html>`);
   preview.document.close();
   return preview;
 }

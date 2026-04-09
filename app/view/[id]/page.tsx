@@ -69,11 +69,9 @@ export default async function ViewPage({
                 margin:0;
                 font-family:"Segoe UI",Arial,sans-serif;
                 color:var(--ink);
-                background:
-                  radial-gradient(circle at top left, rgba(110,124,255,.24), transparent 30%),
-                  radial-gradient(circle at top right, rgba(16,199,162,.16), transparent 26%),
-                  radial-gradient(circle at bottom right, rgba(255,145,71,.14), transparent 32%),
-                  linear-gradient(180deg, #f7f9ff 0%, #edf6ff 100%);
+                background-color:#fdf6e3;
+                background-image:linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+                background-size:100% 32px;
                 overflow:hidden;
               }
               .shell{
@@ -169,8 +167,8 @@ export default async function ViewPage({
               }
               .btn-primary{
                 color:#fff;
-                background:linear-gradient(135deg,var(--amber-2),var(--violet),var(--teal));
-                box-shadow:0 18px 30px rgba(54,74,146,.24);
+                background:#073642;
+                box-shadow:0 18px 30px rgba(0,0,0,.1);
               }
               .btn-secondary{
                 color:var(--ink);
@@ -204,7 +202,7 @@ export default async function ViewPage({
                 gap:12px;
                 padding:16px 20px;
                 border-bottom:1px solid var(--line);
-                background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(248,244,236,.92));
+                background:#fff;
               }
               .viewer-head strong{
                 font-size:14px;
@@ -217,10 +215,7 @@ export default async function ViewPage({
                 min-height:0;
                 flex:1;
                 padding:16px;
-                background:
-                  radial-gradient(circle at top right, rgba(16,199,162,.08), transparent 26%),
-                  radial-gradient(circle at bottom left, rgba(110,124,255,.08), transparent 26%),
-                  linear-gradient(180deg, #edf4ff 0%, #f8fbff 100%);
+                background:rgba(0,0,0,.02);
               }
               .viewer-frame iframe{
                 width:100%;
@@ -261,10 +256,8 @@ export default async function ViewPage({
               .art-frame{
                 margin:-4px -4px 18px;
                 border-radius:24px;
-                background:
-                  radial-gradient(circle at top left, rgba(110,124,255,.14), transparent 28%),
-                  linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,.08));
-                border:1px solid rgba(110,124,255,.14);
+                background:rgba(0,0,0,.05);
+                border:1px solid rgba(0,0,0,.05);
                 padding:10px;
               }
               .art-frame svg{
