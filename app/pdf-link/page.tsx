@@ -203,7 +203,7 @@ export default function PdfLinkPage() {
                 <div className="mt-8 space-y-3">
                   <div className="h-4 overflow-hidden rounded-full bg-black/5 p-1">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#d48a3b] to-[#4ba391] transition-all duration-500 shadow-sm"
+                      className="h-full rounded-full  from-[#d48a3b] to-[#4ba391] transition-all duration-500 shadow-sm"
                       style={{ width: `${progress}%` }}
                     />
                   </div>

@@ -44,14 +44,14 @@ function ProgressBar({
   if (!progress) return null;
 
   return (
-    <div className="rounded-[18px] border border-[rgba(110,124,255,.1)] bg-white/74 p-3">
+    <div className="rounded-[18px] border border-black/5 bg-white/74 p-3">
       <div className="mb-2 flex items-center justify-between gap-3 text-[12px] text-ink4">
         <span>{label || "Working..."}</span>
         <span>{progress}%</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-[rgba(110,124,255,.08)]">
+      <div className="h-2 overflow-hidden rounded-full bg-white/50">
         <div
-          className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-red),var(--color-violet),var(--color-teal))] transition-[width] duration-300"
+          className="h-full rounded-full bg-white transition-[width] duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -73,7 +73,7 @@ function FileListPreview({
       {files.map((file) => (
         <div
           key={`${file.name}-${file.size}`}
-          className="flex items-center gap-2 rounded-[16px] border border-[rgba(110,124,255,.1)] bg-white/76 px-3 py-2 text-[13px] text-ink3"
+          className="flex items-center gap-2 rounded-[16px] border border-black/5 bg-white/76 px-3 py-2 text-[13px] text-ink3"
         >
           <UIcon name={icon as any} size={14} />
           <span className="truncate">{file.name}</span>
@@ -272,7 +272,7 @@ export default function PdfToolsPage() {
               <option value="layout">Best accuracy</option>
               <option value="editable">Editable text</option>
             </HSel>
-            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(255,250,243,.78)] px-4 py-3 text-[13px] leading-relaxed text-ink4">
+            <div className="rounded-[18px] border border-black/5 bg-white/50 px-4 py-3 text-[13px] leading-relaxed text-ink4">
               Best accuracy creates a page-faithful DOCX. Editable text creates
               a cleaner Word document when the PDF has a reliable text layer.
             </div>
@@ -603,14 +603,14 @@ export default function PdfToolsPage() {
       tip: "This uses the dedicated PDF-to-link page, as requested.",
       body: (
         <div className="flex h-full flex-col justify-between gap-5">
-          <div className="rounded-[20px] border border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.78)] px-4 py-4 text-[14px] leading-relaxed text-ink4">
+          <div className="rounded-[20px] border border-black/5 bg-white/50 px-4 py-4 text-[14px] leading-relaxed text-ink4">
             The hosted PDF link experience stays on its own dedicated page for
             now. Everything else in this workspace has been tightened around
             accuracy and presentation.
           </div>
           <Link
             href="/pdf-link"
-            className="inline-flex items-center justify-center gap-2 rounded-[20px] border border-amber2/30 bg-gradient-to-r from-amber to-amber2 px-5 py-3 text-[15px] font-semibold text-white shadow-[0_18px_30px_rgba(186,138,66,.24)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_36px_rgba(186,138,66,.28)]"
+            className="inline-flex items-center justify-center gap-2 rounded-[20px] border border-amber2/30   px-5 py-3 text-[15px] font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             <UIcon name="ArrowUpRight" size={16} />
             Open PDF link workspace

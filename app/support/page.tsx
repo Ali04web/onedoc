@@ -74,8 +74,8 @@ export default function SupportPage() {
                     key={faq.q}
                     className={`rounded-[24px] border transition-all duration-200 ${
                       open
-                        ? "border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(16,199,162,.06))]"
-                        : "border-[rgba(110,124,255,.1)] bg-white/72"
+                        ? "border-black/5 bg-white"
+                        : "border-black/5 bg-white/72"
                     }`}
                   >
                     <Tip tip={open ? "Hide this answer." : "Open this answer."} side="top">
@@ -84,7 +84,7 @@ export default function SupportPage() {
                         title={open ? "Hide this answer." : "Open this answer."}
                         className="flex w-full items-center gap-4 px-5 py-5 text-left"
                       >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(110,124,255,.1)] bg-white/80 text-[var(--color-violet)]">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-white/80 text-[var(--color-violet)]">
                           <UIcon name={open ? "Check" : "HelpCircle"} size={16} />
                         </div>
                         <div className="min-w-0 flex-1">
@@ -123,7 +123,7 @@ export default function SupportPage() {
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="Your name"
                 title="Enter the name support should reply to."
-                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <input
                 type="email"
@@ -131,13 +131,13 @@ export default function SupportPage() {
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="Email address"
                 title="Enter the email address for the reply."
-                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
               <select
                 value={form.type}
                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
                 title="Choose the kind of message you want to send."
-                className="w-full rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               >
                 <option value="question">Question</option>
                 <option value="bug">Bug report</option>
@@ -150,7 +150,7 @@ export default function SupportPage() {
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
                 placeholder="Tell us what your users need, what feels off, or what you want improved."
                 title="Describe your question, problem, or requested improvement."
-                className="w-full resize-y rounded-[18px] border border-[rgba(110,124,255,.14)] bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-[rgba(110,124,255,.34)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full resize-y rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
               />
 
               <div className="flex flex-wrap gap-3">
@@ -158,7 +158,7 @@ export default function SupportPage() {
                   <button
                     type="submit"
                     title="Prepare this support message."
-                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.18)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] px-5 py-3 text-[14px] font-semibold text-white shadow-[0_18px_30px_rgba(54,74,146,.22)] transition-all duration-200 hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white px-5 py-3 text-[14px] font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5"
                   >
                     <UIcon name="Mail" size={16} />
                     Send message
@@ -170,7 +170,7 @@ export default function SupportPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                     title="Open the current public contact profile."
-                    className="inline-flex items-center gap-2 rounded-full border border-[rgba(110,124,255,.14)] bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
+                    className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
                   >
                     <UIcon name="XBrand" size={14} />
                     Connect on X
@@ -190,7 +190,7 @@ export default function SupportPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[680px] border-collapse">
                 <thead>
-                  <tr className="border-b border-[rgba(42,34,24,.08)] text-left text-[12px] uppercase tracking-[0.18em] text-ink4">
+                  <tr className="border-b border-black/5 text-left text-[12px] uppercase tracking-[0.18em] text-ink4">
                     <th className="pb-4 pr-6 font-semibold">Format</th>
                     <th className="pb-4 pr-6 font-semibold">Input</th>
                     <th className="pb-4 pr-6 font-semibold">Output</th>
@@ -199,7 +199,7 @@ export default function SupportPage() {
                 </thead>
                 <tbody>
                   {formats.map(([fmt, input, output, area]) => (
-                    <tr key={fmt} className="border-b border-[rgba(42,34,24,.06)]">
+                    <tr key={fmt} className="border-b border-black/5">
                       <td className="py-5 pr-6 font-caveat text-[24px] font-semibold text-ink2">
                         {fmt}
                       </td>

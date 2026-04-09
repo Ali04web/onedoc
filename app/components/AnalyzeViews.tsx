@@ -31,7 +31,7 @@ export function TView({
         ? safe.replace(
             new RegExp(escRe(esc(searchQ)), "gi"),
             (match: string) =>
-              `<mark class="rounded-md bg-[rgba(186,138,66,.18)] px-1 py-0.5 text-ink">${match}</mark>`
+              `<mark class="rounded-md bg-white/50 px-1 py-0.5 text-ink">${match}</mark>`
           )
         : safe;
 
@@ -45,25 +45,25 @@ export function TView({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-[rgba(42,34,24,.08)] bg-[rgba(255,255,255,.5)] px-5 py-4 md:px-8">
+      <div className="border-b border-black/5 bg-white/80 px-5 py-4 md:px-8">
         <div className="flex flex-wrap items-center gap-3">
-          <span className="premium-chip">
+          <span className="vintage-badge">
             <UIcon name="ScanText" size={14} />
             Extracted text
           </span>
-          <span className="premium-chip">
+          <span className="vintage-badge">
             <UIcon name="Rows3" size={14} />
             {lines.toLocaleString()} lines
           </span>
-          <span className="premium-chip">
+          <span className="vintage-badge">
             <UIcon name="AlignLeft" size={14} />
             Browser-safe review
           </span>
         </div>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-6 md:px-8 md:py-7">
-        <div className="surface-card min-h-full bg-[linear-gradient(180deg,rgba(255,255,255,.78),rgba(248,244,236,.88))] p-0 shadow-[0_22px_48px_rgba(33,25,16,.08)]">
-          <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-4">
+        <div className="vintage-card min-h-full bg-white p-0">
+          <div className="border-b border-black/5 px-5 py-4">
             <div className="text-[12px] font-semibold uppercase tracking-[0.24em] text-ink4">
               Review surface
             </div>
@@ -124,12 +124,12 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
     <div className="flex h-full min-h-0 flex-col overflow-y-auto px-5 py-6 md:px-8 md:py-7">
       <div className="grid gap-4 xl:grid-cols-5">
         {cards.map((card) => (
-          <div key={card.label} className="premium-metric">
+          <div key={card.label} className="vintage-card p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
                 {card.label}
               </div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/80 text-amber">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-white text-ink2 shadow-sm">
                 <UIcon name={card.icon} size={18} />
               </div>
             </div>
@@ -146,7 +146,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
       <div className="mt-6 grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(300px,.65fr)]">
         <SCard>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-black/5 text-ink2 shadow-sm">
               <UIcon name="BarChart3" size={18} />
             </div>
             <div>
@@ -168,9 +168,9 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
                   <div className="truncate text-[14px] font-semibold text-ink2">
                     {word}
                   </div>
-                  <div className="h-2.5 overflow-hidden rounded-full bg-[rgba(42,34,24,.08)]">
+                  <div className="h-2.5 overflow-hidden rounded-full bg-black/5">
                     <div
-                      className="h-full rounded-full bg-[linear-gradient(90deg,var(--color-teal),var(--color-amber))]"
+                      className="h-full rounded-full bg-ink2"
                       style={{
                         width: `${Math.max(
                           12,
@@ -183,7 +183,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
                 </div>
               ))
             ) : (
-              <div className="rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/70 px-4 py-4 text-[14px] leading-relaxed text-ink4">
+              <div className="rounded-[20px] border border-black/5 bg-white/70 px-4 py-4 text-[14px] leading-relaxed text-ink4">
                 No standout terms were detected in this document.
               </div>
             )}
@@ -192,7 +192,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
 
         <SCard>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(186,138,66,.1)] text-amber2">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-black/5 text-ink2 shadow-sm">
               <UIcon name="Sparkles" size={18} />
             </div>
             <div>
@@ -222,7 +222,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
             ].map((line) => (
               <div
                 key={line}
-                className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4 text-[14px] leading-relaxed text-ink3"
+                className="rounded-[18px] border border-black/5 bg-white/70 px-4 py-4 text-[14px] leading-relaxed text-ink3"
               >
                 {line}
               </div>
@@ -255,9 +255,9 @@ export function SearchView({ text }: { text: string }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-[rgba(42,34,24,.08)] bg-[rgba(255,255,255,.5)] px-5 py-4 md:px-8">
+      <div className="border-b border-black/5 bg-white/80 px-5 py-4 md:px-8">
         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
-          <div className="flex items-center gap-3 rounded-[22px] border border-[rgba(42,34,24,.1)] bg-white/80 px-4 py-3 shadow-[0_10px_24px_rgba(33,25,16,.05)]">
+          <div className="flex items-center gap-3 rounded-[22px] border border-black/10 bg-white px-4 py-3 shadow-md">
             <UIcon name="Search" size={18} className="text-ink4" />
             <HInput
               value={query}
@@ -271,7 +271,7 @@ export function SearchView({ text }: { text: string }) {
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="premium-chip">
+            <span className="vintage-badge">
               <UIcon name="Target" size={14} />
               {matches.length} result{matches.length === 1 ? "" : "s"}
             </span>
@@ -284,7 +284,7 @@ export function SearchView({ text }: { text: string }) {
                 }
                 title="Jump to the previous search result."
                 disabled={!matches.length}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white/80 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-ink2/30 enabled:hover:text-ink2"
               >
                 <UIcon name="ChevronUp" size={18} />
               </button>
@@ -298,7 +298,7 @@ export function SearchView({ text }: { text: string }) {
                 }
                 title="Jump to the next search result."
                 disabled={!matches.length}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[rgba(42,34,24,.1)] bg-white/78 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-amber/35 enabled:hover:text-amber2"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-black/10 bg-white/80 text-ink3 transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-40 enabled:hover:-translate-y-0.5 enabled:hover:border-ink2/30 enabled:hover:text-ink2"
               >
                 <UIcon name="ChevronDown" size={18} />
               </button>
@@ -311,12 +311,12 @@ export function SearchView({ text }: { text: string }) {
         <div className="min-h-0 overflow-y-auto">
           <div className="flex flex-col gap-3">
             {!query || query.trim().length < 2 ? (
-              <div className="surface-card px-5 py-6 text-[15px] leading-relaxed text-ink4">
+              <div className="vintage-card px-5 py-6 text-[15px] leading-relaxed text-ink4">
                 Start with at least two characters and OneDocs will scan the
                 extracted text for matching lines.
               </div>
             ) : matches.length === 0 ? (
-              <div className="surface-card px-5 py-6 text-[15px] leading-relaxed text-red">
+              <div className="vintage-card px-5 py-6 text-[15px] leading-relaxed text-red">
                 {`No matches were found for "${query}".`}
               </div>
             ) : (
@@ -324,21 +324,21 @@ export function SearchView({ text }: { text: string }) {
                 const marked = esc(match.text).replace(
                   new RegExp(escRe(esc(query.trim())), "gi"),
                   (chunk: string) =>
-                    `<mark class="rounded-md bg-[rgba(31,90,86,.16)] px-1 py-0.5 text-ink">${chunk}</mark>`
+                    `<mark class="rounded-md bg-white/50 px-1 py-0.5 text-ink">${chunk}</mark>`
                 );
 
                 return (
                   <button
                     key={`${match.line}-${index}`}
                     onClick={() => setCurrent(index)}
-                    className={`surface-card text-left transition-all duration-200 ${
+                    className={`vintage-card text-left transition-all duration-200 ${
                       currentIndex === index
-                        ? "border-amber/30 bg-[linear-gradient(180deg,rgba(255,250,243,.96),rgba(249,241,227,.92))] shadow-[0_24px_42px_rgba(186,138,66,.12)]"
+                        ? "border-ink2/20 bg-white shadow-xl"
                         : "hover:-translate-y-0.5"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <span className="premium-chip">
+                      <span className="vintage-badge">
                         <UIcon name="ListOrdered" size={14} />
                         Line {match.line}
                       </span>
@@ -359,7 +359,7 @@ export function SearchView({ text }: { text: string }) {
 
         <SCard style={{ height: "fit-content" }}>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(31,90,86,.1)] text-teal">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-black/5 text-ink2 shadow-sm">
               <UIcon name="LocateFixed" size={18} />
             </div>
             <div>
@@ -373,7 +373,7 @@ export function SearchView({ text }: { text: string }) {
           </div>
 
           {selected ? (
-            <div className="mt-6 rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4">
+            <div className="mt-6 rounded-2xl border border-black/10 bg-white/80 px-4 py-4">
               <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
                 Selected line
               </div>
@@ -385,18 +385,18 @@ export function SearchView({ text }: { text: string }) {
               </div>
             </div>
           ) : (
-            <div className="mt-6 rounded-[20px] border border-[rgba(42,34,24,.08)] bg-white/72 px-4 py-4 text-[14px] leading-relaxed text-ink4">
+            <div className="mt-6 rounded-[20px] border border-black/10 bg-white/80 px-4 py-4 text-[14px] leading-relaxed text-ink4">
               Search results will appear here with quick context for the current
               selection.
             </div>
           )}
 
           <div className="mt-4 flex flex-col gap-3 text-[13px] leading-relaxed text-ink4">
-            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.78)] px-4 py-3">
+            <div className="rounded-[18px] border border-black/5 bg-black/5 px-4 py-3">
               Search scans the extracted text layer, so scanned-image PDFs may
               produce fewer results unless they contain selectable text.
             </div>
-            <div className="rounded-[18px] border border-[rgba(42,34,24,.08)] bg-[rgba(248,244,236,.78)] px-4 py-3">
+            <div className="rounded-[18px] border border-black/5 bg-black/5 px-4 py-3">
               Use export after search if you want to save the document as text,
               markdown, or reporting data.
             </div>
@@ -497,7 +497,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
             researchers, support teams, and operations workflows.
           </div>
         </div>
-        <span className="premium-chip">
+        <span className="vintage-badge">
           <UIcon name="Lock" size={14} />
           Generated in-browser
         </span>
@@ -508,7 +508,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
           <SCard key={item.title}>
             <div className="flex flex-col gap-5">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(31,90,86,.08)] text-teal">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white border border-black/5 shadow-sm text-ink2">
                   <UIcon name={item.icon} size={20} />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -516,7 +516,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
                     <div className="font-caveat text-[26px] leading-none tracking-[-0.02em] text-ink2">
                       {item.title}
                     </div>
-                    <span className="premium-chip">{item.ext}</span>
+                    <span className="vintage-badge">{item.ext}</span>
                   </div>
                   <div className="mt-2 text-[14px] leading-relaxed text-ink4">
                     {item.description}

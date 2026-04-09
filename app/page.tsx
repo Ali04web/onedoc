@@ -86,14 +86,7 @@ export default function HomePage() {
                         className="flex h-12 w-12 items-center justify-center rounded-2xl"
                         style={{
                           color: tool.accent,
-                          background:
-                            tool.title === "PDF Tools"
-                              ? "linear-gradient(135deg, rgba(255,102,120,.14), rgba(255,201,90,.18))"
-                              : tool.title === "DOCX Tools"
-                                ? "linear-gradient(135deg, rgba(255,145,71,.14), rgba(110,124,255,.16))"
-                                : tool.title === "PDF Link"
-                                  ? "linear-gradient(135deg, rgba(110,124,255,.16), rgba(85,199,247,.18))"
-                                  : "linear-gradient(135deg, rgba(110,124,255,.14), rgba(16,199,162,.16))",
+                          background: "rgba(0,0,0,0.05)",
                         }}
                       >
                         <UIcon name={tool.icon} size={22} />
@@ -109,11 +102,11 @@ export default function HomePage() {
                       </div>
 
                       <div className="mt-auto flex items-center justify-between gap-3">
-                        <span className="premium-chip">
+                        <span className="vintage-badge">
                           <UIcon name="ExternalLink" size={12} />
                           Open
                         </span>
-                        <div className="h-2 flex-1 rounded-full bg-[linear-gradient(90deg,rgba(110,124,255,.14),rgba(16,199,162,.14),rgba(255,145,71,.14))]" />
+                        <div className="h-px flex-1 bg-black/10 mx-2" />
                       </div>
                     </div>
                   </SCard>

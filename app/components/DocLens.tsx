@@ -201,7 +201,7 @@ export default function DocLens() {
           <button
             onClick={() => setSidebarOpen((value) => !value)}
             title={sidebarOpen ? "Close the document list." : "Open the document list."}
-            className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(110,124,255,.2)] bg-[linear-gradient(135deg,var(--color-red),var(--color-violet),var(--color-teal))] text-white shadow-[0_20px_36px_rgba(54,74,146,.28)] transition-transform duration-200 hover:scale-[1.02] md:hidden"
+            className="fixed bottom-5 right-5 z-[90] flex h-14 w-14 items-center justify-center rounded-full border border-black/10 bg-white text-ink2 shadow-xl transition-transform duration-200 hover:scale-[1.02] md:hidden"
             aria-label="Toggle document sidebar"
           >
             <UIcon name={sidebarOpen ? "X" : "PanelsLeftBottom"} size={22} />
@@ -210,18 +210,18 @@ export default function DocLens() {
 
         {sidebarOpen && (
           <div
-            className="fixed inset-0 z-[79] bg-[rgba(24,18,12,.34)] backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-[79] bg-white/50 backdrop-blur-sm md:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
 
         <div className="grid min-h-[620px] md:min-h-[760px] lg:grid-cols-[312px_minmax(0,1fr)]">
           <aside
-            className={`fixed inset-y-0 left-0 z-[80] flex w-[312px] max-w-[88vw] flex-col border-r border-[rgba(110,124,255,.1)] bg-[linear-gradient(180deg,rgba(249,251,255,.98),rgba(240,247,255,.98))] transition-transform duration-200 lg:static lg:w-auto lg:max-w-none ${
+            className={`fixed inset-y-0 left-0 z-[80] flex w-[312px] max-w-[88vw] flex-col border-r border-black/5 bg-paper2/95 backdrop-blur-md transition-transform duration-200 lg:static lg:w-auto lg:max-w-none ${
               sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
             }`}
           >
-            <div className="flex items-center justify-between border-b border-[rgba(110,124,255,.1)] px-5 py-5">
+            <div className="flex items-center justify-between border-b border-black/5 px-5 py-5">
               <div>
                 <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
                   Document queue
@@ -233,13 +233,13 @@ export default function DocLens() {
               <button
                 onClick={() => setSidebarOpen(false)}
                 title="Close the document list."
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-[rgba(42,34,24,.08)] bg-white/80 text-ink3 lg:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-white/80 text-ink3 lg:hidden"
               >
                 <UIcon name="X" size={16} />
               </button>
             </div>
 
-            <div className="border-b border-[rgba(110,124,255,.1)] px-5 py-5">
+            <div className="border-b border-black/5 px-5 py-5">
               <label
                 title="Upload PDFs or DOCX files into the analyzer."
                 onDragOver={(event) => {
@@ -252,10 +252,10 @@ export default function DocLens() {
                   setDrag(false);
                   handleFiles(event.dataTransfer.files);
                 }}
-                className={`block cursor-pointer rounded-[28px] border border-dashed px-5 py-6 text-center transition-all duration-200 ${
+                className={`block cursor-pointer rounded-2xl border-2 border-dashed px-5 py-6 text-center transition-all duration-200 ${
                   drag
-                    ? "border-[rgba(110,124,255,.28)] bg-[linear-gradient(135deg,rgba(110,124,255,.08),rgba(16,199,162,.08))] shadow-[0_22px_38px_rgba(54,74,146,.12)]"
-                    : "border-[rgba(110,124,255,.16)] bg-white/76"
+                    ? "border-[var(--color-vintage-gold)] bg-black/5 shadow-md"
+                    : "border-black/10 bg-black/5"
                 }`}
               >
                 <input
@@ -265,7 +265,7 @@ export default function DocLens() {
                   className="hidden"
                   onChange={(event) => handleFiles(event.target.files)}
                 />
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(110,124,255,.12),rgba(16,199,162,.1))] text-[var(--color-violet)]">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white border border-black/5 text-ink2 shadow-sm">
                   <UIcon name="FolderUp" size={22} />
                 </div>
                 <div className="mt-4 text-[16px] font-semibold text-ink2">
@@ -273,9 +273,9 @@ export default function DocLens() {
                 </div>
                 <div className="mt-2 text-[13px] leading-relaxed text-ink4">Click or drag to upload.</div>
                 <div className="mt-4 flex flex-wrap justify-center gap-2">
-                  <span className="premium-chip">PDF</span>
-                  <span className="premium-chip">DOCX</span>
-                  <span className="premium-chip">Multi-file</span>
+                  <span className="vintage-badge">PDF</span>
+                  <span className="vintage-badge">DOCX</span>
+                  <span className="vintage-badge">Multi-file</span>
                 </div>
               </label>
             </div>
@@ -285,10 +285,10 @@ export default function DocLens() {
                 <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
                   Recent documents
                 </div>
-                <span className="premium-chip">{docs.length}</span>
+                <span className="vintage-badge">{docs.length}</span>
               </div>
               {docs.length === 0 ? (
-                <div className="rounded-[24px] border border-[rgba(110,124,255,.1)] bg-white/76 px-4 py-5 text-[14px] leading-relaxed text-ink4">
+                <div className="rounded-2xl border border-black/10 bg-white/70 px-4 py-5 text-[14px] leading-relaxed text-ink4">
                   Your files will appear here.
                 </div>
               ) : (
@@ -307,7 +307,7 @@ export default function DocLens() {
               )}
             </div>
 
-            <div className="border-t border-[rgba(110,124,255,.1)] px-5 py-5">
+            <div className="border-t border-black/5 px-5 py-5">
               <div className="text-[12px] font-semibold uppercase tracking-[0.22em] text-ink4">
                 Quick info
               </div>
@@ -315,7 +315,7 @@ export default function DocLens() {
                 {workspaceMetrics.map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[20px] border border-[rgba(110,124,255,.1)] bg-white/78 px-4 py-3"
+                    className="rounded-2xl border border-black/10 bg-white/70 px-4 py-3"
                   >
                     <div className="text-[12px] font-semibold uppercase tracking-[0.16em] text-ink4">
                       {item.label}
@@ -329,13 +329,13 @@ export default function DocLens() {
             </div>
           </aside>
 
-          <main className="min-w-0 bg-[linear-gradient(180deg,rgba(255,255,255,.5),rgba(243,249,255,.72))]">
+          <main className="min-w-0 bg-transparent relative">
             {loading && (
-              <div className="h-[3px] bg-[linear-gradient(90deg,var(--color-red),var(--color-violet),var(--color-teal))] bg-[length:240%_100%] animate-ink-load" />
+              <div className="h-[3px] bg-ink2 bg-[length:240%_100%] animate-ink-load" />
             )}
 
             {!ready && (
-              <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-3 text-[13px] text-ink4 md:px-8">
+              <div className="border-b border-black/5 px-5 py-3 text-[13px] text-ink4 md:px-8">
                 Loading tools...
               </div>
             )}
@@ -343,7 +343,7 @@ export default function DocLens() {
             {!active ? (
               <div className="flex h-full flex-col justify-center px-5 py-10 md:px-8 md:py-14">
                 <div className="mx-auto flex w-full max-w-[560px] flex-col items-center text-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[linear-gradient(135deg,rgba(110,124,255,.12),rgba(16,199,162,.12))] text-[var(--color-violet)] shadow-[0_20px_42px_rgba(54,74,146,.16)]">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white border border-black/5 text-ink2 shadow-md">
                     <UIcon name="FileSearch" size={30} />
                   </div>
                   <div className="mt-6 font-caveat text-[40px] leading-none tracking-[-0.04em] text-ink2">
@@ -353,15 +353,15 @@ export default function DocLens() {
                     Upload a PDF or DOCX from the left panel to begin.
                   </div>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
-                    <span className="premium-chip">Read</span>
-                    <span className="premium-chip">Search</span>
-                    <span className="premium-chip">Export</span>
+                    <span className="vintage-badge">Read</span>
+                    <span className="vintage-badge">Search</span>
+                    <span className="vintage-badge">Export</span>
                   </div>
                 </div>
               </div>
             ) : (
               <div className="flex h-full min-h-0 flex-col">
-                <div className="border-b border-[rgba(42,34,24,.08)] px-5 py-5 md:px-8">
+                <div className="border-b border-black/5 px-5 py-5 md:px-8">
                   <div className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
                     <div>
                       <div className="page-kicker">Active Document</div>
@@ -369,19 +369,19 @@ export default function DocLens() {
                         {active.name}
                       </div>
                       <div className="mt-3 flex flex-wrap gap-3">
-                        <span className="premium-chip">
+                        <span className="vintage-badge">
                           <UIcon
                             name={active.type === "pdf" ? "FileText" : "FileSignature"}
                             size={14}
                           />
                           {active.type.toUpperCase()}
                         </span>
-                        <span className="premium-chip">
+                        <span className="vintage-badge">
                           <UIcon name="HardDrive" size={14} />
                           {(active.size / 1048576).toFixed(1)} MB
                         </span>
                         {active.pages ? (
-                          <span className="premium-chip">
+                          <span className="vintage-badge">
                             <UIcon name="Layers3" size={14} />
                             {active.pages} pages
                           </span>
@@ -394,7 +394,7 @@ export default function DocLens() {
                         <Tip key={action.label} tip={action.tip}>
                           <button
                             onClick={() => active && action.onClick()}
-                            className="flex items-center justify-center gap-2 rounded-[20px] border border-[rgba(110,124,255,.12)] bg-white/80 px-4 py-3 text-[14px] font-semibold text-ink3 transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgba(110,124,255,.24)] hover:bg-white"
+                            className="vintage-button w-full justify-center text-[13px] text-ink3 hover:text-ink2 bg-white"
                           >
                             <UIcon name={action.icon as any} size={16} />
                             {action.label}
@@ -409,10 +409,10 @@ export default function DocLens() {
                       <Tip key={item.id} tip={item.tip}>
                         <button
                           onClick={() => setTab(item.id)}
-                          className={`flex items-center gap-2 rounded-full border px-4 py-2.5 text-[14px] font-semibold transition-all duration-200 ${
+                          className={`flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-bold transition-all duration-200 ${
                             tab === item.id
-                              ? "border-[rgba(110,124,255,.2)] bg-[linear-gradient(135deg,rgba(110,124,255,.12),rgba(16,199,162,.08))] text-[var(--color-violet)] shadow-[0_12px_24px_rgba(54,74,146,.12)]"
-                              : "border-[rgba(110,124,255,.1)] bg-white/74 text-ink4 hover:border-[rgba(110,124,255,.18)] hover:bg-white"
+                              ? "bg-ink2 text-white shadow-md"
+                              : "bg-transparent text-ink4 hover:bg-black/5 hover:text-ink2"
                           }`}
                         >
                           <UIcon name={item.icon as any} size={16} />

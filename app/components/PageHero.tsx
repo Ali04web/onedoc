@@ -36,7 +36,7 @@ export function PageHero({
           {chips.length ? (
             <div className="hero-chip-row mt-6">
               {chips.map((chip) => (
-                <span key={chip} className="premium-chip">
+                <span key={chip} className="vintage-badge">
                   {chip}
                 </span>
               ))}
