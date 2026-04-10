@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0a0a0f;
-  --color-bg2: #12121a;
-  --color-bg3: #1a1a26;
+  --color-bg: #06060b;
+  --color-bg2: #0e0e18;
+  --color-bg3: #16162a;
   --color-surface: rgba(255, 255, 255, 0.04);
   --color-surface2: rgba(255, 255, 255, 0.06);
   --color-surface3: rgba(255, 255, 255, 0.08);
@@ -40,32 +40,59 @@ body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-body);
+  overflow-x: hidden;
 }
 
+/* ── Animated ambient background ── */
 body::before {
   content: "";
   position: fixed;
-  top: -40%;
-  left: -20%;
-  width: 80%;
-  height: 80%;
+  top: -30%;
+  left: -15%;
+  width: 70%;
+  height: 70%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 106, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(124, 106, 255, 0.07) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: ambient-drift-1 18s ease-in-out infinite alternate;
 }
 
 body::after {
   content: "";
   position: fixed;
-  bottom: -30%;
-  right: -15%;
-  width: 70%;
-  height: 70%;
+  bottom: -20%;
+  right: -10%;
+  width: 65%;
+  height: 65%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.04) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
+  animation: ambient-drift-2 22s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, 8%) scale(1.08); }
+  100% { transform: translate(-3%, -5%) scale(0.95); }
+}
+
+@keyframes ambient-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6%, -4%) scale(1.1); }
+  100% { transform: translate(4%, 6%) scale(0.92); }
+}
+
+/* ── Noise texture overlay ── */
+main::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
 }
 
 /* ── Page shell ── */
@@ -76,22 +103,52 @@ body::after {
   padding: 20px 0 60px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
   z-index: 1;
 }
 
 /* ── Glass panels ── */
 .surface-panel {
-  background: rgba(255, 255, 255, 0.025);
-  backdrop-filter: blur(24px);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  );
+  backdrop-filter: blur(32px) saturate(140%);
   border: 1px solid var(--color-border);
-  border-radius: 24px;
-  padding: 24px;
-  transition: border-color 0.3s ease;
+  border-radius: 28px;
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.surface-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 106, 255, 0.04) 0%,
+    transparent 50%,
+    rgba(0, 212, 170, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .surface-panel:hover {
   border-color: var(--color-border2);
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    0 0 80px rgba(124, 106, 255, 0.04);
+}
+
+.surface-panel:hover::before {
+  opacity: 1;
 }
 
 .surface-card {
@@ -104,17 +161,47 @@ body::after {
 
 /* ── Vintage card (reusable glass card) ── */
 .vintage-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(16px);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.035) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  );
+  backdrop-filter: blur(16px) saturate(120%);
   border: 1px solid var(--color-border);
-  border-radius: 20px;
-  padding: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 22px;
+  padding: 22px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.vintage-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .vintage-card:hover {
-  border-color: var(--color-border2);
-  box-shadow: 0 8px 40px rgba(124, 106, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 60px rgba(124, 106, 255, 0.06);
+  transform: translateY(-3px);
+}
+
+.vintage-card:hover::after {
+  opacity: 1;
 }
 
 /* ── Badges / chips ── */
@@ -123,7 +210,7 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 5px 14px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
@@ -132,6 +219,13 @@ body::after {
   background: rgba(124, 106, 255, 0.08);
   color: var(--color-accent);
   border: 1px solid rgba(124, 106, 255, 0.12);
+  transition: all 0.3s ease;
+}
+
+.vintage-badge:hover {
+  background: rgba(124, 106, 255, 0.14);
+  border-color: rgba(124, 106, 255, 0.2);
+  transform: scale(1.04);
 }
 
 .premium-chip {
@@ -150,7 +244,7 @@ body::after {
   background: var(--color-border);
 }
 
-/* ── Hero layout (unused on tool pages, kept for home) ── */
+/* ── Hero layout ── */
 .hero-layout {
   display: grid;
   gap: 32px;
@@ -171,15 +265,30 @@ body::after {
   gap: 16px;
 }
 
-/* ── Animations ── */
+/* ── Rich Animations ── */
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes shimmer {
@@ -189,7 +298,23 @@ body::after {
 
 @keyframes glow-pulse {
   0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.7; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes border-glow {
+  0%, 100% { border-color: rgba(124, 106, 255, 0.1); }
+  50% { border-color: rgba(124, 106, 255, 0.25); }
 }
 
 @keyframes ink-load {
@@ -197,12 +322,61 @@ body::after {
   100% { background-position: 200% 0; }
 }
 
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes text-shimmer {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(10px) scale(0.8); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes ripple-out {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
 .animate-fade-in {
-  animation: fade-in 0.3s ease-out forwards;
+  animation: fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .animate-fade-up {
-  animation: fade-up 0.4s ease-out forwards;
+  animation: fade-up 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 6s linear infinite;
 }
 
 .animate-ink-load {
@@ -216,6 +390,45 @@ body::after {
   animation: ink-load 1.2s ease-in-out infinite;
 }
 
+.animate-text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #7c6aff,
+    #00d4aa,
+    #ffa940,
+    #7c6aff
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shimmer 6s linear infinite;
+}
+
+/* ── Interaction Micro-Animations ── */
+.interactive-lift {
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(124, 106, 255, 0.08);
+}
+
+.interactive-lift:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* ── Stagger delays for card grids ── */
+.stagger-1 { animation-delay: 0.05s !important; }
+.stagger-2 { animation-delay: 0.1s !important; }
+.stagger-3 { animation-delay: 0.15s !important; }
+.stagger-4 { animation-delay: 0.2s !important; }
+.stagger-5 { animation-delay: 0.25s !important; }
+.stagger-6 { animation-delay: 0.3s !important; }
+
 /* ── Buttons ── */
 .vintage-button {
   display: inline-flex;
@@ -225,16 +438,32 @@ body::after {
   border-radius: 14px;
   font-weight: 600;
   font-size: 13px;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--color-surface2);
   border: 1px solid var(--color-border);
   color: var(--color-text3);
+  position: relative;
+  overflow: hidden;
+}
+
+.vintage-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .vintage-button:hover {
   background: var(--color-surface3);
   color: var(--color-text);
   border-color: var(--color-border2);
+  transform: translateY(-1px);
+}
+
+.vintage-button:hover::before {
+  opacity: 1;
 }
 
 /* ── Responsive ── */
@@ -246,8 +475,11 @@ body::after {
   .surface-panel,
   .surface-card,
   .vintage-card {
-    border-radius: 18px;
+    border-radius: 20px;
     padding: 18px;
+  }
+  .surface-panel:hover {
+    transform: none;
   }
 }
 
@@ -262,16 +494,27 @@ body::after {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.16);
 }
 
 /* ── Selection ── */
 ::selection {
   background: rgba(124, 106, 255, 0.3);
   color: #fff;
+}
+
+/* ── Focus Rings ── */
+:focus-visible {
+  outline: 2px solid rgba(124, 106, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* ── Smooth Scrolling ── */
+html {
+  scroll-behavior: smooth;
 }
