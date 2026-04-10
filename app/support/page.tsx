@@ -7,29 +7,25 @@ import { UIcon } from "@/app/components/Icons";
 const faqs = [
   {
     q: "Is OneDocs free to use?",
-    a: "Yes. OneDocs remains free while focusing on a more premium product experience. The goal is to make the tool feel trustworthy without hiding features behind a paywall.",
+    a: "Yes. All tools are free with no sign-up required.",
   },
   {
     q: "Are my documents uploaded anywhere?",
-    a: "The main conversions and analysis flows run in the browser. Your files stay on your device unless you explicitly use the PDF Link feature, which is the one feature designed for sharing.",
+    a: "Conversions and analysis run in the browser. Files stay on your device unless you use PDF Link.",
   },
   {
     q: "Which PDF to DOCX option should I use?",
-    a: "Choose the accuracy-first option when visual fidelity matters most. Choose the editable option when the document needs post-conversion editing and some layout shift is acceptable.",
+    a: "Use accuracy mode when visual fidelity matters. Use editable mode when you need to edit the text.",
   },
   {
-    q: "Does OneDocs work well on mobile?",
-    a: "Yes. The layout stays compact on smaller screens, with direct actions and simpler sections instead of large hero blocks.",
-  },
-  {
-    q: "Why does the app feel different now?",
-    a: "The interface was refreshed to feel clearer and more tool-focused, while still keeping a stronger visual identity on the homepage.",
+    q: "Does OneDocs work on mobile?",
+    a: "Yes. The layout is fully responsive.",
   },
 ];
 
 const formats = [
-  ["PDF", "Analyse and convert", "Text, image, DOCX, sharing", "PDF Tools"],
-  ["DOCX", "Analyse and convert", "HTML, text, Markdown, print", "DOCX Tools"],
+  ["PDF", "Analyse & convert", "Text, image, DOCX, link", "PDF Tools"],
+  ["DOCX", "Analyse & convert", "HTML, text, MD, PDF", "DOCX Tools"],
   ["TXT / MD", "Convert", "PDF", "DOCX Tools"],
   ["CSV", "Convert", "HTML table", "DOCX Tools"],
   ["JPG / PNG", "Convert", "PDF", "PDF Tools"],
@@ -48,96 +44,95 @@ export default function SupportPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      setToast("Please complete every field before sending your message.");
+      setToast("Please complete all fields.");
       return;
     }
-
-    setToast("Message prepared. Wire this form to your preferred support inbox next.");
+    setToast("Message prepared. Connect this form to your inbox.");
     setForm({ name: "", email: "", type: "question", message: "" });
   }
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <section className="mt-1 grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
-          <div className="surface-panel p-5 md:p-8">
-            <div className="mb-5 flex items-center gap-4">
-              <div className="page-kicker">Frequently Asked Questions</div>
-              <div className="premium-divider flex-1" />
+        <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
+          {/* FAQ */}
+          <div className="surface-panel p-5 md:p-7">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#7c6aff]/10 border border-[#7c6aff]/15 text-[#7c6aff]">
+                <UIcon name="HelpCircle" size={15} />
+              </div>
+              <div className="font-display text-[15px] font-bold text-white">FAQ</div>
+              <div className="flex-1 h-px bg-white/[0.04]" />
             </div>
 
-            <div className="grid gap-3">
+            <div className="grid gap-2">
               {faqs.map((faq, index) => {
                 const open = openFaq === index;
                 return (
                   <div
                     key={faq.q}
-                    className={`rounded-[24px] border transition-all duration-200 ${
+                    className={`rounded-xl border transition-all duration-200 ${
                       open
-                        ? "border-black/5 bg-white"
-                        : "border-black/5 bg-white/72"
+                        ? "border-white/[0.08] bg-white/[0.03]"
+                        : "border-white/[0.04] bg-white/[0.015]"
                     }`}
                   >
-                    <Tip tip={open ? "Hide this answer." : "Open this answer."} side="top">
-                      <button
-                        onClick={() => setOpenFaq(open ? null : index)}
-                        title={open ? "Hide this answer." : "Open this answer."}
-                        className="flex w-full items-center gap-4 px-5 py-5 text-left"
-                      >
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full border border-black/5 bg-white/80 text-[var(--color-violet)]">
-                          <UIcon name={open ? "Check" : "HelpCircle"} size={16} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="text-[15px] font-semibold text-ink2">{faq.q}</div>
-                        </div>
-                        <div className="text-[12px] uppercase tracking-[0.18em] text-ink4">
-                          {open ? "Hide" : "Open"}
-                        </div>
-                      </button>
-                    </Tip>
+                    <button
+                      onClick={() => setOpenFaq(open ? null : index)}
+                      className="flex w-full items-center gap-3 px-4 py-4 text-left"
+                    >
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg border ${
+                        open
+                          ? "border-[#00d4aa]/20 bg-[#00d4aa]/10 text-[#00d4aa]"
+                          : "border-white/[0.06] bg-white/[0.03] text-[#6b6d80]"
+                      }`}>
+                        <UIcon name={open ? "Check" : "HelpCircle"} size={13} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[13px] font-semibold text-white">{faq.q}</div>
+                      </div>
+                      <UIcon name={open ? "ChevronUp" : "ChevronDown"} size={14} className="text-[#6b6d80]" />
+                    </button>
 
-                    {open ? (
-                      <div className="px-5 pb-5 pt-0 text-[14px] leading-relaxed text-ink3 animate-fade-up">
+                    {open && (
+                      <div className="px-4 pb-4 pt-0 text-[13px] leading-relaxed text-[#9294a5] animate-fade-in ml-11">
                         {faq.a}
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="surface-panel p-5 md:p-8">
-            <div className="mb-5 page-kicker">Contact Studio</div>
-            <div className="font-caveat text-[32px] font-semibold leading-none text-ink2">
-              Contact support
+          {/* Contact Form */}
+          <div className="surface-panel p-5 md:p-7">
+            <div className="mb-5 flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#00d4aa]/10 border border-[#00d4aa]/15 text-[#00d4aa]">
+                <UIcon name="Mail" size={15} />
+              </div>
+              <div className="font-display text-[15px] font-bold text-white">Contact</div>
             </div>
-            <p className="mt-4 text-[14px] leading-relaxed text-ink3">
-              Send a message and wire this form to your inbox later.
-            </p>
 
-            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
+            <form onSubmit={handleSubmit} className="grid gap-3">
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="Your name"
-                title="Enter the name support should reply to."
-                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] text-white outline-none placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30"
               />
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="Email address"
-                title="Enter the email address for the reply."
-                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] text-white outline-none placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30"
               />
               <select
                 value={form.type}
                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
-                title="Choose the kind of message you want to send."
-                className="w-full rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                className="w-full rounded-xl border border-white/[0.08] bg-[#12121a] px-4 py-2.5 text-[13px] text-white outline-none focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30"
               >
                 <option value="question">Question</option>
                 <option value="bug">Bug report</option>
@@ -145,72 +140,65 @@ export default function SupportPage() {
                 <option value="feedback">General feedback</option>
               </select>
               <textarea
-                rows={5}
+                rows={4}
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-                placeholder="Tell us what your users need, what feels off, or what you want improved."
-                title="Describe your question, problem, or requested improvement."
-                className="w-full resize-y rounded-[18px] border border-black/5 bg-white/82 px-4 py-3 text-[14px] text-ink outline-none placeholder:text-ink4 focus:border-black/5 focus:bg-white focus:shadow-[0_0_0_4px_rgba(110,124,255,.12)]"
+                placeholder="Your message..."
+                className="w-full resize-y rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] text-white outline-none placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30"
               />
 
-              <div className="flex flex-wrap gap-3">
-                <Tip tip="Prepare this support message." side="top">
-                  <button
-                    type="submit"
-                    title="Prepare this support message."
-                    className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white px-5 py-3 text-[14px] font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5"
-                  >
-                    <UIcon name="Mail" size={16} />
-                    Send message
-                  </button>
-                </Tip>
-                <Tip tip="Open the current public contact profile." side="top">
-                  <a
-                    href="https://x.com/alivldm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    title="Open the current public contact profile."
-                    className="inline-flex items-center gap-2 rounded-full border border-black/5 bg-white/80 px-5 py-3 text-[14px] font-semibold text-ink2 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:bg-white"
-                  >
-                    <UIcon name="XBrand" size={14} />
-                    Connect on X
-                  </a>
-                </Tip>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] px-5 py-2.5 text-[13px] font-bold text-white shadow-lg shadow-[#7c6aff]/20 transition-all hover:-translate-y-0.5"
+                >
+                  <UIcon name="Mail" size={14} />
+                  Send
+                </button>
+                <a
+                  href="https://x.com/alivldm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-5 py-2.5 text-[13px] font-semibold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-white/[0.06]"
+                >
+                  <UIcon name="XBrand" size={12} />
+                  X
+                </a>
               </div>
             </form>
           </div>
         </section>
 
-        <section className="mt-5 surface-panel overflow-hidden">
-          <div className="p-5 md:p-8">
-            <div className="mb-5 flex items-center gap-4">
-              <div className="page-kicker">Supported Formats</div>
-              <div className="premium-divider flex-1" />
+        {/* Supported Formats */}
+        <section className="surface-panel overflow-hidden p-5 md:p-7">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#ffa940]/10 border border-[#ffa940]/15 text-[#ffa940]">
+              <UIcon name="FileSpreadsheet" size={15} />
             </div>
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[680px] border-collapse">
-                <thead>
-                  <tr className="border-b border-black/5 text-left text-[12px] uppercase tracking-[0.18em] text-ink4">
-                    <th className="pb-4 pr-6 font-semibold">Format</th>
-                    <th className="pb-4 pr-6 font-semibold">Input</th>
-                    <th className="pb-4 pr-6 font-semibold">Output</th>
-                    <th className="pb-4 font-semibold">Area</th>
+            <div className="font-display text-[15px] font-bold text-white">Supported Formats</div>
+            <div className="flex-1 h-px bg-white/[0.04]" />
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[600px] border-collapse">
+              <thead>
+                <tr className="border-b border-white/[0.06] text-left text-[11px] uppercase tracking-widest text-[#6b6d80]">
+                  <th className="pb-3 pr-6 font-semibold">Format</th>
+                  <th className="pb-3 pr-6 font-semibold">Input</th>
+                  <th className="pb-3 pr-6 font-semibold">Output</th>
+                  <th className="pb-3 font-semibold">Area</th>
+                </tr>
+              </thead>
+              <tbody>
+                {formats.map(([fmt, input, output, area]) => (
+                  <tr key={fmt} className="border-b border-white/[0.04]">
+                    <td className="py-3.5 pr-6 font-display text-[15px] font-bold text-white">{fmt}</td>
+                    <td className="py-3.5 pr-6 text-[13px] text-[#9294a5]">{input}</td>
+                    <td className="py-3.5 pr-6 text-[13px] text-[#9294a5]">{output}</td>
+                    <td className="py-3.5 text-[13px] font-medium text-[#6b6d80]">{area}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {formats.map(([fmt, input, output, area]) => (
-                    <tr key={fmt} className="border-b border-black/5">
-                      <td className="py-5 pr-6 font-caveat text-[24px] font-semibold text-ink2">
-                        {fmt}
-                      </td>
-                      <td className="py-5 pr-6 text-[14px] text-ink3">{input}</td>
-                      <td className="py-5 pr-6 text-[14px] text-ink3">{output}</td>
-                      <td className="py-5 text-[14px] font-semibold text-ink4">{area}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </section>
       </div>

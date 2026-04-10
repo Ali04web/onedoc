@@ -3,7 +3,6 @@ import fs from "fs/promises";
 import path from "path";
 import { notFound } from "next/navigation";
 import { BrandSymbol } from "@/app/components/BrandSymbol";
-import { DocumentHeroArt } from "@/app/components/DocumentHeroArt";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
@@ -49,329 +48,194 @@ export default async function ViewPage({
         <style
           dangerouslySetInnerHTML={{
             __html: `
+              @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
               :root{
-                color-scheme: light;
-                --paper:#f4f8ff;
-                --paper-2:#eaf2ff;
-                --paper-3:#ffffff;
-                --ink:#162340;
-                --muted:#68799a;
-                --line:rgba(74,98,181,.14);
-                --amber:#ffc95a;
-                --amber-2:#ff9147;
-                --teal:#10c7a2;
-                --violet:#6e7cff;
-                --shadow:0 28px 60px rgba(34,48,94,.16);
+                color-scheme: dark;
               }
               *{box-sizing:border-box}
               html,body{height:100%}
               body{
                 margin:0;
-                font-family:"Segoe UI",Arial,sans-serif;
-                color:var(--ink);
-                background-color:#fdf6e3;
-                background-image:linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
-                background-size:100% 32px;
+                font-family:'Inter',system-ui,sans-serif;
+                color:#e4e4ef;
+                background-color:#0a0a0f;
                 overflow:hidden;
+              }
+              body::before{
+                content:"";
+                position:fixed;
+                top:-40%;left:-20%;
+                width:80%;height:80%;
+                border-radius:50%;
+                background:radial-gradient(circle,rgba(124,106,255,0.06) 0%,transparent 70%);
+                pointer-events:none;
               }
               .shell{
                 min-height:100%;
                 display:flex;
                 flex-direction:column;
-                padding:22px;
-                gap:18px;
+                padding:16px;
+                gap:14px;
               }
               .toolbar{
                 display:flex;
                 align-items:center;
-                gap:18px;
-                padding:18px 22px;
-                border:1px solid var(--line);
-                border-radius:28px;
-                background:rgba(253,251,248,.82);
-                backdrop-filter:blur(18px);
-                box-shadow:var(--shadow);
+                gap:14px;
+                padding:14px 18px;
+                border:1px solid rgba(255,255,255,0.06);
+                border-radius:20px;
+                background:rgba(255,255,255,0.025);
+                backdrop-filter:blur(24px);
                 flex-shrink:0;
               }
               .brand{
                 min-width:0;
                 display:flex;
                 align-items:center;
-                gap:14px;
+                gap:12px;
               }
               .brand-mark{
-                width:56px;
-                height:56px;
-                border-radius:50%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:rgba(255,255,255,.82);
-                box-shadow:0 18px 32px rgba(34,48,94,.14);
+                width:42px;height:42px;
+                border-radius:14px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(255,255,255,0.04);
+                border:1px solid rgba(255,255,255,0.06);
               }
-              .brand-copy{
-                min-width:0;
-              }
+              .brand-copy{min-width:0}
               .eyebrow{
-                font-size:11px;
-                letter-spacing:.22em;
+                font-size:10px;
+                letter-spacing:.18em;
                 text-transform:uppercase;
-                color:var(--muted);
-                font-weight:700;
+                color:#6b6d80;
+                font-weight:600;
               }
               .title{
-                margin-top:6px;
-                font-size:clamp(20px,2vw,28px);
-                line-height:1.05;
+                margin-top:4px;
+                font-size:clamp(16px,2vw,22px);
+                line-height:1.1;
                 font-weight:700;
+                color:#fff;
                 white-space:nowrap;
                 overflow:hidden;
                 text-overflow:ellipsis;
               }
               .meta{
-                margin-top:8px;
-                display:flex;
-                flex-wrap:wrap;
-                gap:8px;
+                margin-top:6px;
+                display:flex;flex-wrap:wrap;gap:6px;
               }
               .chip{
-                display:inline-flex;
-                align-items:center;
-                gap:6px;
-                padding:8px 12px;
-                border-radius:999px;
-                border:1px solid var(--line);
-                background:rgba(255,255,255,.92);
-                color:var(--muted);
-                font-size:12px;
-                font-weight:600;
+                display:inline-flex;align-items:center;gap:4px;
+                padding:4px 10px;border-radius:999px;
+                border:1px solid rgba(124,106,255,0.12);
+                background:rgba(124,106,255,0.08);
+                color:#a78bfa;font-size:11px;font-weight:600;
               }
               .actions{
                 margin-left:auto;
-                display:flex;
-                flex-wrap:wrap;
-                gap:10px;
+                display:flex;flex-wrap:wrap;gap:8px;
               }
               .btn{
-                display:inline-flex;
-                align-items:center;
-                justify-content:center;
-                gap:8px;
-                border-radius:18px;
-                padding:12px 18px;
-                text-decoration:none;
-                font-size:14px;
-                font-weight:700;
-                transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
-                white-space:nowrap;
+                display:inline-flex;align-items:center;justify-content:center;
+                gap:6px;border-radius:14px;padding:10px 16px;
+                text-decoration:none;font-size:13px;font-weight:700;
+                transition:transform .18s ease,box-shadow .18s ease;
+                white-space:nowrap;border:none;
               }
               .btn-primary{
                 color:#fff;
-                background:#073642;
-                box-shadow:0 18px 30px rgba(0,0,0,.1);
+                background:linear-gradient(135deg,#7c6aff,#5b4bcf);
+                box-shadow:0 8px 24px rgba(124,106,255,0.25);
               }
               .btn-secondary{
-                color:var(--ink);
-                background:rgba(255,255,255,.9);
-                border:1px solid var(--line);
+                color:#e4e4ef;
+                background:rgba(255,255,255,0.04);
+                border:1px solid rgba(255,255,255,0.06);
               }
-              .btn:hover{
-                transform:translateY(-1px);
-              }
+              .btn:hover{transform:translateY(-1px)}
               .viewer-shell{
-                min-height:0;
-                flex:1;
-                display:flex;
-                gap:18px;
+                min-height:0;flex:1;display:flex;gap:14px;
               }
               .viewer-panel{
-                min-width:0;
-                flex:1;
-                display:flex;
-                flex-direction:column;
-                border:1px solid var(--line);
-                border-radius:30px;
-                overflow:hidden;
-                background:rgba(253,251,248,.86);
-                box-shadow:var(--shadow);
+                min-width:0;flex:1;display:flex;flex-direction:column;
+                border:1px solid rgba(255,255,255,0.06);
+                border-radius:20px;overflow:hidden;
+                background:rgba(255,255,255,0.025);
+                backdrop-filter:blur(16px);
               }
               .viewer-head{
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                gap:12px;
-                padding:16px 20px;
-                border-bottom:1px solid var(--line);
-                background:#fff;
+                display:flex;align-items:center;justify-content:space-between;
+                gap:10px;padding:12px 16px;
+                border-bottom:1px solid rgba(255,255,255,0.04);
+                background:rgba(255,255,255,0.02);
               }
-              .viewer-head strong{
-                font-size:14px;
-              }
-              .viewer-head span{
-                color:var(--muted);
-                font-size:12px;
-              }
+              .viewer-head strong{font-size:13px;color:#fff}
+              .viewer-head span{color:#6b6d80;font-size:11px}
               .viewer-frame{
-                min-height:0;
-                flex:1;
-                padding:16px;
-                background:rgba(0,0,0,.02);
+                min-height:0;flex:1;padding:12px;
+                background:rgba(255,255,255,0.01);
               }
               .viewer-frame iframe{
-                width:100%;
-                height:100%;
-                border:none;
-                border-radius:22px;
-                background:#fff;
-                box-shadow:0 18px 40px rgba(28,21,13,.12);
+                width:100%;height:100%;border:none;
+                border-radius:14px;background:#1a1a26;
+                box-shadow:0 12px 32px rgba(0,0,0,0.3);
               }
               .side-panel{
-                width:320px;
-                flex-shrink:0;
-                display:flex;
-                flex-direction:column;
-                gap:14px;
+                width:300px;flex-shrink:0;
+                display:flex;flex-direction:column;gap:12px;
               }
               .card{
-                border:1px solid var(--line);
-                border-radius:28px;
-                background:rgba(255,255,255,.84);
-                box-shadow:var(--shadow);
-                padding:20px;
+                border:1px solid rgba(255,255,255,0.06);
+                border-radius:20px;
+                background:rgba(255,255,255,0.025);
+                backdrop-filter:blur(16px);
+                padding:18px;
               }
-              .card h2{
-                margin:0;
-                font-size:24px;
-                line-height:1.05;
-              }
-              .card p{
-                margin:12px 0 0;
-                color:var(--muted);
-                line-height:1.7;
-                font-size:14px;
-              }
-              .art-card{
-                overflow:hidden;
-              }
-              .art-frame{
-                margin:-4px -4px 18px;
-                border-radius:24px;
-                background:rgba(0,0,0,.05);
-                border:1px solid rgba(0,0,0,.05);
-                padding:10px;
-              }
-              .art-frame svg{
-                display:block;
-                width:100%;
-                height:auto;
-              }
-              .list{
-                display:flex;
-                flex-direction:column;
-                gap:10px;
-                margin-top:16px;
-              }
+              .card h2{margin:0;font-size:18px;line-height:1.1;color:#fff}
+              .card p{margin:10px 0 0;color:#6b6d80;line-height:1.6;font-size:13px}
+              .list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
               .list-item{
-                border:1px solid var(--line);
-                border-radius:18px;
-                background:#fff;
-                padding:14px;
+                border:1px solid rgba(255,255,255,0.06);
+                border-radius:14px;background:rgba(255,255,255,0.02);padding:12px;
               }
-              .list-item strong{
-                display:block;
-                font-size:13px;
-                margin-bottom:4px;
-              }
-              .list-item span{
-                color:var(--muted);
-                font-size:13px;
-                line-height:1.6;
-              }
+              .list-item strong{display:block;font-size:12px;color:#fff;margin-bottom:4px}
+              .list-item span{color:#6b6d80;font-size:12px;line-height:1.6}
               .mobile-fallback{
-                display:none;
-                min-height:0;
-                flex:1;
-                border:1px solid var(--line);
-                border-radius:28px;
-                background:rgba(253,251,248,.88);
-                box-shadow:var(--shadow);
-                padding:28px 22px;
-                text-align:center;
-                align-items:center;
-                justify-content:center;
-                flex-direction:column;
+                display:none;min-height:0;flex:1;
+                border:1px solid rgba(255,255,255,0.06);
+                border-radius:20px;background:rgba(255,255,255,0.025);
+                backdrop-filter:blur(16px);
+                padding:24px 18px;text-align:center;
+                align-items:center;justify-content:center;flex-direction:column;
               }
               .mobile-fallback .icon{
-                width:86px;
-                height:86px;
-                border-radius:50%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                background:rgba(255,255,255,.88);
-                box-shadow:0 20px 38px rgba(34,48,94,.14);
+                width:72px;height:72px;border-radius:20px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(255,255,255,0.04);
+                border:1px solid rgba(255,255,255,0.06);
               }
-              .mobile-fallback .icon svg{
-                width:52px;
-                height:52px;
-              }
-              .mobile-fallback h2{
-                margin:18px 0 0;
-                font-size:28px;
-                line-height:1.05;
-              }
-              .mobile-fallback p{
-                margin:14px 0 0;
-                max-width:360px;
-                color:var(--muted);
-                line-height:1.7;
-                font-size:14px;
-              }
+              .mobile-fallback h2{margin:14px 0 0;font-size:22px;color:#fff}
+              .mobile-fallback p{margin:10px 0 0;max-width:320px;color:#6b6d80;line-height:1.6;font-size:13px}
               .powered{
-                position:fixed;
-                right:20px;
-                bottom:14px;
-                color:rgba(118,106,87,.78);
-                font-size:12px;
+                position:fixed;right:16px;bottom:12px;
+                color:rgba(107,109,128,0.6);font-size:11px;
               }
-              .powered a{
-                color:inherit;
-                text-decoration:none;
-              }
+              .powered a{color:inherit;text-decoration:none}
               @media (max-width: 1080px){
                 body{overflow:auto}
-                .shell{padding:16px}
+                .shell{padding:12px}
                 .viewer-shell{flex-direction:column}
                 .side-panel{width:auto}
               }
               @media (max-width: 768px){
                 body{overflow:auto}
-                .shell{padding:14px}
-                .toolbar{
-                  flex-direction:column;
-                  align-items:flex-start;
-                  gap:16px;
-                }
-                .actions{
-                  margin-left:0;
-                  width:100%;
-                }
-                .actions .btn{
-                  flex:1;
-                }
-                .viewer-shell{
-                  display:none;
-                }
-                .mobile-fallback{
-                  display:flex;
-                }
-                .title{
-                  white-space:normal;
-                }
-                .powered{
-                  position:static;
-                  padding:0 4px 12px;
-                }
+                .shell{padding:10px}
+                .toolbar{flex-direction:column;align-items:flex-start;gap:12px}
+                .actions{margin-left:0;width:100%}
+                .actions .btn{flex:1}
+                .viewer-shell{display:none}
+                .mobile-fallback{display:flex}
+                .title{white-space:normal}
+                .powered{position:static;padding:0 4px 10px}
               }
             `,
           }}
@@ -382,7 +246,7 @@ export default async function ViewPage({
           <div className="toolbar">
             <div className="brand">
               <div className="brand-mark">
-                <BrandSymbol size={48} />
+                <BrandSymbol size={32} />
               </div>
               <div className="brand-copy">
                 <div className="eyebrow">OneDocs Shared Viewer</div>
@@ -390,7 +254,7 @@ export default async function ViewPage({
                 <div className="meta">
                   <span className="chip">PDF</span>
                   <span className="chip">{sizeMB} MB</span>
-                  <span className="chip">Uploaded {uploadDate}</span>
+                  <span className="chip">{uploadDate}</span>
                 </div>
               </div>
             </div>
@@ -409,11 +273,8 @@ export default async function ViewPage({
               <div className="viewer-head">
                 <div>
                   <strong>Live document view</strong>
-                  <div>
-                    <span>Open, review, and download from one clean surface.</span>
-                  </div>
                 </div>
-                <span>Hosted with OneDocs</span>
+                <span>OneDocs</span>
               </div>
               <div className="viewer-frame">
                 <iframe src={pdfUrl} title={meta.originalName} />
@@ -421,33 +282,28 @@ export default async function ViewPage({
             </div>
 
             <div className="side-panel">
-              <div className="card art-card">
-                <div className="art-frame">
-                  <DocumentHeroArt mode="viewer" />
-                </div>
+              <div className="card">
                 <div className="eyebrow">Share Experience</div>
-                <h2>Professional presentation for shared PDFs.</h2>
+                <h2>Professional PDF viewer</h2>
                 <p>
-                  This viewer keeps the file accessible while giving the shared
-                  page a calmer, more trustworthy feel for clients and internal
-                  stakeholders.
+                  Clean, trustworthy presentation for shared documents.
                 </p>
               </div>
 
               <div className="card">
-                <div className="eyebrow">What You Can Do</div>
+                <div className="eyebrow">Actions</div>
                 <div className="list">
                   <div className="list-item">
                     <strong>Review in place</strong>
-                    <span>The PDF opens directly inside the page for immediate reading.</span>
+                    <span>PDF opens directly in the page.</span>
                   </div>
                   <div className="list-item">
-                    <strong>Download the original</strong>
-                    <span>Use the top action to keep the exact uploaded file.</span>
+                    <strong>Download original</strong>
+                    <span>Get the exact uploaded file.</span>
                   </div>
                   <div className="list-item">
-                    <strong>Share confidently</strong>
-                    <span>The page now looks aligned with the rest of the OneDocs product.</span>
+                    <strong>Share link</strong>
+                    <span>Anyone with the URL can view.</span>
                   </div>
                 </div>
               </div>
@@ -456,22 +312,21 @@ export default async function ViewPage({
 
           <div className="mobile-fallback">
             <div className="icon">
-              <BrandSymbol size={52} />
+              <BrandSymbol size={42} />
             </div>
             <h2>{meta.originalName}</h2>
             <p>
-              {sizeMB} MB · Uploaded {uploadDate}. Open the document in a new
-              tab or download the original file below.
+              {sizeMB} MB · {uploadDate}
             </p>
             <div
               style={{
                 display: "flex",
                 width: "100%",
-                maxWidth: "360px",
-                gap: "10px",
+                maxWidth: "320px",
+                gap: "8px",
                 flexWrap: "wrap",
                 justifyContent: "center",
-                marginTop: "22px",
+                marginTop: "18px",
               }}
             >
               <a className="btn btn-primary" href={pdfUrl} target="_blank" rel="noopener">

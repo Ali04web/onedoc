@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
 import { fmtSize } from "../lib/utils";
-import { Emoji } from "./Icons";
+import { UIcon } from "./Icons";
 
 export function Tip({ children, tip, side = "top" }: any) {
   const [show, setShow] = useState(false);
   const hideRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pos: any = {
-    top: "bottom-[calc(100%+14px)] left-1/2 -translate-x-1/2",
-    bottom: "top-[calc(100%+14px)] left-1/2 -translate-x-1/2",
-    right: "left-[calc(100%+14px)] top-1/2 -translate-y-1/2",
-    left: "right-[calc(100%+14px)] top-1/2 -translate-y-1/2",
+    top: "bottom-[calc(100%+10px)] left-1/2 -translate-x-1/2",
+    bottom: "top-[calc(100%+10px)] left-1/2 -translate-x-1/2",
+    right: "left-[calc(100%+10px)] top-1/2 -translate-y-1/2",
+    left: "right-[calc(100%+10px)] top-1/2 -translate-y-1/2",
   };
 
   function clearHideTimer() {
@@ -47,7 +47,7 @@ export function Tip({ children, tip, side = "top" }: any) {
       {show && tip && (
         <div
           role="tooltip"
-          className={`pointer-events-none absolute z-[9000] max-w-[280px] rounded-xl border border-black/10 bg-white px-3.5 py-2 text-[12px] font-bold leading-relaxed text-ink2 shadow-xl animate-fade-in ${pos[side]}`}
+          className={`pointer-events-none absolute z-[9000] max-w-[260px] rounded-xl bg-[#1a1a26] border border-white/[0.08] px-3 py-2 text-[11px] font-medium leading-relaxed text-[#e4e4ef] shadow-xl animate-fade-in ${pos[side]}`}
         >
           {tip}
         </div>
@@ -63,9 +63,9 @@ export function Toast({ msg, onDone }: any) {
   }, [onDone]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 rounded-2xl border border-black/5 bg-white px-5 py-3.5 text-[14px] font-bold text-ink2 shadow-2xl animate-fade-up">
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#4ba391]/10 text-[#4ba391]">
-        <Emoji symbol="✅" size={18} />
+    <div className="fixed bottom-6 right-6 z-[9999] flex items-center gap-3 rounded-2xl bg-[#1a1a26]/95 backdrop-blur-xl border border-white/[0.08] px-5 py-3.5 text-[13px] font-semibold text-white shadow-2xl animate-fade-up">
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#00d4aa]/15 text-[#00d4aa]">
+        <UIcon name="CheckCircle2" size={16} />
       </div>
       {msg}
     </div>
@@ -74,29 +74,23 @@ export function Toast({ msg, onDone }: any) {
 
 export function Spinner() {
   return (
-    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-black/10 border-t-ink2 animate-spin align-middle" />
+    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-white/10 border-t-[#7c6aff] animate-spin align-middle" />
   );
 }
 
 export function SHead({ ico, label, sub }: any) {
   return (
-    <div className="mb-10 flex flex-col gap-3 lg:flex-row lg:items-end">
-      <div className="flex items-start gap-5">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white border border-black/5 shadow-md">
-          {typeof ico === "string" ? <Emoji symbol={ico} size={26} /> : ico}
-        </div>
-        <div>
-          <div className="font-caveat text-[32px] font-bold leading-none text-ink2">
-            {label}
-          </div>
-          {sub && (
-            <div className="mt-2 max-w-[620px] text-[15px] font-medium leading-relaxed text-ink4">
-              {sub}
-            </div>
-          )}
-        </div>
+    <div className="mb-6 flex items-center gap-4">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7c6aff]/10 border border-[#7c6aff]/15 text-[#7c6aff]">
+        {typeof ico === "string" ? <UIcon emoji={ico} size={18} /> : ico}
       </div>
-      <div className="premium-divider hidden flex-1 lg:block opacity-50" />
+      <div className="min-w-0 flex-1">
+        <div className="font-display text-[16px] font-bold text-white">{label}</div>
+        {sub && (
+          <div className="text-[13px] text-[#6b6d80] font-medium">{sub}</div>
+        )}
+      </div>
+      <div className="hidden lg:block flex-1 h-px bg-white/[0.04]" />
     </div>
   );
 }
@@ -104,7 +98,7 @@ export function SHead({ ico, label, sub }: any) {
 export function SCard({ children, style = {} }: any) {
   return (
     <div
-      className="vintage-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-[0.99]"
+      className="vintage-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/[0.1]"
       style={style}
     >
       {children}
@@ -112,25 +106,27 @@ export function SCard({ children, style = {} }: any) {
   );
 }
 
-export function CCard({ ico, title, desc, accentCol = "#ba8a42", children }: any) {
+export function CCard({ ico, title, desc, accentCol = "#7c6aff", children }: any) {
   return (
-    <div className="vintage-card group flex h-full flex-col gap-5 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="flex items-start gap-4">
+    <div className="vintage-card group flex h-full flex-col gap-4 p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-white/[0.1]">
+      <div className="flex items-start gap-3">
         <div
-          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl border bg-white shadow-sm"
-          style={{ borderColor: `${accentCol}20`, color: accentCol }}
+          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border shadow-sm"
+          style={{
+            borderColor: `${accentCol}25`,
+            background: `${accentCol}10`,
+            color: accentCol,
+          }}
         >
-          {typeof ico === "string" ? <Emoji symbol={ico} size={22} /> : ico}
+          {typeof ico === "string" ? <UIcon emoji={ico} size={18} /> : ico}
         </div>
         <div className="min-w-0">
-          <div className="font-caveat text-[24px] font-bold leading-tight text-ink2">
-            {title}
-          </div>
-          <div className="mt-1 text-[13px] font-medium leading-relaxed text-ink4">{desc}</div>
+          <div className="font-display text-[15px] font-bold text-white">{title}</div>
+          <div className="mt-0.5 text-[12px] font-medium text-[#6b6d80] leading-relaxed">{desc}</div>
         </div>
       </div>
-      <div className="premium-divider opacity-50" />
-      <div className="flex flex-1 flex-col gap-4 text-ink3">{children}</div>
+      <div className="h-px bg-white/[0.04]" />
+      <div className="flex flex-1 flex-col gap-3 text-[#9294a5]">{children}</div>
     </div>
   );
 }
@@ -153,12 +149,12 @@ export function FZone({
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       title={tip}
-      className={`flex min-h-[100px] cursor-pointer items-center justify-center gap-4 rounded-2xl border-2 border-dashed px-5 py-4 text-center transition-all duration-200 ${
+      className={`flex min-h-[80px] cursor-pointer items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-3.5 text-center transition-all duration-200 ${
         has
-          ? "border-[#4ba391]/30 bg-[#4ba391]/5 text-[#4ba391]"
+          ? "border-[#00d4aa]/30 bg-[#00d4aa]/[0.04] text-[#00d4aa]"
           : hov
-            ? "border-vintage-gold/30 bg-vintage-gold/5 text-ink2"
-            : "border-black/10 bg-black/5 text-ink3"
+            ? "border-[#7c6aff]/30 bg-[#7c6aff]/[0.04] text-white"
+            : "border-white/[0.08] bg-white/[0.02] text-[#9294a5]"
       }`}
     >
       <input
@@ -171,23 +167,23 @@ export function FZone({
         }
       />
       <div
-        className={`flex h-11 w-11 items-center justify-center rounded-full border transition-colors ${
+        className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${
           has
-            ? "border-[#4ba391]/20 bg-white"
-            : hov ? "border-vintage-gold/20 bg-white" : "border-black/5 bg-white"
+            ? "border-[#00d4aa]/20 bg-[#00d4aa]/10"
+            : hov ? "border-[#7c6aff]/20 bg-[#7c6aff]/10" : "border-white/[0.06] bg-white/[0.03]"
         }`}
       >
-        <Emoji symbol={has ? "✅" : "📎"} size={20} />
+        <UIcon name={has ? "CheckCircle2" : "Paperclip"} size={16} />
       </div>
       <div className="min-w-0">
-        <div className="text-[15px] font-bold leading-tight">
+        <div className="text-[13px] font-semibold leading-tight">
           {has
             ? multi
               ? `${files.length} selected`
               : file.name
             : label}
         </div>
-        {!has && <div className="mt-1 text-[12px] font-medium text-ink4">Click or drag to upload</div>}
+        {!has && <div className="mt-0.5 text-[11px] font-medium text-[#6b6d80]">Click or drag to upload</div>}
       </div>
     </label>
   );
@@ -208,7 +204,7 @@ export function HInput({ className = "", tip, ...props }: any) {
     <input
       {...props}
       title={tip}
-      className={`w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] font-medium text-ink2 outline-none transition-all placeholder:text-ink4 focus:ring-4 focus:ring-black/5 ${className}`}
+      className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-2.5 text-[13px] font-medium text-white outline-none transition-all placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30 ${className}`}
     />
   );
 
@@ -226,7 +222,7 @@ export function HSel({ className = "", children, tip, ...props }: any) {
     <select
       {...props}
       title={tip}
-      className={`w-full cursor-pointer rounded-xl border border-black/10 bg-white px-4 py-3 text-[14px] font-medium text-ink2 outline-none transition-all focus:ring-4 focus:ring-black/5 ${className}`}
+      className={`w-full cursor-pointer rounded-xl border border-white/[0.08] bg-[#12121a] px-4 py-2.5 text-[13px] font-medium text-white outline-none transition-all focus:ring-2 focus:ring-[#7c6aff]/20 focus:border-[#7c6aff]/30 ${className}`}
     >
       {children}
     </select>
@@ -246,14 +242,14 @@ export function CStat({ msg, type }: any) {
 
   const styles =
     type === "ok"
-      ? "border-[#4ba391]/20 bg-[#4ba391]/5 text-[#4ba391]"
+      ? "border-[#00d4aa]/20 bg-[#00d4aa]/[0.06] text-[#00d4aa]"
       : type === "err"
-        ? "border-red-500/20 bg-red-500/5 text-red-600"
-        : "border-black/10 bg-black/5 text-ink3";
+        ? "border-[#ff6b6b]/20 bg-[#ff6b6b]/[0.06] text-[#ff6b6b]"
+        : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]";
 
   return (
-    <div className={`flex items-start gap-3 rounded-xl border px-4 py-3 text-[13px] font-bold leading-relaxed animate-fade-in ${styles}`}>
-      <Emoji symbol={type === "ok" ? "✅" : type === "err" ? "✕" : "⏳"} size={16} />
+    <div className={`flex items-start gap-2.5 rounded-xl border px-3.5 py-2.5 text-[12px] font-semibold leading-relaxed animate-fade-in ${styles}`}>
+      <UIcon name={type === "ok" ? "CheckCircle2" : type === "err" ? "X" : "Hourglass"} size={14} />
       <span>{msg}</span>
     </div>
   );
@@ -267,10 +263,10 @@ export function HBtn({ onClick, disabled, loading, label, tip }: any) {
       onClick={onClick}
       disabled={isDisabled}
       title={tip}
-      className={`flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[15px] font-bold transition-all ${
+      className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-[13px] font-bold transition-all ${
         isDisabled
-          ? "cursor-not-allowed bg-black/5 text-ink4"
-          : "cursor-pointer bg-ink2 text-white shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
+          ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80]"
+          : "cursor-pointer bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-lg shadow-[#7c6aff]/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#7c6aff]/30 active:translate-y-0"
       }`}
     >
       {loading && <Spinner />}
@@ -296,28 +292,28 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
         onClick={onSelect}
-        className={`mb-2 flex cursor-pointer items-center gap-3 rounded-2xl border px-3 py-3 transition-all ${
+        className={`mb-1.5 flex cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 transition-all ${
           active
-            ? "border-ink2/20 bg-white shadow-lg scale-[1.02]"
+            ? "border-[#7c6aff]/20 bg-[#7c6aff]/[0.06] shadow-lg shadow-[#7c6aff]/5"
             : hov
-              ? "border-black/5 bg-white/50"
+              ? "border-white/[0.06] bg-white/[0.03]"
               : "border-transparent bg-transparent"
         }`}
       >
         <div
-          className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border bg-white ${
+          className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border ${
             active
-              ? "border-ink2/20 text-ink2"
-              : "border-black/10 text-ink3"
+              ? "border-[#7c6aff]/20 bg-[#7c6aff]/10 text-[#7c6aff]"
+              : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]"
           }`}
         >
-          <Emoji symbol={doc.type === "pdf" ? "📄" : "📝"} size={18} />
+          <UIcon name={doc.type === "pdf" ? "FileText" : "FileSignature"} size={15} />
         </div>
         <div className="min-w-0 flex-1">
-          <div className={`truncate text-[14px] font-bold ${active ? "text-ink2" : "text-ink3"}`}>
+          <div className={`truncate text-[13px] font-semibold ${active ? "text-white" : "text-[#9294a5]"}`}>
             {doc.name}
           </div>
-          <div className="mt-0.5 text-[12px] font-medium text-ink4">
+          <div className="mt-0.5 text-[11px] font-medium text-[#6b6d80]">
             {fmtSize(doc.size)}
             {doc.pages ? ` · ${doc.pages} pages` : ""}
           </div>
@@ -328,9 +324,9 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
               e.stopPropagation();
               onRemove();
             }}
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-ink4 hover:text-red-500 transition-colors shadow-sm"
+            className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/[0.04] text-[#6b6d80] hover:text-[#ff6b6b] hover:bg-[#ff6b6b]/10 transition-colors"
           >
-            <Emoji symbol="✕" size={14} />
+            <UIcon name="X" size={12} />
           </button>
         )}
       </div>

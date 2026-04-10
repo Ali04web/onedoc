@@ -22,25 +22,21 @@ import {
 } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
 
-function CsvPreview({
-  rows,
-}: {
-  rows: string[][];
-}) {
+function CsvPreview({ rows }: { rows: string[][] }) {
   if (!rows.length) return null;
 
   const [header, ...body] = rows;
 
   return (
-    <div className="overflow-hidden rounded-[20px] border border-black/5 bg-white/76">
-      <div className="grid grid-cols-1 border-b border-black/5 bg-white px-4 py-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
+    <div className="overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02]">
+      <div className="border-b border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#6b6d80]">
         {header.join(" · ")}
       </div>
-      <div className="max-h-[140px] overflow-auto">
+      <div className="max-h-[120px] overflow-auto">
         {body.slice(0, 4).map((row, index) => (
           <div
             key={`${row.join("|")}-${index}`}
-            className="grid grid-cols-1 gap-1 border-b border-black/5 px-4 py-3 text-[13px] text-ink3 last:border-b-0"
+            className="border-b border-white/[0.04] px-4 py-2.5 text-[12px] text-[#9294a5] last:border-b-0"
           >
             {row.join(" · ")}
           </div>
@@ -94,11 +90,9 @@ export default function DocxToolsPage() {
   const docxCards = [
     {
       title: "DOCX to HTML",
-      description:
-        "Convert Word documents into richer standalone web pages with stronger structure preservation.",
-      accent: "#1f5a56",
-      icon: <UIcon name="Globe" size={24} />,
-      tip: "Great for sending formatted content to clients or publishing internal drafts.",
+      accent: "#00d4aa",
+      icon: <UIcon name="Globe" size={18} />,
+      tip: "Export as standalone web page.",
       body: (
         <>
           <FZone
@@ -106,12 +100,8 @@ export default function DocxToolsPage() {
             label="Choose a DOCX"
             file={getTool("docxHtml").file}
             onFile={(file: File) => setTool("docxHtml", { file })}
-            tip="Upload a Word file to export a standalone HTML page."
           />
-          <CStat
-            msg={getTool("docxHtml").status}
-            type={getTool("docxHtml").statusType}
-          />
+          <CStat msg={getTool("docxHtml").status} type={getTool("docxHtml").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("docxHtml").file;
@@ -124,24 +114,21 @@ export default function DocxToolsPage() {
                 );
                 const page = buildStandaloneHtml(stem(file.name), htmlBody);
                 dlText(`${stem(file.name)}.html`, page);
-                return "Standalone HTML exported successfully.";
+                return "Standalone HTML exported.";
               });
             }}
             disabled={!getTool("docxHtml").file}
             loading={getTool("docxHtml").loading}
             label="Export HTML"
-            tip="Builds a self-contained premium HTML document."
           />
         </>
       ),
     },
     {
       title: "DOCX to TXT",
-      description:
-        "Strip formatting and keep only the readable text for indexing, notes, or downstream tooling.",
-      accent: "#a34b42",
-      icon: <UIcon name="FileText" size={24} />,
-      tip: "Useful when you need clean raw text rather than visual formatting.",
+      accent: "#ff6b6b",
+      icon: <UIcon name="FileText" size={18} />,
+      tip: "Strip formatting, keep raw text.",
       body: (
         <>
           <FZone
@@ -149,12 +136,8 @@ export default function DocxToolsPage() {
             label="Choose a DOCX"
             file={getTool("docxTxt").file}
             onFile={(file: File) => setTool("docxTxt", { file })}
-            tip="Upload a Word file to extract plain text."
           />
-          <CStat
-            msg={getTool("docxTxt").status}
-            type={getTool("docxTxt").statusType}
-          />
+          <CStat msg={getTool("docxTxt").status} type={getTool("docxTxt").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("docxTxt").file;
@@ -165,24 +148,21 @@ export default function DocxToolsPage() {
                   arrayBuffer: await file.arrayBuffer(),
                 });
                 dlText(`${stem(file.name)}.txt`, result.value);
-                return "Plain text extracted successfully.";
+                return "Plain text extracted.";
               });
             }}
             disabled={!getTool("docxTxt").file}
             loading={getTool("docxTxt").loading}
             label="Extract text"
-            tip="Downloads a clean TXT file."
           />
         </>
       ),
     },
     {
       title: "DOCX to Markdown",
-      description:
-        "Produce cleaner markdown from richer HTML conversion instead of a basic text dump.",
-      accent: "#345d9d",
-      icon: <UIcon name="NotebookPen" size={24} />,
-      tip: "Works well for product docs, changelogs, knowledge bases, and GitHub content.",
+      accent: "#7c6aff",
+      icon: <UIcon name="NotebookPen" size={18} />,
+      tip: "Great for docs, wikis, GitHub.",
       body: (
         <>
           <FZone
@@ -190,12 +170,8 @@ export default function DocxToolsPage() {
             label="Choose a DOCX"
             file={getTool("docxMd").file}
             onFile={(file: File) => setTool("docxMd", { file })}
-            tip="Upload a Word file to convert it into markdown."
           />
-          <CStat
-            msg={getTool("docxMd").status}
-            type={getTool("docxMd").statusType}
-          />
+          <CStat msg={getTool("docxMd").status} type={getTool("docxMd").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("docxMd").file;
@@ -208,24 +184,21 @@ export default function DocxToolsPage() {
                 );
                 const markdown = htmlToMarkdown(htmlBody);
                 dlText(`${stem(file.name)}.md`, markdown);
-                return "Markdown exported successfully.";
+                return "Markdown exported.";
               });
             }}
             disabled={!getTool("docxMd").file}
             loading={getTool("docxMd").loading}
             label="Export Markdown"
-            tip="Uses the richer HTML conversion flow before translating to markdown."
           />
         </>
       ),
     },
     {
       title: "DOCX to PDF",
-      description:
-        "Open a print-ready preview that preserves more structure and can be saved as PDF from the browser print flow.",
-      accent: "#ba8a42",
-      icon: <UIcon name="Printer" size={24} />,
-      tip: "This avoids low-quality text-only PDF output by using a richer preview path.",
+      accent: "#ffa940",
+      icon: <UIcon name="Printer" size={18} />,
+      tip: "Print preview, save as PDF.",
       body: (
         <>
           <FZone
@@ -233,12 +206,8 @@ export default function DocxToolsPage() {
             label="Choose a DOCX"
             file={getTool("docxPdf").file}
             onFile={(file: File) => setTool("docxPdf", { file })}
-            tip="Upload a Word file to prepare a print-ready PDF view."
           />
-          <CStat
-            msg={getTool("docxPdf").status}
-            type={getTool("docxPdf").statusType}
-          />
+          <CStat msg={getTool("docxPdf").status} type={getTool("docxPdf").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("docxPdf").file;
@@ -266,7 +235,7 @@ export default function DocxToolsPage() {
                   preview?.document.write(page);
                   preview?.document.close();
                   window.setTimeout(() => preview?.print(), 180);
-                  return "Print-ready preview opened. Save as PDF from the print dialog.";
+                  return "Print preview opened. Save as PDF from dialog.";
                 } catch (error) {
                   preview?.close();
                   throw error;
@@ -276,7 +245,6 @@ export default function DocxToolsPage() {
             disabled={!getTool("docxPdf").file}
             loading={getTool("docxPdf").loading}
             label="Open PDF preview"
-            tip="Opens a new print dialog path that can be saved as a PDF."
           />
         </>
       ),
@@ -285,12 +253,10 @@ export default function DocxToolsPage() {
 
   const dataCards = [
     {
-      title: "TXT or MD to PDF",
-      description:
-        "Turn plain text content into a simple A4 PDF for quick delivery or review.",
-      accent: "#a34b42",
-      icon: <UIcon name="ScrollText" size={24} />,
-      tip: "Useful for reports, notes, markdown drafts, and quick handoffs.",
+      title: "TXT/MD to PDF",
+      accent: "#ff6b6b",
+      icon: <UIcon name="ScrollText" size={18} />,
+      tip: "Turn text to A4 PDF.",
       body: (
         <>
           <FZone
@@ -298,12 +264,8 @@ export default function DocxToolsPage() {
             label="Choose a TXT or MD file"
             file={getTool("txtPdf").file}
             onFile={(file: File) => setTool("txtPdf", { file })}
-            tip="Upload plain text or markdown."
           />
-          <CStat
-            msg={getTool("txtPdf").status}
-            type={getTool("txtPdf").statusType}
-          />
+          <CStat msg={getTool("txtPdf").status} type={getTool("txtPdf").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("txtPdf").file;
@@ -329,7 +291,6 @@ export default function DocxToolsPage() {
                     lines.push("");
                     return;
                   }
-
                   const words = line.split(/\s+/);
                   let current = "";
                   for (const word of words) {
@@ -348,18 +309,14 @@ export default function DocxToolsPage() {
                 let y = pageHeight - margin;
 
                 page.drawText(stem(file.name), {
-                  x: margin,
-                  y,
-                  size: 18,
-                  font: bold,
-                  color: rgb(0.12, 0.07, 0.04),
+                  x: margin, y, size: 18, font: bold, color: rgb(0.9, 0.9, 0.95),
                 });
                 y -= 28;
                 page.drawLine({
                   start: { x: margin, y },
                   end: { x: pageWidth - margin, y },
                   thickness: 0.8,
-                  color: rgb(0.8, 0.75, 0.68),
+                  color: rgb(0.3, 0.3, 0.35),
                 });
                 y -= 18;
 
@@ -370,11 +327,7 @@ export default function DocxToolsPage() {
                   }
                   if (line) {
                     page.drawText(line, {
-                      x: margin,
-                      y,
-                      size: fontSize,
-                      font,
-                      color: rgb(0.1, 0.1, 0.1),
+                      x: margin, y, size: fontSize, font, color: rgb(0.8, 0.8, 0.85),
                     });
                   }
                   y -= lineHeight;
@@ -382,24 +335,21 @@ export default function DocxToolsPage() {
 
                 const output = await pdf.save();
                 dlBlob(`${stem(file.name)}.pdf`, new Blob([output], { type: "application/pdf" }));
-                return "PDF generated successfully.";
+                return "PDF generated.";
               });
             }}
             disabled={!getTool("txtPdf").file}
             loading={getTool("txtPdf").loading}
             label="Create PDF"
-            tip="Builds a clean PDF from your text content."
           />
         </>
       ),
     },
     {
       title: "CSV to HTML table",
-      description:
-        "Create a cleaner, presentation-ready HTML table using more reliable CSV parsing.",
-      accent: "#1f5a56",
-      icon: <UIcon name="TableProperties" size={24} />,
-      tip: "Supports quoted cells and produces a stronger standalone HTML export.",
+      accent: "#00d4aa",
+      icon: <UIcon name="TableProperties" size={18} />,
+      tip: "Standalone HTML table export.",
       body: (
         <>
           <FZone
@@ -407,13 +357,9 @@ export default function DocxToolsPage() {
             label="Choose a CSV file"
             file={getTool("csvHtml").file}
             onFile={(file: File) => setTool("csvHtml", { file })}
-            tip="Upload comma-separated data."
           />
           <CsvPreview rows={getTool("csvHtml").preview || []} />
-          <CStat
-            msg={getTool("csvHtml").status}
-            type={getTool("csvHtml").statusType}
-          />
+          <CStat msg={getTool("csvHtml").status} type={getTool("csvHtml").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("csvHtml").file;
@@ -429,42 +375,24 @@ export default function DocxToolsPage() {
                 setTool("csvHtml", { preview: rows.slice(0, 5) });
 
                 const bodyHtml = `
-                  <p>${body.length.toLocaleString()} row${
-                    body.length === 1 ? "" : "s"
-                  } converted from <strong>${esc(file.name)}</strong>.</p>
+                  <p>${body.length.toLocaleString()} row${body.length === 1 ? "" : "s"} converted from <strong>${esc(file.name)}</strong>.</p>
                   <table>
                     <thead>
-                      <tr>${header
-                        .map((cell) => `<th>${esc(cell)}</th>`)
-                        .join("")}</tr>
+                      <tr>${header.map((cell) => `<th>${esc(cell)}</th>`).join("")}</tr>
                     </thead>
                     <tbody>
-                      ${body
-                        .map(
-                          (row) =>
-                            `<tr>${row
-                              .map((cell) => `<td>${esc(cell)}</td>`)
-                              .join("")}</tr>`
-                        )
-                        .join("")}
+                      ${body.map((row) => `<tr>${row.map((cell) => `<td>${esc(cell)}</td>`).join("")}</tr>`).join("")}
                     </tbody>
                   </table>
                 `;
 
-                dlText(
-                  `${stem(file.name)}.html`,
-                  buildStandaloneHtml(stem(file.name), bodyHtml)
-                );
-
-                return `${body.length.toLocaleString()} CSV row${
-                  body.length === 1 ? "" : "s"
-                } exported to HTML.`;
+                dlText(`${stem(file.name)}.html`, buildStandaloneHtml(stem(file.name), bodyHtml));
+                return `${body.length.toLocaleString()} CSV row${body.length === 1 ? "" : "s"} exported to HTML.`;
               });
             }}
             disabled={!getTool("csvHtml").file}
             loading={getTool("csvHtml").loading}
             label="Export HTML"
-            tip="Builds a standalone HTML page with a styled table."
           />
         </>
       ),
@@ -473,21 +401,12 @@ export default function DocxToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="surface-panel mt-1 p-5 md:p-8">
-        <SHead
-          ico={<UIcon name="FileSignature" size={24} />}
-          label="DOCX Conversions"
-          sub="Core conversions for Word documents."
-        />
+      <section className="surface-panel p-5 md:p-7">
+        <SHead ico={<UIcon name="FileSignature" size={18} />} label="DOCX Conversions" />
         <div className="grid gap-4 xl:grid-cols-2">
           {docxCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
-              <CCard
-                ico={card.icon}
-                title={card.title}
-                desc={card.description}
-                accentCol={card.accent}
-              >
+              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                 {card.body}
               </CCard>
             </Tip>
@@ -495,21 +414,12 @@ export default function DocxToolsPage() {
         </div>
       </section>
 
-      <section className="surface-panel p-6 md:p-8">
-        <SHead
-          ico={<UIcon name="FileSpreadsheet" size={24} />}
-          label="Text And Data"
-          sub="Simple helpers for text and CSV files."
-        />
+      <section className="surface-panel p-5 md:p-7">
+        <SHead ico={<UIcon name="FileSpreadsheet" size={18} />} label="Text & Data" />
         <div className="grid gap-4 xl:grid-cols-2">
           {dataCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
-              <CCard
-                ico={card.icon}
-                title={card.title}
-                desc={card.description}
-                accentCol={card.accent}
-              >
+              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                 {card.body}
               </CCard>
             </Tip>

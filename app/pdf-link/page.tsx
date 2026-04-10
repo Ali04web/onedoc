@@ -39,7 +39,7 @@ export default function PdfLinkPage() {
       return;
     }
     if (f.size > 20 * 1024 * 1024) {
-      setError("This file is too large. The limit is 20 MB.");
+      setError("File too large. Max 20 MB.");
       return;
     }
     setFile(f);
@@ -79,7 +79,7 @@ export default function PdfLinkPage() {
 
       setUploaded(result);
       setProgress(100);
-      showToast("PDF Link Generated Successfully!");
+      showToast("PDF Link Generated!");
     } catch (e: any) {
       setError(e.message || "Upload failed.");
     } finally {
@@ -100,46 +100,18 @@ export default function PdfLinkPage() {
     if (!uploaded) return;
     navigator.clipboard.writeText(uploaded.url);
     setCopied(true);
-    showToast("Link Copied to Clipboard!");
+    showToast("Link Copied!");
     setTimeout(() => setCopied(false), 2000);
   }
 
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <div className="flex flex-col items-center justify-center pt-8 pb-12">
-          {/* Header Icon */}
-          <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-white shadow-xl rotate-[-4deg] border border-black/5">
-            <UIcon name="Link" size={38} className="text-ink2" />
-          </div>
+        <div className="flex flex-col items-center justify-center pt-6 pb-12">
 
-          {/* Title */}
-          <h1 className="vintage-title text-center leading-tight mb-4">
-            PDF to <span className="text-[#d48a3b] italic">Link</span>
-          </h1>
-
-          {/* Subtext */}
-          <div className="max-w-[480px] text-center text-[18px] text-ink3/80 font-medium font-patrick leading-relaxed">
-            <p>Upload your PDF and get an instant shareable link.</p>
-            <p>Anyone with the Link can view and download it.</p>
-          </div>
-
-          {/* Badges */}
-          <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
-            <span className="rounded-lg border border-[#4ba391]/20 bg-[#4ba391]/10 px-3 py-1.5 text-[12px] font-bold text-[#4ba391]">
-              Free
-            </span>
-            <span className="text-[13px] font-semibold text-ink4">
-              · Max 20 MB
-            </span>
-            <span className="text-[13px] font-semibold text-ink4">
-              · No sign-up
-            </span>
-          </div>
-
-          {/* Main Upload Area */}
+          {/* Upload / Result Area */}
           {!uploaded ? (
-            <div className="mt-12 w-full max-w-[640px]">
+            <div className="w-full max-w-[600px]">
               <label
                 onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
                 onDragLeave={() => setDrag(false)}
@@ -149,8 +121,8 @@ export default function PdfLinkPage() {
                   const dropped = e.dataTransfer.files[0];
                   if (dropped) handleFile(dropped);
                 }}
-                className={`relative flex min-h-[340px] cursor-pointer flex-col items-center justify-center rounded-[40px] bg-white p-12 text-center shadow-2xl transition-all duration-300 active:scale-[0.98] ${
-                  drag ? "scale-[1.02] ring-4 ring-[#4ba391]/20" : ""
+                className={`relative flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-2xl bg-white/[0.025] backdrop-blur-sm border-2 border-dashed p-10 text-center transition-all duration-300 active:scale-[0.99] ${
+                  drag ? "scale-[1.01] border-[#7c6aff]/40 bg-[#7c6aff]/[0.04]" : "border-white/[0.08]"
                 }`}
               >
                 <input
@@ -163,29 +135,29 @@ export default function PdfLinkPage() {
                     if (selected) handleFile(selected);
                   }}
                 />
-                
-                {/* Internal Dotted Border Container */}
-                <div className="absolute inset-6 rounded-[32px] border-2 border-dashed border-black/10 transition-colors group-hover:border-black/20" />
 
                 <div className="relative z-10">
-                  {/* Folder Icon */}
-                  <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-[24px] bg-[#fdf6e3] mx-auto transition-transform duration-300">
-                    <UIcon name={file ? "CheckCircle2" : "FolderOpen"} size={42} className={file ? "text-[#4ba391]" : "text-ink2"} />
+                  <div className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl mx-auto transition-all duration-300 ${
+                    file
+                      ? "bg-[#00d4aa]/10 border border-[#00d4aa]/20"
+                      : "bg-white/[0.04] border border-white/[0.06]"
+                  }`}>
+                    <UIcon name={file ? "CheckCircle2" : "FolderOpen"} size={28} className={file ? "text-[#00d4aa]" : "text-[#9294a5]"} />
                   </div>
 
-                  <div className="font-caveat text-[32px] font-bold text-ink2">
+                  <div className="font-display text-xl font-bold text-white">
                     {file ? file.name : "Drop your PDF here"}
                   </div>
-                  <div className="mt-4 text-[16px] font-medium text-ink4">
+                  <div className="mt-2 text-[14px] font-medium text-[#6b6d80]">
                     {file
-                      ? `${fmtSize(file.size)} · Click Generate to continue`
-                      : "or click to browse - up to 20 MB"}
+                      ? `${fmtSize(file.size)} · Ready to generate`
+                      : "or click to browse · up to 20 MB"}
                   </div>
 
                   {file && (
                     <button
                       onClick={(e) => { e.preventDefault(); e.stopPropagation(); reset(); }}
-                      className="mt-6 px-4 py-2 text-[14px] font-bold text-red-500 hover:text-red-600 transition-colors"
+                      className="mt-5 px-3 py-1.5 text-[13px] font-semibold text-[#ff6b6b] hover:text-[#ff4444] transition-colors"
                     >
                       Remove file
                     </button>
@@ -194,80 +166,88 @@ export default function PdfLinkPage() {
               </label>
 
               {error && (
-                <div className="mt-6 rounded-2xl bg-red-50 p-4 text-[14px] font-semibold text-red-600 text-center border border-red-100 animate-shake">
+                <div className="mt-5 rounded-xl bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 p-3.5 text-[13px] font-semibold text-[#ff6b6b] text-center">
                   {error}
                 </div>
               )}
 
               {uploading && (
-                <div className="mt-8 space-y-3">
-                  <div className="h-4 overflow-hidden rounded-full bg-black/5 p-1">
+                <div className="mt-6 space-y-2">
+                  <div className="h-2 overflow-hidden rounded-full bg-white/[0.04]">
                     <div
-                      className="h-full rounded-full  from-[#d48a3b] to-[#4ba391] transition-all duration-500 shadow-sm"
+                      className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] to-[#00d4aa] transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
-                  <div className="text-center text-[14px] font-bold text-ink3 animate-pulse">
-                    Crafting your link... {progress}%
+                  <div className="text-center text-[13px] font-semibold text-[#9294a5] animate-pulse">
+                    Generating link... {progress}%
                   </div>
                 </div>
               )}
 
-              <div className="mt-10 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <button
                   onClick={upload}
                   disabled={!file || uploading}
-                  className={`group relative flex items-center gap-3 rounded-2xl px-12 py-5 text-[18px] font-bold transition-all duration-300 ${
+                  className={`group relative flex items-center gap-3 rounded-2xl px-10 py-4 text-[15px] font-bold transition-all duration-300 ${
                     !file || uploading
-                      ? "cursor-not-allowed bg-black/5 text-ink4"
-                      : "bg-ink2 text-white shadow-xl hover:-translate-y-1 hover:shadow-2xl active:translate-y-0"
+                      ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80]"
+                      : "bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-xl shadow-[#7c6aff]/25 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:translate-y-0"
                   }`}
                 >
-                  <UIcon name={uploading ? "Hourglass" : "Link"} size={20} className={uploading ? "animate-spin" : ""} />
+                  <UIcon name={uploading ? "Hourglass" : "Link"} size={18} className={uploading ? "animate-spin" : ""} />
                   {uploading ? "Generating..." : "Generate Link"}
-                  <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-10 transition-opacity bg-white" />
                 </button>
+              </div>
+
+              {/* Badges */}
+              <div className="mt-6 flex flex-wrap justify-center items-center gap-3">
+                <span className="rounded-lg border border-[#00d4aa]/20 bg-[#00d4aa]/10 px-2.5 py-1 text-[11px] font-bold text-[#00d4aa]">
+                  Free
+                </span>
+                <span className="text-[12px] font-medium text-[#6b6d80]">· Max 20 MB</span>
+                <span className="text-[12px] font-medium text-[#6b6d80]">· No sign-up</span>
               </div>
             </div>
           ) : (
             /* Result Area */
-            <div className="mt-12 w-full max-w-[640px] animate-fade-up">
-              <div className="rounded-[40px] bg-white p-10 text-center shadow-2xl border border-black/5">
-                <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-[#4ba391]/10 text-[#4ba391] mx-auto">
-                  <UIcon name="CheckCircle2" size={42} />
+            <div className="w-full max-w-[600px] animate-fade-up">
+              <div className="rounded-2xl bg-white/[0.025] backdrop-blur-sm border border-white/[0.08] p-8 text-center">
+                <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00d4aa]/10 border border-[#00d4aa]/20 text-[#00d4aa] mx-auto">
+                  <UIcon name="CheckCircle2" size={32} />
                 </div>
-                <h2 className="font-caveat text-[34px] font-bold text-ink2 mb-6">Link is Ready!</h2>
-                
-                <div className="overflow-hidden rounded-2xl bg-[#fdf6e3] border border-black/5 mb-8">
-                  <div className="px-6 py-5 font-mono text-[14px] text-ink2 truncate bg-white/50 mb-1">
+                <h2 className="font-display text-2xl font-bold text-white mb-5">Link is Ready</h2>
+
+                <div className="overflow-hidden rounded-xl bg-white/[0.03] border border-white/[0.06] mb-6">
+                  <div className="px-5 py-4 font-mono text-[13px] text-[#9294a5] truncate">
                     {uploaded.url}
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-3">
                   <button
                     onClick={copyLink}
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl bg-ink2 py-4 text-[16px] font-bold text-white shadow-lg transition-transform hover:-translate-y-1 active:scale-95"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] py-3.5 text-[14px] font-bold text-white shadow-lg shadow-[#7c6aff]/20 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
                   >
-                    <UIcon name={copied ? "Check" : "ClipboardList"} size={18} />
+                    <UIcon name={copied ? "Check" : "ClipboardList"} size={16} />
                     {copied ? "Copied!" : "Copy Link"}
                   </button>
                   <a
                     href={uploaded.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-ink2/10 bg-white py-4 text-[16px] font-bold text-ink2 no-underline transition-transform hover:-translate-y-1 active:scale-95"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] py-3.5 text-[14px] font-bold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-white/[0.06] active:scale-[0.98]"
                   >
-                    <UIcon name="ExternalLink" size={18} />
+                    <UIcon name="ExternalLink" size={16} />
                     Visit Page
                   </a>
                 </div>
 
                 <button
                   onClick={reset}
-                  className="mt-8 text-[14px] font-bold text-ink4 hover:text-ink2 transition-colors"
+                  className="mt-6 text-[13px] font-semibold text-[#6b6d80] hover:text-white transition-colors"
                 >
-                   Upload another PDF
+                  Upload another PDF
                 </button>
               </div>
             </div>

@@ -44,14 +44,14 @@ function ProgressBar({
   if (!progress) return null;
 
   return (
-    <div className="rounded-[18px] border border-black/5 bg-white/74 p-3">
-      <div className="mb-2 flex items-center justify-between gap-3 text-[12px] text-ink4">
+    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
+      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
         <span>{label || "Working..."}</span>
         <span>{progress}%</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/50">
+      <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.04]">
         <div
-          className="h-full rounded-full bg-white transition-[width] duration-300"
+          className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] to-[#00d4aa] transition-[width] duration-300"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -69,13 +69,13 @@ function FileListPreview({
   if (!files?.length) return null;
 
   return (
-    <div className="flex max-h-[112px] flex-col gap-2 overflow-y-auto">
+    <div className="flex max-h-[100px] flex-col gap-1.5 overflow-y-auto">
       {files.map((file) => (
         <div
           key={`${file.name}-${file.size}`}
-          className="flex items-center gap-2 rounded-[16px] border border-black/5 bg-white/76 px-3 py-2 text-[13px] text-ink3"
+          className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[12px] text-[#9294a5]"
         >
-          <UIcon name={icon as any} size={14} />
+          <UIcon name={icon as any} size={12} />
           <span className="truncate">{file.name}</span>
         </div>
       ))}
@@ -128,11 +128,9 @@ export default function PdfToolsPage() {
   const conversionCards = [
     {
       title: "PDF to plain text",
-      description:
-        "Extract page-aware text for internal review, notes, or downstream automations.",
-      accent: "#a34b42",
-      icon: <UIcon name="FileText" size={24} />,
-      tip: "Uses the improved PDF extraction flow for cleaner text output.",
+      accent: "#ff6b6b",
+      icon: <UIcon name="FileText" size={18} />,
+      tip: "Uses improved extraction for cleaner text output.",
       body: (
         <>
           <FZone
@@ -140,16 +138,9 @@ export default function PdfToolsPage() {
             label="Choose a PDF"
             file={getTool("pdfTxt").file}
             onFile={(file: File) => setTool("pdfTxt", { file })}
-            tip="Upload a PDF to extract its text."
           />
-          <ProgressBar
-            progress={getTool("pdfTxt").progress || 0}
-            label="Extracting text"
-          />
-          <CStat
-            msg={getTool("pdfTxt").status}
-            type={getTool("pdfTxt").statusType}
-          />
+          <ProgressBar progress={getTool("pdfTxt").progress || 0} label="Extracting text" />
+          <CStat msg={getTool("pdfTxt").status} type={getTool("pdfTxt").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("pdfTxt").file;
@@ -161,26 +152,21 @@ export default function PdfToolsPage() {
                 });
                 dlText(`${stem(file.name)}.txt`, extraction.text);
                 setTool("pdfTxt", { progress: 100 });
-                return `${extraction.pageCount} page${
-                  extraction.pageCount === 1 ? "" : "s"
-                } extracted to TXT.`;
+                return `${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"} extracted to TXT.`;
               });
             }}
             disabled={!getTool("pdfTxt").file}
             loading={getTool("pdfTxt").loading}
             label="Extract text"
-            tip="Download a text file with page markers and cleaner paragraph flow."
           />
         </>
       ),
     },
     {
       title: "PDF to PNG images",
-      description:
-        "Render each page as a crisp image and bundle everything into a ZIP.",
-      accent: "#1f5a56",
-      icon: <UIcon name="Image" size={24} />,
-      tip: "Useful for slide decks, page thumbnails, approvals, and archival screenshots.",
+      accent: "#00d4aa",
+      icon: <UIcon name="Image" size={18} />,
+      tip: "Render pages as crisp images bundled in a ZIP.",
       body: (
         <>
           <FZone
@@ -188,10 +174,9 @@ export default function PdfToolsPage() {
             label="Choose a PDF"
             file={getTool("pdfImg").file}
             onFile={(file: File) => setTool("pdfImg", { file })}
-            tip="Upload a PDF for page image export."
           />
           <div className="grid gap-2">
-            <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#6b6d80]">
               Render quality
             </div>
             <HInput
@@ -199,24 +184,13 @@ export default function PdfToolsPage() {
               min="72"
               max="300"
               value={getTool("pdfImg").dpi || "180"}
-              tip="Set the image render DPI. Higher values are sharper and larger."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                 setTool("pdfImg", { dpi: event.target.value })
               }
             />
-            <div className="text-[12px] leading-relaxed text-ink4">
-              Higher DPI gives sharper pages but larger downloads. 180 is a good
-              premium default.
-            </div>
           </div>
-          <ProgressBar
-            progress={getTool("pdfImg").progress || 0}
-            label="Rendering page images"
-          />
-          <CStat
-            msg={getTool("pdfImg").status}
-            type={getTool("pdfImg").statusType}
-          />
+          <ProgressBar progress={getTool("pdfImg").progress || 0} label="Rendering page images" />
+          <CStat msg={getTool("pdfImg").status} type={getTool("pdfImg").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("pdfImg").file;
@@ -229,26 +203,21 @@ export default function PdfToolsPage() {
                 const zip = await buildPdfImageZip(rendered);
                 dlBlob(`${stem(file.name)}_images.zip`, zip);
                 setTool("pdfImg", { progress: 100 });
-                return `${rendered.length} page image${
-                  rendered.length === 1 ? "" : "s"
-                } packaged in a ZIP.`;
+                return `${rendered.length} page image${rendered.length === 1 ? "" : "s"} packaged in a ZIP.`;
               });
             }}
             disabled={!getTool("pdfImg").file}
             loading={getTool("pdfImg").loading}
             label="Create ZIP"
-            tip="Downloads PNG files named page-001, page-002, and so on."
           />
         </>
       ),
     },
     {
       title: "PDF to DOCX",
-      description:
-        "Offer customers both a page-faithful Word file and an editable text-first Word draft.",
-      accent: "#345d9d",
-      icon: <UIcon name="FileSignature" size={24} />,
-      tip: "Best Accuracy reproduces the original pages. Editable Text builds a cleaner Word draft when the PDF has strong text extraction.",
+      accent: "#7c6aff",
+      icon: <UIcon name="FileSignature" size={18} />,
+      tip: "Best Accuracy or Editable Text output.",
       body: (
         <>
           <FZone
@@ -256,15 +225,13 @@ export default function PdfToolsPage() {
             label="Choose a PDF"
             file={getTool("pdfDocx").file}
             onFile={(file: File) => setTool("pdfDocx", { file })}
-            tip="Upload the PDF you want to convert into Word."
           />
           <div className="grid gap-2">
-            <div className="text-[12px] font-semibold uppercase tracking-[0.18em] text-ink4">
+            <div className="text-[11px] font-semibold uppercase tracking-widest text-[#6b6d80]">
               Output mode
             </div>
             <HSel
               value={getTool("pdfDocx").mode || "layout"}
-              tip="Choose between page-faithful accuracy and cleaner editable text."
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
                 setTool("pdfDocx", { mode: event.target.value })
               }
@@ -272,19 +239,12 @@ export default function PdfToolsPage() {
               <option value="layout">Best accuracy</option>
               <option value="editable">Editable text</option>
             </HSel>
-            <div className="rounded-[18px] border border-black/5 bg-white/50 px-4 py-3 text-[13px] leading-relaxed text-ink4">
-              Best accuracy creates a page-faithful DOCX. Editable text creates
-              a cleaner Word document when the PDF has a reliable text layer.
-            </div>
           </div>
           <ProgressBar
             progress={getTool("pdfDocx").progress || 0}
             label={getTool("pdfDocx").phase || "Building Word output"}
           />
-          <CStat
-            msg={getTool("pdfDocx").status}
-            type={getTool("pdfDocx").statusType}
-          />
+          <CStat msg={getTool("pdfDocx").status} type={getTool("pdfDocx").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("pdfDocx").file;
@@ -292,21 +252,14 @@ export default function PdfToolsPage() {
 
               await run("pdfDocx", async () => {
                 const selectedMode = getTool("pdfDocx").mode || "layout";
-                setTool("pdfDocx", {
-                  phase: "Analyzing PDF text structure",
-                  progress: 8,
-                });
+                setTool("pdfDocx", { phase: "Analyzing PDF text structure", progress: 8 });
 
                 const extraction = await extractPdfFile(file, PDF_WORKER_SRC, {
                   onProgress: (progress) =>
-                    setTool("pdfDocx", {
-                      progress: Math.round(progress * 0.5),
-                    }),
+                    setTool("pdfDocx", { progress: Math.round(progress * 0.5) }),
                 });
 
-                const extractedText = extraction.text
-                  .replace(/--- Page \d+ ---/g, "")
-                  .trim();
+                const extractedText = extraction.text.replace(/--- Page \d+ ---/g, "").trim();
                 const lowTextConfidence = extractedText.length < 120;
                 const useLayoutMode =
                   selectedMode === "layout" ||
@@ -316,26 +269,20 @@ export default function PdfToolsPage() {
 
                 if (useLayoutMode) {
                   setTool("pdfDocx", {
-                    phase:
-                      selectedMode === "editable" && lowTextConfidence
-                        ? "Low text confidence detected, switching to page-faithful mode"
-                        : "Rendering page-faithful Word pages",
+                    phase: selectedMode === "editable" && lowTextConfidence
+                      ? "Low text, switching to page-faithful mode"
+                      : "Rendering page-faithful Word pages",
                     progress: 55,
                   });
 
                   const rendered = await renderPdfPages(file, PDF_WORKER_SRC, 180, {
                     onProgress: (progress) =>
-                      setTool("pdfDocx", {
-                        progress: 55 + Math.round(progress * 0.45),
-                      }),
+                      setTool("pdfDocx", { progress: 55 + Math.round(progress * 0.45) }),
                   });
 
                   output = await buildLayoutPdfDocx(rendered);
                 } else {
-                  setTool("pdfDocx", {
-                    phase: "Composing editable Word paragraphs",
-                    progress: 72,
-                  });
+                  setTool("pdfDocx", { phase: "Composing editable Word paragraphs", progress: 72 });
                   output = await buildEditablePdfDocx(extraction);
                   setTool("pdfDocx", { progress: 100 });
                 }
@@ -344,15 +291,14 @@ export default function PdfToolsPage() {
 
                 return useLayoutMode
                   ? selectedMode === "editable" && lowTextConfidence
-                    ? "Low extractable text detected, so OneDocs created a page-faithful DOCX for accuracy."
-                    : "High-accuracy DOCX created successfully."
-                  : "Editable DOCX created successfully.";
+                    ? "Low text detected, created page-faithful DOCX."
+                    : "High-accuracy DOCX created."
+                  : "Editable DOCX created.";
               });
             }}
             disabled={!getTool("pdfDocx").file}
             loading={getTool("pdfDocx").loading}
             label="Convert to DOCX"
-            tip="Choose the page-faithful mode when exact appearance matters most."
           />
         </>
       ),
@@ -362,10 +308,9 @@ export default function PdfToolsPage() {
   const organizeCards = [
     {
       title: "Merge PDFs",
-      description: "Combine multiple files into one polished deliverable.",
-      accent: "#7a5b23",
-      icon: <UIcon name="Combine" size={24} />,
-      tip: "Files are merged in the order you select them.",
+      accent: "#ffa940",
+      icon: <UIcon name="Combine" size={18} />,
+      tip: "Files are merged in the order selected.",
       body: (
         <>
           <FZone
@@ -374,7 +319,6 @@ export default function PdfToolsPage() {
             multi
             files={getTool("merge").files}
             onFiles={(files: File[]) => setTool("merge", { files })}
-            tip="Select the PDFs you want to combine."
           />
           <FileListPreview files={getTool("merge").files} icon="FileText" />
           <CStat msg={getTool("merge").status} type={getTool("merge").statusType} />
@@ -388,32 +332,27 @@ export default function PdfToolsPage() {
 
                 for (const file of files) {
                   const source = await PDFDocument.load(await file.arrayBuffer());
-                  const pages = await merged.copyPages(
-                    source,
-                    source.getPageIndices()
-                  );
+                  const pages = await merged.copyPages(source, source.getPageIndices());
                   pages.forEach((page: any) => merged.addPage(page));
                 }
 
                 const bytes = await merged.save();
                 dlBlob("merged.pdf", new Blob([bytes], { type: "application/pdf" }));
-                return `${files.length} PDFs merged into one file.`;
+                return `${files.length} PDFs merged.`;
               });
             }}
             disabled={!((getTool("merge").files || []).length >= 2)}
             loading={getTool("merge").loading}
             label="Merge PDFs"
-            tip="A minimum of two PDFs is required."
           />
         </>
       ),
     },
     {
       title: "Split PDF",
-      description: "Extract exact page ranges for cleaner sharing and review.",
-      accent: "#1f5a56",
-      icon: <UIcon name="ScissorsLineDashed" size={24} />,
-      tip: 'Use values like "1-3, 5, 9" to keep only the pages you want.',
+      accent: "#00d4aa",
+      icon: <UIcon name="ScissorsLineDashed" size={18} />,
+      tip: 'Use "1-3, 5, 9" syntax.',
       body: (
         <>
           <FZone
@@ -421,12 +360,10 @@ export default function PdfToolsPage() {
             label="Choose a PDF"
             file={getTool("split").file}
             onFile={(file: File) => setTool("split", { file })}
-            tip="Upload the PDF you want to split."
           />
           <HInput
-            placeholder="Page range, for example 1-3, 5, 9"
+            placeholder="Page range, e.g. 1-3, 5, 9"
             value={getTool("split").pages || ""}
-            tip="Enter pages or ranges to keep in the split file."
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setTool("split", { pages: event.target.value })
             }
@@ -441,46 +378,33 @@ export default function PdfToolsPage() {
               await run("split", async () => {
                 const { PDFDocument } = window.PDFLib;
                 const source = await PDFDocument.load(await file.arrayBuffer());
-                const selectedPages = parsePageRange(
-                  pagesInput,
-                  source.getPageCount()
-                );
+                const selectedPages = parsePageRange(pagesInput, source.getPageCount());
 
                 if (!selectedPages.length) {
                   throw new Error("Enter at least one valid page range.");
                 }
 
                 const output = await PDFDocument.create();
-                const pages = await output.copyPages(
-                  source,
-                  selectedPages.map((page) => page - 1)
-                );
+                const pages = await output.copyPages(source, selectedPages.map((page) => page - 1));
                 pages.forEach((page: any) => output.addPage(page));
 
                 const bytes = await output.save();
-                dlBlob(
-                  `${stem(file.name)}_split.pdf`,
-                  new Blob([bytes], { type: "application/pdf" })
-                );
-                return `${selectedPages.length} page${
-                  selectedPages.length === 1 ? "" : "s"
-                } extracted.`;
+                dlBlob(`${stem(file.name)}_split.pdf`, new Blob([bytes], { type: "application/pdf" }));
+                return `${selectedPages.length} page${selectedPages.length === 1 ? "" : "s"} extracted.`;
               });
             }}
             disabled={!getTool("split").file || !getTool("split").pages}
             loading={getTool("split").loading}
             label="Extract pages"
-            tip="Only the requested pages will be kept in the output file."
           />
         </>
       ),
     },
     {
       title: "Images to PDF",
-      description: "Bundle JPG and PNG files into one customer-ready PDF.",
-      accent: "#345d9d",
-      icon: <UIcon name="Images" size={24} />,
-      tip: "Images are added in the same order you choose them.",
+      accent: "#7c6aff",
+      icon: <UIcon name="Images" size={18} />,
+      tip: "Images added in selection order.",
       body: (
         <>
           <FZone
@@ -489,13 +413,9 @@ export default function PdfToolsPage() {
             multi
             files={getTool("imgPdf").files}
             onFiles={(files: File[]) => setTool("imgPdf", { files })}
-            tip="Select one or more images."
           />
           <FileListPreview files={getTool("imgPdf").files} icon="Image" />
-          <CStat
-            msg={getTool("imgPdf").status}
-            type={getTool("imgPdf").statusType}
-          />
+          <CStat msg={getTool("imgPdf").status} type={getTool("imgPdf").statusType} />
           <HBtn
             onClick={async () => {
               const files = getTool("imgPdf").files || [];
@@ -513,35 +433,26 @@ export default function PdfToolsPage() {
                       : await pdf.embedJpg(bytes);
 
                   const page = pdf.addPage([image.width, image.height]);
-                  page.drawImage(image, {
-                    x: 0,
-                    y: 0,
-                    width: image.width,
-                    height: image.height,
-                  });
+                  page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
                 }
 
                 const output = await pdf.save();
                 dlBlob("images.pdf", new Blob([output], { type: "application/pdf" }));
-                return `${files.length} image${
-                  files.length === 1 ? "" : "s"
-                } added to a single PDF.`;
+                return `${files.length} image${files.length === 1 ? "" : "s"} converted to PDF.`;
               });
             }}
             disabled={!((getTool("imgPdf").files || []).length > 0)}
             loading={getTool("imgPdf").loading}
             label="Create PDF"
-            tip="Each image becomes its own PDF page."
           />
         </>
       ),
     },
     {
       title: "Rotate PDF",
-      description: "Apply a clean rotation across every page in the file.",
-      accent: "#ba8a42",
-      icon: <UIcon name="RotateCw" size={24} />,
-      tip: "Useful for scanned pages that were saved sideways or upside down.",
+      accent: "#ffa940",
+      icon: <UIcon name="RotateCw" size={18} />,
+      tip: "Fix sideways or upside-down pages.",
       body: (
         <>
           <FZone
@@ -549,18 +460,16 @@ export default function PdfToolsPage() {
             label="Choose a PDF"
             file={getTool("rotate").file}
             onFile={(file: File) => setTool("rotate", { file })}
-            tip="Upload the PDF you want to rotate."
           />
           <HSel
             value={getTool("rotate").deg || "90"}
-            tip="Choose how much rotation to apply to every page."
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) =>
               setTool("rotate", { deg: event.target.value })
             }
           >
-            <option value="90">Rotate 90 degrees clockwise</option>
-            <option value="180">Rotate 180 degrees</option>
-            <option value="270">Rotate 270 degrees</option>
+            <option value="90">Rotate 90° clockwise</option>
+            <option value="180">Rotate 180°</option>
+            <option value="270">Rotate 270°</option>
           </HSel>
           <CStat msg={getTool("rotate").status} type={getTool("rotate").statusType} />
           <HBtn
@@ -579,41 +488,33 @@ export default function PdfToolsPage() {
                 });
 
                 const output = await pdf.save();
-                dlBlob(
-                  `${stem(file.name)}_rotated.pdf`,
-                  new Blob([output], { type: "application/pdf" })
-                );
-                return `Rotated every page by ${amount} degrees.`;
+                dlBlob(`${stem(file.name)}_rotated.pdf`, new Blob([output], { type: "application/pdf" }));
+                return `Rotated every page by ${amount}°.`;
               });
             }}
             disabled={!getTool("rotate").file}
             loading={getTool("rotate").loading}
             label="Rotate file"
-            tip="Applies the same rotation to the full document."
           />
         </>
       ),
     },
     {
-      title: "PDF link",
-      description:
-        "Keep the shareable-link flow separate while the rest of the PDF workspace gets upgraded.",
-      accent: "#1f5a56",
-      icon: <UIcon name="Link" size={24} />,
-      tip: "This uses the dedicated PDF-to-link page, as requested.",
+      title: "PDF Link",
+      accent: "#00d4aa",
+      icon: <UIcon name="Link" size={18} />,
+      tip: "Dedicated shareable-link workspace.",
       body: (
-        <div className="flex h-full flex-col justify-between gap-5">
-          <div className="rounded-[20px] border border-black/5 bg-white/50 px-4 py-4 text-[14px] leading-relaxed text-ink4">
-            The hosted PDF link experience stays on its own dedicated page for
-            now. Everything else in this workspace has been tightened around
-            accuracy and presentation.
+        <div className="flex h-full flex-col justify-between gap-4">
+          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-[13px] leading-relaxed text-[#6b6d80]">
+            Upload a PDF and get an instant shareable viewer link.
           </div>
           <Link
             href="/pdf-link"
-            className="inline-flex items-center justify-center gap-2 rounded-[20px] border border-amber2/30   px-5 py-3 text-[15px] font-semibold text-white shadow-md transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00d4aa] to-[#00b894] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-[#00d4aa]/20 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
           >
-            <UIcon name="ArrowUpRight" size={16} />
-            Open PDF link workspace
+            <UIcon name="ArrowUpRight" size={14} />
+            Open PDF Link
           </Link>
         </div>
       ),
@@ -623,14 +524,13 @@ export default function PdfToolsPage() {
   const securityCards = [
     {
       title: "Lock PDF",
-      description: "Secure your document by requiring a password to open it.",
-      accent: "#b33f3f",
-      icon: <UIcon name="Lock" size={24} />,
-      tip: "Encrypts the PDF so nobody can open it without the password.",
+      accent: "#ff6b6b",
+      icon: <UIcon name="Lock" size={18} />,
+      tip: "Encrypt with a password.",
       body: (
         <>
-          <FZone accept=".pdf" label="Choose a PDF" file={getTool("lock").file} onFile={(file: File) => setTool("lock", { file })} tip="Upload the PDF you want to lock." />
-          <HInput type="password" placeholder="Enter a secure password" value={getTool("lock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("lock", { password: e.target.value })} tip="Choose the password required to open the file." />
+          <FZone accept=".pdf" label="Choose a PDF" file={getTool("lock").file} onFile={(file: File) => setTool("lock", { file })} />
+          <HInput type="password" placeholder="Enter a secure password" value={getTool("lock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("lock", { password: e.target.value })} />
           <CStat msg={getTool("lock").status} type={getTool("lock").statusType} />
           <HBtn onClick={async () => {
              const file = getTool("lock").file;
@@ -643,20 +543,19 @@ export default function PdfToolsPage() {
                 dlBlob(`${stem(file.name)}_locked.pdf`, new Blob([bytes], { type: "application/pdf" }));
                 return "PDF locked successfully.";
              });
-          }} disabled={!getTool("lock").file || !getTool("lock").password} loading={getTool("lock").loading} label="Lock PDF" tip="Downloads the encrypted copy." />
+          }} disabled={!getTool("lock").file || !getTool("lock").password} loading={getTool("lock").loading} label="Lock PDF" />
        </>
       ),
     },
     {
       title: "Unlock PDF",
-      description: "Remove the password from an encrypted document permanently.",
-      accent: "#3f90b3",
-      icon: <UIcon name="Unlock" size={24} />,
-      tip: "You must know the current password to unlock it.",
+      accent: "#7c6aff",
+      icon: <UIcon name="Unlock" size={18} />,
+      tip: "Remove password from encrypted PDF.",
       body: (
         <>
-          <FZone accept=".pdf" label="Choose locked PDF" file={getTool("unlock").file} onFile={(file: File) => setTool("unlock", { file })} tip="Upload the encrypted PDF." />
-          <HInput type="password" placeholder="Enter the current password" value={getTool("unlock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("unlock", { password: e.target.value })} tip="You need to provide the original password to unlock it." />
+          <FZone accept=".pdf" label="Choose locked PDF" file={getTool("unlock").file} onFile={(file: File) => setTool("unlock", { file })} />
+          <HInput type="password" placeholder="Enter the current password" value={getTool("unlock").password || ""} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTool("unlock", { password: e.target.value })} />
           <CStat msg={getTool("unlock").status} type={getTool("unlock").statusType} />
           <HBtn onClick={async () => {
              const file = getTool("unlock").file;
@@ -669,7 +568,7 @@ export default function PdfToolsPage() {
                 dlBlob(`${stem(file.name)}_unlocked.pdf`, new Blob([bytes], { type: "application/pdf" }));
                 return "PDF unlocked permanently.";
              });
-          }} disabled={!getTool("unlock").file || !getTool("unlock").password} loading={getTool("unlock").loading} label="Unlock PDF" tip="Downloads a completely unprotected copy." />
+          }} disabled={!getTool("unlock").file || !getTool("unlock").password} loading={getTool("unlock").loading} label="Unlock PDF" />
        </>
       ),
     }
@@ -677,21 +576,12 @@ export default function PdfToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="surface-panel mt-1 p-5 md:p-8">
-        <SHead
-          ico={<UIcon name="FileText" size={24} />}
-          label="Conversion Tools"
-          sub="Convert PDFs into the format you need."
-        />
+      <section className="surface-panel p-5 md:p-7">
+        <SHead ico={<UIcon name="FileText" size={18} />} label="Conversion Tools" />
         <div className="grid gap-4 xl:grid-cols-3">
           {conversionCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
-              <CCard
-                ico={card.icon}
-                title={card.title}
-                desc={card.description}
-                accentCol={card.accent}
-              >
+              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                 {card.body}
               </CCard>
             </Tip>
@@ -699,21 +589,12 @@ export default function PdfToolsPage() {
         </div>
       </section>
 
-      <section className="surface-panel p-6 md:p-8">
-        <SHead
-          ico={<UIcon name="Layers3" size={24} />}
-          label="Organize And Deliver"
-          sub="Merge, split, rotate, and share."
-        />
+      <section className="surface-panel p-5 md:p-7">
+        <SHead ico={<UIcon name="Layers3" size={18} />} label="Organize & Deliver" />
         <div className="grid gap-4 xl:grid-cols-3">
           {organizeCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
-              <CCard
-                ico={card.icon}
-                title={card.title}
-                desc={card.description}
-                accentCol={card.accent}
-              >
+              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                 {card.body}
               </CCard>
             </Tip>
@@ -721,21 +602,12 @@ export default function PdfToolsPage() {
         </div>
       </section>
 
-      <section className="surface-panel p-6 md:p-8">
-        <SHead
-          ico={<UIcon name="ShieldCheck" size={24} />}
-          label="Security Tools"
-          sub="Lock and unlock your PDF files securely."
-        />
+      <section className="surface-panel p-5 md:p-7">
+        <SHead ico={<UIcon name="ShieldCheck" size={18} />} label="Security" />
         <div className="grid gap-4 xl:grid-cols-2">
           {securityCards.map((card) => (
             <Tip key={card.title} tip={card.tip} side="top">
-              <CCard
-                ico={card.icon}
-                title={card.title}
-                desc={card.description}
-                accentCol={card.accent}
-              >
+              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                 {card.body}
               </CCard>
             </Tip>
