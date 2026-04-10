@@ -29,14 +29,6 @@ const tools = [
     gradient: "from-[#ffa940] to-[#ff7b3a]",
     glow: "rgba(255, 169, 64, 0.15)",
   },
-  {
-    href: "/pdf-link",
-    icon: "Link",
-    label: "PDF Link",
-    desc: "Upload a PDF and instantly get a shareable viewer link.",
-    gradient: "from-[#00d4aa] to-[#00b894]",
-    glow: "rgba(0, 212, 170, 0.15)",
-  },
 ] as const;
 
 const stats = [
@@ -116,17 +108,6 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* Bottom CTA */}
-      <section className="mt-16 mb-8 text-center animate-fade-in" style={{ animationDelay: "0.3s" }}>
-        <Link
-          href="/pdf-link"
-          className="inline-flex items-center gap-3 rounded-2xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] px-8 py-4 text-[15px] font-bold text-white no-underline shadow-xl shadow-[#7c6aff]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:translate-y-0"
-        >
-          <UIcon name="Link" size={18} />
-          Upload PDF & Get Shareable Link
-        </Link>
-        <p className="mt-4 text-[13px] text-[#6b6d80]">No account needed · Up to 20 MB · Instant link</p>
-      </section>
     </div>
   );
 }
