@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import {
   Space_Grotesk,
-  Outfit,
-  IBM_Plex_Mono,
+  Inter,
+  JetBrains_Mono,
 } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
@@ -13,13 +13,13 @@ const display = Space_Grotesk({
   weight: ["500", "600", "700"],
 });
 
-const body = Outfit({
+const body = Inter({
   variable: "--font-body-ui",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const mono = IBM_Plex_Mono({
+const mono = JetBrains_Mono({
   variable: "--font-code-ui",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
