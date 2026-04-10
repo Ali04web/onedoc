@@ -110,17 +110,18 @@ export default function PdfLinkPage() {
       <div className="page-shell">
         <div className="relative flex flex-col items-center justify-center pt-6 pb-12">
           {/* Coming Soon Overlay */}
-          <div className="absolute inset-0 z-[50] flex items-center justify-center rounded-3xl bg-[rgba(10,10,15,0.4)] backdrop-blur-[6px]">
-            <div className="surface-panel flex flex-col items-center gap-4 px-8 py-6 text-center shadow-2xl animate-fade-in border border-white/[0.12]">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-lg shadow-[#ffa940]/20">
-                <UIcon name="Hourglass" size={24} className="text-white animate-spin-slow" />
+          <div className="absolute inset-0 z-[50] flex items-center justify-center rounded-3xl bg-[rgba(6,6,11,0.5)] backdrop-blur-[8px]">
+            <div className="surface-panel flex flex-col items-center gap-5 px-10 py-8 text-center shadow-2xl animate-fade-in-scale border border-white/[0.12]">
+              <div className="relative flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-xl shadow-[#ffa940]/25">
+                <UIcon name="Hourglass" size={28} className="text-white animate-spin-slow" />
+                <div className="absolute inset-0 rounded-2xl border border-white/20 animate-glow-pulse" />
               </div>
-              <div className="space-y-1">
-                <h2 className="font-display text-2xl font-bold text-white tracking-tight">Coming Soon</h2>
-                <p className="text-[14px] text-[#9294a5] font-medium">Cloud storage and sharing is currently being optimized.</p>
+              <div className="space-y-2">
+                <h2 className="font-display text-3xl font-bold text-white tracking-tight">Coming Soon</h2>
+                <p className="text-[14px] text-[#9294a5] font-medium leading-relaxed max-w-[320px]">Cloud storage and sharing is currently being optimized for the best experience.</p>
               </div>
-              <Link href="/" className="mt-2 inline-flex items-center gap-2 rounded-xl bg-white/[0.06] px-5 py-2.5 text-[13px] font-bold text-white no-underline transition-all hover:bg-white/[0.1] active:scale-95">
-                <UIcon name="ArrowLeft" size={14} />
+              <Link href="/" className="group mt-1 inline-flex items-center gap-2.5 rounded-xl bg-white/[0.06] border border-white/[0.06] px-6 py-3 text-[13px] font-bold text-white no-underline transition-all hover:bg-white/[0.1] hover:border-white/[0.1] active:scale-95">
+                <UIcon name="ArrowLeft" size={14} className="transition-transform group-hover:-translate-x-1" />
                 Back home
               </Link>
             </div>
@@ -138,8 +139,8 @@ export default function PdfLinkPage() {
                   const dropped = e.dataTransfer.files[0];
                   if (dropped) handleFile(dropped);
                 }}
-                className={`relative flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-2xl bg-white/[0.025] backdrop-blur-sm border-2 border-dashed p-10 text-center transition-all duration-300 active:scale-[0.99] ${
-                  drag ? "scale-[1.01] border-[#7c6aff]/40 bg-[#7c6aff]/[0.04]" : "border-white/[0.08]"
+                className={`relative flex min-h-[300px] cursor-pointer flex-col items-center justify-center rounded-3xl bg-white/[0.025] backdrop-blur-sm border-2 border-dashed p-10 text-center transition-all duration-400 active:scale-[0.99] overflow-hidden ${
+                  drag ? "scale-[1.02] border-[#7c6aff]/40 bg-[#7c6aff]/[0.04]" : "border-white/[0.08] hover:border-white/[0.12]"
                 }`}
               >
                 <input
@@ -154,12 +155,12 @@ export default function PdfLinkPage() {
                 />
 
                 <div className="relative z-10">
-                  <div className={`mb-5 flex h-16 w-16 items-center justify-center rounded-2xl mx-auto transition-all duration-300 ${
+                  <div className={`mb-5 flex h-18 w-18 items-center justify-center rounded-2xl mx-auto transition-all duration-400 ${
                     file
-                      ? "bg-[#00d4aa]/10 border border-[#00d4aa]/20"
+                      ? "bg-[#00d4aa]/10 border border-[#00d4aa]/20 shadow-lg shadow-[#00d4aa]/10"
                       : "bg-white/[0.04] border border-white/[0.06]"
-                  }`}>
-                    <UIcon name={file ? "CheckCircle2" : "FolderOpen"} size={28} className={file ? "text-[#00d4aa]" : "text-[#9294a5]"} />
+                  }`} style={{ width: 72, height: 72 }}>
+                    <UIcon name={file ? "CheckCircle2" : "FolderOpen"} size={32} className={`transition-all duration-300 ${file ? "text-[#00d4aa]" : "text-[#9294a5]"}`} />
                   </div>
 
                   <div className="font-display text-xl font-bold text-white">
@@ -183,17 +184,17 @@ export default function PdfLinkPage() {
               </label>
 
               {error && (
-                <div className="mt-5 rounded-xl bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 p-3.5 text-[13px] font-semibold text-[#ff6b6b] text-center">
+                <div className="mt-5 rounded-xl bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 p-3.5 text-[13px] font-semibold text-[#ff6b6b] text-center animate-fade-in">
                   {error}
                 </div>
               )}
 
               {uploading && (
-                <div className="mt-6 space-y-2">
-                  <div className="h-2 overflow-hidden rounded-full bg-white/[0.04]">
+                <div className="mt-6 space-y-2.5">
+                  <div className="relative h-2.5 overflow-hidden rounded-full bg-white/[0.04]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] to-[#00d4aa] transition-all duration-500"
-                      style={{ width: `${progress}%` }}
+                      className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] via-[#00d4aa] to-[#7c6aff] transition-all duration-500"
+                      style={{ width: `${progress}%`, backgroundSize: "200% 100%", animation: "shimmer 2s linear infinite" }}
                     />
                   </div>
                   <div className="text-center text-[13px] font-semibold text-[#9294a5] animate-pulse">
@@ -206,14 +207,17 @@ export default function PdfLinkPage() {
                 <button
                   onClick={upload}
                   disabled={!file || uploading}
-                  className={`group relative flex items-center gap-3 rounded-2xl px-10 py-4 text-[15px] font-bold transition-all duration-300 ${
+                  className={`group relative flex items-center gap-3 rounded-2xl px-10 py-4 text-[15px] font-bold transition-all duration-400 overflow-hidden ${
                     !file || uploading
                       ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80]"
-                      : "bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-xl shadow-[#7c6aff]/25 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:translate-y-0"
+                      : "bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-xl shadow-[#7c6aff]/25 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:translate-y-0 active:scale-[0.98]"
                   }`}
                 >
+                  {!(!file || uploading) && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  )}
                   <UIcon name={uploading ? "Hourglass" : "Link"} size={18} className={uploading ? "animate-spin" : ""} />
-                  {uploading ? "Generating..." : "Generate Link"}
+                  <span className="relative">{uploading ? "Generating..." : "Generate Link"}</span>
                 </button>
               </div>
 
@@ -228,10 +232,10 @@ export default function PdfLinkPage() {
             </div>
           ) : (
             /* Result Area */
-            <div className="w-full max-w-[600px] animate-fade-up">
-              <div className="rounded-2xl bg-white/[0.025] backdrop-blur-sm border border-white/[0.08] p-8 text-center">
-                <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00d4aa]/10 border border-[#00d4aa]/20 text-[#00d4aa] mx-auto">
-                  <UIcon name="CheckCircle2" size={32} />
+            <div className="w-full max-w-[600px] animate-fade-in-scale">
+              <div className="rounded-3xl bg-white/[0.025] backdrop-blur-sm border border-white/[0.08] p-10 text-center">
+                <div className="mb-5 flex h-18 w-18 items-center justify-center rounded-2xl bg-[#00d4aa]/10 border border-[#00d4aa]/20 text-[#00d4aa] mx-auto shadow-lg shadow-[#00d4aa]/10" style={{ width: 72, height: 72 }}>
+                  <UIcon name="CheckCircle2" size={36} />
                 </div>
                 <h2 className="font-display text-2xl font-bold text-white mb-5">Link is Ready</h2>
 
@@ -244,16 +248,17 @@ export default function PdfLinkPage() {
                 <div className="flex flex-col sm:flex-row items-center gap-3">
                   <button
                     onClick={copyLink}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] py-3.5 text-[14px] font-bold text-white shadow-lg shadow-[#7c6aff]/20 transition-all hover:-translate-y-0.5 active:scale-[0.98]"
+                    className="group relative flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] py-3.5 text-[14px] font-bold text-white shadow-lg shadow-[#7c6aff]/20 transition-all hover:-translate-y-0.5 active:scale-[0.98] overflow-hidden"
                   >
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                     <UIcon name={copied ? "Check" : "ClipboardList"} size={16} />
-                    {copied ? "Copied!" : "Copy Link"}
+                    <span className="relative">{copied ? "Copied!" : "Copy Link"}</span>
                   </button>
                   <a
                     href={uploaded.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] py-3.5 text-[14px] font-bold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-white/[0.06] active:scale-[0.98]"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] py-3.5 text-[14px] font-bold text-white no-underline transition-all hover:-translate-y-0.5 hover:bg-white/[0.06] hover:border-white/[0.12] active:scale-[0.98]"
                   >
                     <UIcon name="ExternalLink" size={16} />
                     Visit Page

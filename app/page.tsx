@@ -156,23 +156,32 @@ function ToolCard({ tool, index }: { tool: typeof tools[number]; index: number }
   );
 }
 
-// Particle dots background for hero
+// Particle dots background for hero — deterministic to avoid hydration mismatch
+const PARTICLES = [
+  { w: 4, h: 4, top: 20, left: 15, delay: 0, dur: 5, color: "#7c6aff", opacity: 0.2 },
+  { w: 3, h: 3, top: 45, left: 70, delay: 0.7, dur: 6, color: "#00d4aa", opacity: 0.18 },
+  { w: 5, h: 5, top: 65, left: 30, delay: 1.4, dur: 4.5, color: "#ffa940", opacity: 0.22 },
+  { w: 3, h: 3, top: 30, left: 85, delay: 2.1, dur: 5.5, color: "#ff6b6b", opacity: 0.16 },
+  { w: 4, h: 4, top: 75, left: 55, delay: 2.8, dur: 6.5, color: "#7c6aff", opacity: 0.2 },
+  { w: 5, h: 5, top: 50, left: 40, delay: 3.5, dur: 4, color: "#00d4aa", opacity: 0.15 },
+];
+
 function HeroParticles() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-      {[...Array(6)].map((_, i) => (
+      {PARTICLES.map((p, i) => (
         <div
           key={i}
           className="absolute rounded-full animate-float"
           style={{
-            width: `${3 + Math.random() * 4}px`,
-            height: `${3 + Math.random() * 4}px`,
-            background: ["#7c6aff", "#00d4aa", "#ffa940", "#ff6b6b"][i % 4],
-            opacity: 0.15 + Math.random() * 0.15,
-            top: `${15 + Math.random() * 70}%`,
-            left: `${10 + Math.random() * 80}%`,
-            animationDelay: `${i * 0.7}s`,
-            animationDuration: `${4 + Math.random() * 3}s`,
+            width: `${p.w}px`,
+            height: `${p.h}px`,
+            background: p.color,
+            opacity: p.opacity,
+            top: `${p.top}%`,
+            left: `${p.left}%`,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.dur}s`,
           }}
         />
       ))}

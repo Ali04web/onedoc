@@ -44,16 +44,25 @@ function ProgressBar({
   if (!progress) return null;
 
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3">
-      <div className="mb-2 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
-        <span>{label || "Working..."}</span>
-        <span>{progress}%</span>
+    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 animate-fade-in">
+      <div className="mb-2.5 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
+        <span className="flex items-center gap-2">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#7c6aff] animate-pulse" />
+          {label || "Working..."}
+        </span>
+        <span className="font-bold text-white/60">{progress}%</span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.04]">
+      <div className="relative h-2 overflow-hidden rounded-full bg-white/[0.04]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] to-[#00d4aa] transition-[width] duration-300"
-          style={{ width: `${progress}%` }}
+          className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] via-[#00d4aa] to-[#7c6aff] transition-[width] duration-500 ease-out"
+          style={{ width: `${progress}%`, backgroundSize: "200% 100%", animation: progress < 100 ? "shimmer 2s linear infinite" : "none" }}
         />
+        {progress < 100 && (
+          <div
+            className="absolute top-0 h-full w-8 rounded-full bg-white/20 blur-sm"
+            style={{ left: `${Math.max(0, progress - 4)}%`, transition: "left 0.5s ease-out" }}
+          />
+        )}
       </div>
     </div>
   );
@@ -576,41 +585,67 @@ export default function PdfToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="surface-panel p-5 md:p-7">
-        <SHead ico={<UIcon name="FileText" size={18} />} label="Conversion Tools" />
-        <div className="grid gap-4 xl:grid-cols-3">
-          {conversionCards.map((card) => (
-            <Tip key={card.title} tip={card.tip} side="top">
-              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                {card.body}
-              </CCard>
-            </Tip>
+      {/* Page Hero */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#ff6b6b]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#ff6b6b]/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex items-start gap-5">
+          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff6b6b] to-[#ee5a24] shadow-xl shadow-[#ff6b6b]/25">
+            <UIcon name="FileText" size={26} className="text-white" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">PDF Suite</h1>
+            <p className="mt-1.5 text-[14px] text-[#9294a5] font-medium max-w-[500px] leading-relaxed">Convert, merge, split, rotate, lock, and unlock — all processing happens in your browser.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["Convert", "Merge", "Split", "Rotate", "Lock", "Unlock"].map((t) => (
+                <span key={t} className="rounded-lg bg-white/[0.05] border border-white/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#6b6d80]">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <SHead ico={<UIcon name="FileText" size={18} />} label="Conversion Tools" sub="Transform PDFs to other formats" />
+        <div className="grid gap-5 xl:grid-cols-3">
+          {conversionCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.15 + i * 0.05}s` }}>
+              <Tip tip={card.tip} side="top">
+                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+                  {card.body}
+                </CCard>
+              </Tip>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="surface-panel p-5 md:p-7">
-        <SHead ico={<UIcon name="Layers3" size={18} />} label="Organize & Deliver" />
-        <div className="grid gap-4 xl:grid-cols-3">
-          {organizeCards.map((card) => (
-            <Tip key={card.title} tip={card.tip} side="top">
-              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                {card.body}
-              </CCard>
-            </Tip>
+      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+        <SHead ico={<UIcon name="Layers3" size={18} />} label="Organize & Deliver" sub="Restructure and combine your documents" />
+        <div className="grid gap-5 xl:grid-cols-3">
+          {organizeCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.25 + i * 0.05}s` }}>
+              <Tip tip={card.tip} side="top">
+                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+                  {card.body}
+                </CCard>
+              </Tip>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="surface-panel p-5 md:p-7">
-        <SHead ico={<UIcon name="ShieldCheck" size={18} />} label="Security" />
-        <div className="grid gap-4 xl:grid-cols-2">
-          {securityCards.map((card) => (
-            <Tip key={card.title} tip={card.tip} side="top">
-              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                {card.body}
-              </CCard>
-            </Tip>
+      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+        <SHead ico={<UIcon name="ShieldCheck" size={18} />} label="Security" sub="Protect or unlock PDF files" />
+        <div className="grid gap-5 xl:grid-cols-2">
+          {securityCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.05}s` }}>
+              <Tip tip={card.tip} side="top">
+                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+                  {card.body}
+                </CCard>
+              </Tip>
+            </div>
           ))}
         </div>
       </section>

@@ -401,28 +401,52 @@ export default function DocxToolsPage() {
 
   return (
     <div className="page-shell">
-      <section className="surface-panel p-5 md:p-7">
-        <SHead ico={<UIcon name="FileSignature" size={18} />} label="DOCX Conversions" />
-        <div className="grid gap-4 xl:grid-cols-2">
-          {docxCards.map((card) => (
-            <Tip key={card.title} tip={card.tip} side="top">
-              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                {card.body}
-              </CCard>
-            </Tip>
+      {/* Page Hero */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#7c6aff]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#7c6aff]/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex items-start gap-5">
+          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-xl shadow-[#ffa940]/25">
+            <UIcon name="FileSignature" size={26} className="text-white" />
+          </div>
+          <div>
+            <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">Word Tools</h1>
+            <p className="mt-1.5 text-[14px] text-[#9294a5] font-medium max-w-[500px] leading-relaxed">Export DOCX to HTML, text, markdown, and PDF — plus handy data-to-table conversions.</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {["HTML", "Text", "Markdown", "PDF", "CSV"].map((t) => (
+                <span key={t} className="rounded-lg bg-white/[0.05] border border-white/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#6b6d80]">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <SHead ico={<UIcon name="FileSignature" size={18} />} label="DOCX Conversions" sub="Transform Word documents to other formats" />
+        <div className="grid gap-5 xl:grid-cols-2">
+          {docxCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.15 + i * 0.05}s` }}>
+              <Tip tip={card.tip} side="top">
+                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+                  {card.body}
+                </CCard>
+              </Tip>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="surface-panel p-5 md:p-7">
-        <SHead ico={<UIcon name="FileSpreadsheet" size={18} />} label="Text & Data" />
-        <div className="grid gap-4 xl:grid-cols-2">
-          {dataCards.map((card) => (
-            <Tip key={card.title} tip={card.tip} side="top">
-              <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                {card.body}
-              </CCard>
-            </Tip>
+      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
+        <SHead ico={<UIcon name="FileSpreadsheet" size={18} />} label="Text & Data" sub="Convert text files and spreadsheet data" />
+        <div className="grid gap-5 xl:grid-cols-2">
+          {dataCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.25 + i * 0.05}s` }}>
+              <Tip tip={card.tip} side="top">
+                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+                  {card.body}
+                </CCard>
+              </Tip>
+            </div>
           ))}
         </div>
       </section>
