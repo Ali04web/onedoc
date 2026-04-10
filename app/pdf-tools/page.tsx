@@ -539,7 +539,7 @@ export default function PdfToolsPage() {
              await run("lock", async () => {
                 const pdfLibEncrypt = await import("pdf-lib-plus-encrypt");
                 const pdf = await pdfLibEncrypt.PDFDocument.load(await file.arrayBuffer());
-                const bytes = await pdf.save({ userPassword: password, ownerPassword: password });
+                const bytes = await pdf.save({ userPassword: password, ownerPassword: password } as any);
                 dlBlob(`${stem(file.name)}_locked.pdf`, new Blob([bytes], { type: "application/pdf" }));
                 return "PDF locked successfully.";
              });
@@ -563,7 +563,7 @@ export default function PdfToolsPage() {
              if (!file || !password) return;
              await run("unlock", async () => {
                 const pdfLibEncrypt = await import("pdf-lib-plus-encrypt");
-                const pdf = await pdfLibEncrypt.PDFDocument.load(await file.arrayBuffer(), { password });
+                const pdf = await pdfLibEncrypt.PDFDocument.load(await file.arrayBuffer(), { password } as any);
                 const bytes = await pdf.save();
                 dlBlob(`${stem(file.name)}_unlocked.pdf`, new Blob([bytes], { type: "application/pdf" }));
                 return "PDF unlocked permanently.";
