@@ -29,6 +29,14 @@ const tools = [
     gradient: "from-[#ffa940] to-[#ff7b3a]",
     glow: "rgba(255, 169, 64, 0.15)",
   },
+  {
+    href: "/pdf-link",
+    icon: "Link",
+    label: "PDF Link",
+    desc: "Upload a PDF and instantly get a shareable viewer link.",
+    gradient: "from-[#00d4aa] to-[#00b894]",
+    glow: "rgba(0, 212, 170, 0.15)",
+  },
 ] as const;
 
 const stats = [

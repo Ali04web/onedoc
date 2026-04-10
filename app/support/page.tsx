@@ -24,7 +24,7 @@ const faqs = [
 ];
 
 const formats = [
-  ["PDF", "Analyse & convert", "Text, image, DOCX", "PDF Tools"],
+  ["PDF", "Analyse & convert", "Text, image, DOCX, link", "PDF Tools"],
   ["DOCX", "Analyse & convert", "HTML, text, MD, PDF", "DOCX Tools"],
   ["TXT / MD", "Convert", "PDF", "DOCX Tools"],
   ["CSV", "Convert", "HTML table", "DOCX Tools"],

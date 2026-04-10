@@ -10,6 +10,7 @@ const navItems = [
   { href: "/analyze", icon: "Microscope", label: "Analyze" },
   { href: "/pdf-tools", icon: "FileText", label: "PDF Tools" },
   { href: "/docx-tools", icon: "FileSignature", label: "DOCX Tools" },
+  { href: "/pdf-link", icon: "Link", label: "PDF Link" },
   { href: "/support", icon: "MessageCircleHeart", label: "Support" },
 ] as const;
 
