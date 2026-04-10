@@ -10,7 +10,6 @@ const navItems = [
   { href: "/analyze", icon: "Microscope", label: "Analyze" },
   { href: "/pdf-tools", icon: "FileText", label: "PDF Tools" },
   { href: "/docx-tools", icon: "FileSignature", label: "DOCX Tools" },
-  { href: "/pdf-link", icon: "Link", label: "PDF Link" },
   { href: "/support", icon: "MessageCircleHeart", label: "Support" },
 ] as const;
 
@@ -59,13 +58,6 @@ export default function Navbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          <Link
-            href="/pdf-link"
-            className="hidden lg:inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] px-4 py-2.5 text-[12px] font-bold text-white no-underline shadow-lg shadow-[#7c6aff]/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#7c6aff]/30 active:translate-y-0"
-          >
-            <UIcon name="Link" size={13} />
-            Get Shareable Link
-          </Link>
 
           {/* Mobile Toggle */}
           <button
@@ -120,16 +112,6 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-              <div className="mt-2 border-t border-white/[0.06] pt-2">
-                <Link
-                  href="/pdf-link"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] py-3 text-[14px] font-semibold text-white no-underline"
-                >
-                  <UIcon name="Link" size={14} />
-                  Get Shareable Link
-                </Link>
-              </div>
             </div>
           </div>
         )}
