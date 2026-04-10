@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import React, { useCallback, useRef, useState } from "react";
+import Link from "next/link";
 import { Toast } from "@/app/components/DocLensUI";
 import { UIcon } from "@/app/components/Icons";
 
@@ -107,7 +108,23 @@ export default function PdfLinkPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        <div className="flex flex-col items-center justify-center pt-6 pb-12">
+        <div className="relative flex flex-col items-center justify-center pt-6 pb-12">
+          {/* Coming Soon Overlay */}
+          <div className="absolute inset-0 z-[50] flex items-center justify-center rounded-3xl bg-[rgba(10,10,15,0.4)] backdrop-blur-[6px]">
+            <div className="surface-panel flex flex-col items-center gap-4 px-8 py-6 text-center shadow-2xl animate-fade-in border border-white/[0.12]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-lg shadow-[#ffa940]/20">
+                <UIcon name="Hourglass" size={24} className="text-white animate-spin-slow" />
+              </div>
+              <div className="space-y-1">
+                <h2 className="font-display text-2xl font-bold text-white tracking-tight">Coming Soon</h2>
+                <p className="text-[14px] text-[#9294a5] font-medium">Cloud storage and sharing is currently being optimized.</p>
+              </div>
+              <Link href="/" className="mt-2 inline-flex items-center gap-2 rounded-xl bg-white/[0.06] px-5 py-2.5 text-[13px] font-bold text-white no-underline transition-all hover:bg-white/[0.1] active:scale-95">
+                <UIcon name="ArrowLeft" size={14} />
+                Back home
+              </Link>
+            </div>
+          </div>
 
           {/* Upload / Result Area */}
           {!uploaded ? (
