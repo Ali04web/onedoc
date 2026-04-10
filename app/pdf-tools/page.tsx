@@ -499,25 +499,6 @@ export default function PdfToolsPage() {
         </>
       ),
     },
-    {
-      title: "PDF Link",
-      accent: "#00d4aa",
-      icon: <UIcon name="Link" size={18} />,
-      tip: "Dedicated shareable-link workspace.",
-      body: (
-        <div className="flex h-full flex-col justify-between gap-4">
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-[13px] leading-relaxed text-[#6b6d80]">
-            Upload a PDF and get an instant shareable viewer link.
-          </div>
-          <Link
-            href="/pdf-link"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00d4aa] to-[#00b894] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-[#00d4aa]/20 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
-          >
-            <UIcon name="ArrowUpRight" size={14} />
-            Open PDF Link
-          </Link>
-        </div>
-      ),
     },
   ];
 
