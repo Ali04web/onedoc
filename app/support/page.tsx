@@ -11,7 +11,7 @@ const faqs = [
   },
   {
     q: "Are my documents uploaded anywhere?",
-    a: "Conversions and analysis run in the browser. Files stay on your device unless you use PDF Link.",
+    a: "Conversions and analysis run entirely in the browser. Your files never leave your device.",
   },
   {
     q: "Which PDF to DOCX option should I use?",
@@ -24,7 +24,7 @@ const faqs = [
 ];
 
 const formats = [
-  ["PDF", "Analyse & convert", "Text, image, DOCX, link", "PDF Tools"],
+  ["PDF", "Analyse & convert", "Text, image, DOCX", "PDF Tools"],
   ["DOCX", "Analyse & convert", "HTML, text, MD, PDF", "DOCX Tools"],
   ["TXT / MD", "Convert", "PDF", "DOCX Tools"],
   ["CSV", "Convert", "HTML table", "DOCX Tools"],

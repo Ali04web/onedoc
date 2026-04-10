@@ -499,7 +499,6 @@ export default function PdfToolsPage() {
         </>
       ),
     },
-    },
   ];
 
   const securityCards = [
