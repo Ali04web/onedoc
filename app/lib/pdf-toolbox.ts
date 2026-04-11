@@ -219,7 +219,7 @@ export function parseTerms(value: string) {
   return Array.from(
     new Set(
       value
-        .split(",")
+        .split(/[\n,;]+/)
         .map((term) => term.trim())
         .filter((term) => term.length > 0)
     )

@@ -1919,12 +1919,34 @@ export default function PdfToolsPage() {
       <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
           {allCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.08 + i * 0.02}s` }}>
-              <Tip tip={card.tip} side="top">
-                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
+            <div
+              key={card.title}
+              className="animate-fade-in h-[31rem] min-h-[31rem]"
+              style={{ animationDelay: `${0.08 + i * 0.02}s` }}
+            >
+              {card.tip && IMPORTANT_CARD_TOOLTIPS.has(card.title) ? (
+                <Tip tip={card.tip} side="top" className="flex h-full w-full">
+                  <CCard
+                    ico={card.icon}
+                    title={card.title}
+                    accentCol={card.accent}
+                    className="min-h-0"
+                    bodyClassName="min-h-0 overflow-y-auto pr-1"
+                  >
+                    {card.body}
+                  </CCard>
+                </Tip>
+              ) : (
+                <CCard
+                  ico={card.icon}
+                  title={card.title}
+                  accentCol={card.accent}
+                  className="min-h-0"
+                  bodyClassName="min-h-0 overflow-y-auto pr-1"
+                >
                   {card.body}
                 </CCard>
-              </Tip>
+              )}
             </div>
           ))}
         </div>
