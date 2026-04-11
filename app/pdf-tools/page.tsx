@@ -666,9 +666,9 @@ export default function PdfToolsPage() {
               setTool("rotate", { deg: event.target.value })
             }
           >
-            <option value="90">Rotate 90° clockwise</option>
-            <option value="180">Rotate 180°</option>
-            <option value="270">Rotate 270°</option>
+            <option value="90">Rotate 90 degrees clockwise</option>
+            <option value="180">Rotate 180 degrees</option>
+            <option value="270">Rotate 270 degrees</option>
           </HSel>
           <CStat msg={getTool("rotate").status} type={getTool("rotate").statusType} />
           <HBtn
@@ -688,7 +688,7 @@ export default function PdfToolsPage() {
 
                 const output = await pdf.save();
                 dlBlob(`${stem(file.name)}_rotated.pdf`, new Blob([output], { type: "application/pdf" }));
-                return `Rotated every page by ${amount}°.`;
+                return `Rotated every page by ${amount} degrees.`;
               });
             }}
             disabled={!getTool("rotate").file}
@@ -1354,12 +1354,15 @@ export default function PdfToolsPage() {
 
               await run("quickConvert", async () => {
                 if (format === "txt") {
-                  const extraction = await extractPdfFile(file, PDF_WORKER_SRC, {
-                    onProgress: (progress) => setProgress("quickConvert", Math.max(8, progress), "Extracting text"),
+                  const extraction = await extractPdfTextWithOcrFallback(file, PDF_WORKER_SRC, {
+                    onProgress: (progress, label) =>
+                      setProgress("quickConvert", Math.max(8, progress), label || "Extracting text"),
                   });
                   dlText(`${stem(file.name)}.txt`, extraction.text);
-                  setProgress("quickConvert", 100, "TXT ready");
-                  return `${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"} exported to TXT.`;
+                  setProgress("quickConvert", 100, extraction.source === "ocr" ? "OCR TXT ready" : "TXT ready");
+                  return extraction.source === "ocr"
+                    ? `Low native text detected, OCR text exported from ${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"}.`
+                    : `${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"} exported to TXT.`;
                 }
 
                 if (format === "docx-layout") {
@@ -1658,11 +1661,17 @@ export default function PdfToolsPage() {
                     mode === "match"
                       ? embeddedPages[Math.min(index, embeddedPages.length - 1)]
                       : embeddedPages[0];
+                  const scale = Math.min(
+                    page.getWidth() / overlayPage.width,
+                    page.getHeight() / overlayPage.height
+                  );
+                  const drawWidth = overlayPage.width * scale;
+                  const drawHeight = overlayPage.height * scale;
                   page.drawPage(overlayPage, {
-                    x: 0,
-                    y: 0,
-                    width: page.getWidth(),
-                    height: page.getHeight(),
+                    x: (page.getWidth() - drawWidth) / 2,
+                    y: (page.getHeight() - drawHeight) / 2,
+                    width: drawWidth,
+                    height: drawHeight,
                     opacity: 1,
                   });
                 });
