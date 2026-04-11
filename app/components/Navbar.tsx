@@ -6,12 +6,12 @@ import { usePathname } from "next/navigation";
 import { UIcon } from "./Icons";
 
 const navItems = [
-  { href: "/", icon: "Home", label: "Home" },
-  { href: "/analyze", icon: "Microscope", label: "Analyze" },
-  { href: "/pdf-tools", icon: "FileText", label: "PDF Tools" },
-  { href: "/docx-tools", icon: "FileSignature", label: "DOCX Tools" },
-  { href: "/pdf-link", icon: "Link", label: "PDF Link" },
-  { href: "/support", icon: "MessageCircleHeart", label: "Support" },
+  { href: "/", icon: "NavHome", label: "Home" },
+  { href: "/analyze", icon: "NavAnalyze", label: "Analyze" },
+  { href: "/pdf-tools", icon: "NavPdfTools", label: "PDF Tools" },
+  { href: "/docx-tools", icon: "NavDocxTools", label: "DOCX Tools" },
+  { href: "/pdf-link", icon: "NavPdfLink", label: "PDF Link" },
+  { href: "/support", icon: "NavSupport", label: "Support" },
 ] as const;
 
 export default function Navbar() {

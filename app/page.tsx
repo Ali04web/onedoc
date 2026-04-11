@@ -7,7 +7,7 @@ import { UIcon } from "./components/Icons";
 const tools = [
   {
     href: "/analyze",
-    icon: "Microscope",
+    icon: "NavAnalyze",
     label: "Analyze",
     desc: "Extract text, search, and generate insights from PDFs & DOCX files.",
     gradient: "from-[#7c6aff] to-[#a78bfa]",
@@ -16,7 +16,7 @@ const tools = [
   },
   {
     href: "/pdf-tools",
-    icon: "FileText",
+    icon: "NavPdfTools",
     label: "PDF Suite",
     desc: "Convert, merge, split, rotate, lock, and unlock your PDF files.",
     gradient: "from-[#ff6b6b] to-[#ee5a24]",
@@ -25,7 +25,7 @@ const tools = [
   },
   {
     href: "/docx-tools",
-    icon: "FileSignature",
+    icon: "NavDocxTools",
     label: "Word Tools",
     desc: "Export DOCX to HTML, text, markdown, PDF, and CSV to HTML tables.",
     gradient: "from-[#ffa940] to-[#ff7b3a]",
@@ -34,7 +34,7 @@ const tools = [
   },
   {
     href: "/pdf-link",
-    icon: "Link",
+    icon: "NavPdfLink",
     label: "PDF Link",
     desc: "Upload a PDF and instantly get a shareable viewer link.",
     gradient: "from-[#00d4aa] to-[#00b894]",
@@ -255,7 +255,7 @@ export default function HomePage() {
             href="/analyze"
             className="inline-flex items-center gap-2.5 rounded-2xl border border-white/[0.1] bg-white/[0.04] px-7 py-3.5 text-[14px] font-bold text-white no-underline transition-all duration-300 hover:bg-white/[0.08] hover:border-white/[0.16] hover:-translate-y-1 active:scale-[0.97]"
           >
-            <UIcon name="Microscope" size={16} />
+            <UIcon name="NavAnalyze" size={16} />
             Analyze docs
           </Link>
         </div>
