@@ -43,10 +43,8 @@ export default function Navbar() {
       <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group no-underline transition-all active:scale-95">
-          <div className="relative h-10 w-10 rounded-xl bg-gradient-to-br from-[#7c6aff] to-[#00d4aa] flex items-center justify-center shadow-lg shadow-[#7c6aff]/25 transition-all duration-300 group-hover:shadow-xl group-hover:shadow-[#7c6aff]/35 group-hover:scale-105">
-            <UIcon name="FileText" size={18} className="text-white" />
-            {/* Animated ring */}
-            <div className="absolute inset-0 rounded-xl border border-white/20 animate-glow-pulse" />
+          <div className="relative h-10 w-10 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+            <img src="/onedocs-symbol.svg" alt="OneDocs Logo" className="h-full w-full object-contain" />
           </div>
           <div className="font-display text-[20px] font-bold tracking-tight text-white transition-colors group-hover:text-white/90">
             OneDocs

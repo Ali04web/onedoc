@@ -1,33 +1,76 @@
-<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="14" y1="12" x2="78" y2="84" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#6E7CFF"/>
-      <stop offset="0.5" stop-color="#17B897"/>
-      <stop offset="1" stop-color="#FF8E3D"/>
+    <style>
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+      }
+      @keyframes shadow-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.25; }
+        50% { transform: scale(0.95); opacity: 0.15; }
+      }
+      .doc-group {
+        animation: float 4s ease-in-out infinite;
+        transform-origin: center;
+      }
+    </style>
+    <!-- Premium Gradients -->
+    <linearGradient id="docGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFD43B" />
+      <stop offset="100%" stop-color="#F59F00" />
     </linearGradient>
-    <linearGradient id="page" x1="28" y1="18" x2="67" y2="69" gradientUnits="userSpaceOnUse">
-      <stop stop-color="white"/>
-      <stop offset="1" stop-color="#EEF3FF"/>
+    <linearGradient id="foldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBE6" />
+      <stop offset="100%" stop-color="#FFE566" />
     </linearGradient>
-    <linearGradient id="link" x1="56" y1="47" x2="76" y2="68" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFD056"/>
-      <stop offset="1" stop-color="#FF6B57"/>
-    </linearGradient>
-    <filter id="shadow" x="6" y="8" width="84" height="84" filterUnits="userSpaceOnUse">
-      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#5D68D6" flood-opacity="0.28"/>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#F59F00" flood-opacity="0.25"/>
+    </filter>
+    <filter id="foldShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="-4" dy="4" stdDeviation="8" flood-color="#C97800" flood-opacity="0.15"/>
     </filter>
   </defs>
-  <g filter="url(#shadow)">
-    <rect x="14" y="12" width="68" height="68" rx="22" fill="url(#bg)"/>
+
+  <!-- Animated Container -->
+  <g class="doc-group">
+    <!-- Ground / Base Drop Shadow substitute -->
+    <g transform="translate(96, 64)" filter="url(#shadow)">
+      <!-- Main document shape (320x384) -->
+      <path d="M 32 0 
+               L 224 0 
+               L 320 96 
+               L 320 352 
+               C 320 369.673 305.673 384 288 384 
+               L 32 384 
+               C 14.327 384 0 369.673 0 352 
+               L 0 32 
+               C 0 14.327 14.327 0 32 0 Z" 
+            fill="url(#docGrad)" />
+
+      <!-- Dog-ear fold -->
+      <path d="M 224 0
+               L 320 96
+               L 256 96
+               C 238.327 96 224 81.673 224 64
+               Z"
+            fill="url(#foldGrad)"
+            filter="url(#foldShadow)" />
+
+      <!-- Header block inside doc -->
+      <rect x="48" y="48" width="80" height="24" rx="12" fill="#FFFFFF" opacity="0.9" />
+
+      <!-- Content Lines -->
+      <circle cx="60" cy="120" r="12" fill="#FFFFFF" opacity="0.8" />
+      <rect x="88" y="108" width="160" height="24" rx="12" fill="#FFFFFF" opacity="0.6" />
+
+      <circle cx="60" cy="168" r="12" fill="#FFFFFF" opacity="0.8" />
+      <rect x="88" y="156" width="120" height="24" rx="12" fill="#FFFFFF" opacity="0.6" />
+
+      <circle cx="60" cy="216" r="12" fill="#FFFFFF" opacity="0.8" />
+      <rect x="88" y="204" width="180" height="24" rx="12" fill="#FFFFFF" opacity="0.6" />
+
+      <circle cx="60" cy="264" r="12" fill="#FFFFFF" opacity="0.8" />
+      <rect x="88" y="252" width="100" height="24" rx="12" fill="#FFFFFF" opacity="0.6" />
+    </g>
   </g>
-  <path d="M31 24C31 21.7909 32.7909 20 35 20H55.5L65 29.5V57C65 59.2091 63.2091 61 61 61H35C32.7909 61 31 59.2091 31 57V24Z" fill="url(#page)"/>
-  <path d="M55 20V27.5C55 29.7091 56.7909 31.5 59 31.5H65" fill="#D9E5FF"/>
-  <path d="M55 20V27.5C55 29.7091 56.7909 31.5 59 31.5H65" stroke="#D2DCFF" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M39 35H57" stroke="#7180B9" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M39 43H57" stroke="#8A97C7" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M39 51H51" stroke="#A2ADD8" stroke-width="3.2" stroke-linecap="round"/>
-  <rect x="53" y="45" width="24" height="24" rx="12" fill="white" fill-opacity="0.22"/>
-  <path d="M60.2 58.4L64.1 54.5C65.4 53.2 67.5 53.2 68.8 54.5C70.1 55.8 70.1 57.9 68.8 59.2L64.9 63.1C63.6 64.4 61.5 64.4 60.2 63.1C58.9 61.8 58.9 59.7 60.2 58.4Z" stroke="url(#link)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M53.7 51.9L57.6 48C58.9 46.7 61 46.7 62.3 48C63.6 49.3 63.6 51.4 62.3 52.7L58.4 56.6C57.1 57.9 55 57.9 53.7 56.6C52.4 55.3 52.4 53.2 53.7 51.9Z" stroke="url(#link)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M70 25L71.8 29.2L76 31L71.8 32.8L70 37L68.2 32.8L64 31L68.2 29.2L70 25Z" fill="#FFF1A9"/>
 </svg>
