@@ -44,10 +44,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group no-underline transition-all active:scale-95">
           <div className="relative h-10 w-10 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
-            <img src="/onedocs-symbol.svg" alt="OneDocs Logo" className="h-full w-full object-contain" />
+            <img src="/onedoc-symbol.svg" alt="OneDoc Logo" className="h-full w-full object-contain" />
           </div>
           <div className="font-display text-[20px] font-bold tracking-tight text-white transition-colors group-hover:text-white/90">
-            OneDocs
+            OneDoc
           </div>
           <span className="rounded-lg bg-[#00d4aa]/12 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#00d4aa] border border-[#00d4aa]/15 transition-all duration-300 group-hover:bg-[#00d4aa]/18">
             FREE
