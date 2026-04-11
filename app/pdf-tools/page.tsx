@@ -1853,7 +1853,7 @@ export default function PdfToolsPage() {
   return (
     <div className="page-shell">
       {/* Page Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#ff6b6b]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
+      <div className="hidden relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#ff6b6b]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#ff6b6b]/5 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex items-start gap-5">
@@ -1873,10 +1873,9 @@ export default function PdfToolsPage() {
       </div>
 
       <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-        <SHead ico={<UIcon name="FileText" size={18} />} label="Conversion Tools" sub="Transform PDFs to other formats" />
-        <div className="grid gap-5 xl:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
           {conversionCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.15 + i * 0.05}s` }}>
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.15 + i * 0.05}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
@@ -1888,10 +1887,9 @@ export default function PdfToolsPage() {
       </section>
 
       <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-        <SHead ico={<UIcon name="Layers3" size={18} />} label="Organize & Deliver" sub="Restructure and combine your documents" />
-        <div className="grid gap-5 xl:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
           {organizeCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.25 + i * 0.05}s` }}>
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.25 + i * 0.05}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
@@ -1903,10 +1901,9 @@ export default function PdfToolsPage() {
       </section>
 
       <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-        <SHead ico={<UIcon name="ShieldCheck" size={18} />} label="Security" sub="Protect or unlock PDF files" />
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
           {securityCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.35 + i * 0.05}s` }}>
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.35 + i * 0.05}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
@@ -1918,10 +1915,9 @@ export default function PdfToolsPage() {
       </section>
 
       <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-        <SHead ico={<UIcon name="PenTool" size={18} />} label="Edit & Review" sub="Annotate, sign, watermark, redact, and compare PDFs" />
-        <div className="grid gap-5 xl:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
           {reviewCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.45 + i * 0.05}s` }}>
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.45 + i * 0.05}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
@@ -1933,10 +1929,9 @@ export default function PdfToolsPage() {
       </section>
 
       <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-        <SHead ico={<UIcon name="Sparkles" size={18} />} label="More PDF Tools" sub="Compression, OCR, overlays, creation, and web capture" />
-        <div className="grid gap-5 xl:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
           {extraToolCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in" style={{ animationDelay: `${0.55 + i * 0.05}s` }}>
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.55 + i * 0.05}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
