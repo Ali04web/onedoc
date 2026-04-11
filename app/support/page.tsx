@@ -6,7 +6,7 @@ import { UIcon } from "@/app/components/Icons";
 
 const faqs = [
   {
-    q: "Is OneDocs free to use?",
+    q: "Is OneDoc free to use?",
     a: "Yes. All tools are free with no sign-up required.",
   },
   {
@@ -18,7 +18,7 @@ const faqs = [
     a: "Use accuracy mode when visual fidelity matters. Use editable mode when you need to edit the text.",
   },
   {
-    q: "Does OneDocs work on mobile?",
+    q: "Does OneDoc work on mobile?",
     a: "Yes. The layout is fully responsive.",
   },
 ];

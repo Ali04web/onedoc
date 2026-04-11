@@ -26,13 +26,13 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OneDocs | Document Conversion Suite",
+  title: "OneDoc | Document Conversion Suite",
   description:
     "Fast PDF and DOCX tools for convert, analyze, and share workflows.",
   icons: {
-    icon: "/onedocs-symbol.svg",
-    shortcut: "/onedocs-symbol.svg",
-    apple: "/onedocs-symbol.svg",
+    icon: "/onedoc-symbol.svg",
+    shortcut: "/onedoc-symbol.svg",
+    apple: "/onedoc-symbol.svg",
   },
 };
 
@@ -56,7 +56,7 @@ export default function RootLayout({
         <footer className="relative z-10 border-t border-white/[0.04] bg-[rgba(6,6,11,0.5)] backdrop-blur-xl">
           <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5">
             <div className="text-[12px] text-[#6b6d80] font-medium">
-              © 2026 OneDocs · All tools free
+              © 2026 OneDoc · All tools free
             </div>
             <div className="flex items-center gap-4 text-[12px] text-[#6b6d80]">
               <span className="flex items-center gap-1.5">
