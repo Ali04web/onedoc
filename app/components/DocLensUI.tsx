@@ -36,7 +36,7 @@ export function Tip({ children, tip, side = "top", className = "" }: any) {
 
   return (
     <div
-      className={`relative inline-flex max-w-full ${className}`}
+      className={`relative max-w-full ${className || "inline-flex"}`}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
       onFocusCapture={() => setShow(true)}

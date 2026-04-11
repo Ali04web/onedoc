@@ -324,7 +324,7 @@ export default function PdfToolsPage() {
       title: "PDF to plain text",
       accent: "#ff6b6b",
       icon: <UIcon name="FileText" size={18} />,
-      tip: "Uses improved extraction for cleaner text output.",
+      tip: "Extracts native text first, then falls back to OCR for scanned PDFs.",
       body: (
         <>
           <FZone
@@ -416,7 +416,7 @@ export default function PdfToolsPage() {
       title: "PDF to DOCX",
       accent: "#7c6aff",
       icon: <UIcon name="FileSignature" size={18} />,
-      tip: "Best Accuracy or Editable Text output.",
+      tip: "Use page-faithful output for tricky layouts or editable text when extraction is strong.",
       body: (
         <>
           <FZone
@@ -1264,7 +1264,7 @@ export default function PdfToolsPage() {
       title: "Compare PDFs",
       accent: "#00b894",
       icon: <UIcon name="GitCompareArrows" size={18} />,
-      tip: "Creates HTML and TXT reports with per-page text similarity scores.",
+      tip: "Creates HTML and TXT reports with OCR fallback for low-text or scanned PDFs.",
       body: (
         <>
           <FZone
@@ -1472,7 +1472,7 @@ export default function PdfToolsPage() {
       title: "Extract PDF images",
       accent: "#9254de",
       icon: <UIcon name="GalleryHorizontal" size={18} />,
-      tip: "Pull embedded images or fall back to page snapshots.",
+      tip: "Pulls embedded images directly and falls back to page snapshots when needed.",
       body: (
         <>
           <FZone
@@ -1691,7 +1691,7 @@ export default function PdfToolsPage() {
       title: "Webpage to PDF",
       accent: "#eb2f96",
       icon: <UIcon name="Globe" size={18} />,
-      tip: "Fetches a webpage and opens a print dialog so you can save it as PDF.",
+      tip: "Fetches the page server-side, sanitizes it, and opens a print-ready same-origin preview.",
       body: (
         <>
           <HInput
@@ -1740,7 +1740,7 @@ export default function PdfToolsPage() {
       title: "PDF OCR",
       accent: "#13c2c2",
       icon: <UIcon name="ScanSearch" size={18} />,
-      tip: "Recognize text from scanned or image-only PDFs.",
+      tip: "Recognizes text from scanned or image-only PDFs and exports clean page-by-page OCR text.",
       body: (
         <>
           <FZone
