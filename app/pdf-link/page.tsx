@@ -216,7 +216,7 @@ export default function PdfLinkPage() {
                   {!(!file || uploading) && (
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                   )}
-                  <UIcon name={uploading ? "Hourglass" : "Link"} size={18} className={uploading ? "animate-spin" : ""} />
+                  <UIcon name={uploading ? "Hourglass" : "NavPdfLink"} size={18} className={uploading ? "animate-spin" : ""} />
                   <span className="relative">{uploading ? "Generating..." : "Generate Link"}</span>
                 </button>
               </div>

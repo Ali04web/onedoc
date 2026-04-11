@@ -167,7 +167,7 @@ export default function DocLens() {
             <div className="flex items-center justify-between border-b border-white/[0.04] px-4 py-4">
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-xl bg-[#7c6aff]/10 border border-[#7c6aff]/15 flex items-center justify-center">
-                  <UIcon name="Microscope" size={14} className="text-[#7c6aff]" />
+                  <UIcon name="NavAnalyze" size={14} className="text-[#7c6aff]" />
                 </div>
                 <div className="font-display text-[14px] font-bold text-white">Analyzer</div>
               </div>
