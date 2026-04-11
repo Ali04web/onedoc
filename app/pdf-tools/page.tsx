@@ -14,6 +14,7 @@ import {
 import {
   comparePdfFiles,
   createRedactedPdf,
+  extractPdfTextWithOcrFallback,
   extractPdfImages,
   formatBytes,
   openPrintWindow,
@@ -29,7 +30,7 @@ import {
   CCard,
   CStat,
   FZone,
-  HBtn,
+  HBtn as BaseHBtn,
   HInput,
   HSel,
   Tip,
@@ -56,6 +57,20 @@ const PLACEMENT_OPTIONS: Array<{ value: PlacementPreset; label: string }> = [
   { value: "bottom-center", label: "Bottom center" },
   { value: "bottom-right", label: "Bottom right" },
 ];
+
+const IMPORTANT_CARD_TOOLTIPS = new Set([
+  "PDF to plain text",
+  "PDF to DOCX",
+  "Redact PDF",
+  "Compare PDFs",
+  "Extract PDF images",
+  "Webpage to PDF",
+  "PDF OCR",
+]);
+
+function HBtn(props: any) {
+  return <BaseHBtn {...props} className={`mt-auto shrink-0 ${props.className || ""}`.trim()} />;
+}
 
 function ProgressBar({
   progress,

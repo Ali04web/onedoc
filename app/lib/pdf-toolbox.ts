@@ -42,6 +42,7 @@ export interface ExtractImagesResult {
 export interface OcrPdfResult {
   text: string;
   pageCount: number;
+  pages: Array<{ pageNumber: number; text: string }>;
 }
 
 export interface RedactPdfResult {
@@ -57,6 +58,15 @@ export interface ComparePdfResult {
   differingPages: number[];
   pageCountA: number;
   pageCountB: number;
+  sourceA: "native" | "ocr";
+  sourceB: "native" | "ocr";
+}
+
+export interface PdfTextResult {
+  text: string;
+  pageCount: number;
+  pages: Array<{ pageNumber: number; text: string }>;
+  source: "native" | "ocr";
 }
 
 type ImageCarrier = {
@@ -115,6 +125,10 @@ function escapeHtml(value: string) {
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
+}
+
+function countReadableCharacters(value: string) {
+  return (value.match(/[A-Za-z0-9]/g) || []).length;
 }
 
 function normalizeCompareText(value: string) {
@@ -396,11 +410,101 @@ function cleanOcrText(value: string) {
   return value.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
 }
 
+function stripPageMarkers(value: string) {
+  return value.replace(/--- Page \d+ ---/g, "\n");
+}
+
+function buildNativeTextPages(extraction: PdfExtraction) {
+  return extraction.pages.map((page, index) => ({
+    pageNumber: index + 1,
+    text: cleanOcrText(page.text || ""),
+  }));
+}
+
+function findTermMatchOffsets(lineText: string, term: string) {
+  const matches: Array<{ index: number; length: number }> = [];
+  const source = lineText.toLowerCase();
+  const candidate = term.toLowerCase();
+
+  if (!candidate) {
+    return matches;
+  }
+
+  const isWordChar = (value?: string) => Boolean(value && /[a-z0-9]/i.test(value));
+  const needsLeftBoundary = isWordChar(candidate[0]);
+  const needsRightBoundary = isWordChar(candidate[candidate.length - 1]);
+
+  let offset = 0;
+  while (offset < source.length) {
+    const foundAt = source.indexOf(candidate, offset);
+    if (foundAt === -1) {
+      break;
+    }
+
+    const left = source[foundAt - 1];
+    const right = source[foundAt + candidate.length];
+    const leftOkay = !needsLeftBoundary || !isWordChar(left);
+    const rightOkay = !needsRightBoundary || !isWordChar(right);
+
+    if (leftOkay && rightOkay) {
+      matches.push({ index: foundAt, length: candidate.length });
+    }
+
+    offset = foundAt + candidate.length;
+  }
+
+  return matches;
+}
+
+export async function extractPdfTextWithOcrFallback(
+  file: File,
+  workerSrc: string,
+  options: {
+    language?: string;
+    dpi?: number;
+    minTextSignal?: number;
+    onProgress?: (progress: number, label?: string) => void;
+  } = {}
+): Promise<PdfTextResult> {
+  const extraction = await extractPdfFile(file, workerSrc, {
+    onProgress: (progress) =>
+      options.onProgress?.(Math.round(progress * 0.45), "Reading embedded PDF text"),
+  });
+
+  const nativePages = buildNativeTextPages(extraction);
+  const nativeTextSignal = countReadableCharacters(stripPageMarkers(extraction.text));
+  const threshold = options.minTextSignal ?? Math.max(90, extraction.pageCount * 30);
+
+  if (nativeTextSignal >= threshold) {
+    options.onProgress?.(100, "Text extraction ready");
+    return {
+      text: extraction.text,
+      pageCount: extraction.pageCount,
+      pages: nativePages,
+      source: "native",
+    };
+  }
+
+  const ocr = await runPdfOcr(file, workerSrc, {
+    language: options.language,
+    dpi: options.dpi ?? 190,
+    onProgress: (progress, label) =>
+      options.onProgress?.(45 + Math.round(progress * 0.55), label || "Running OCR"),
+  });
+
+  return {
+    text: ocr.text,
+    pageCount: ocr.pageCount,
+    pages: ocr.pages,
+    source: "ocr",
+  };
+}
+
 function buildComparisonText(
   fileA: File,
   fileB: File,
-  extractionA: PdfExtraction,
-  extractionB: PdfExtraction,
+  extractionA: { pageCount: number },
+  extractionB: { pageCount: number },
   overallScore: number,
   differingPages: number[],
   pageSummaries: Array<{ pageNumber: number; score: number; left: string; right: string }>
@@ -433,8 +537,8 @@ function buildComparisonText(
 function buildComparisonHtml(
   fileA: File,
   fileB: File,
-  extractionA: PdfExtraction,
-  extractionB: PdfExtraction,
+  extractionA: { pageCount: number },
+  extractionB: { pageCount: number },
   overallScore: number,
   pageSummaries: Array<{ pageNumber: number; score: number; left: string; right: string }>
 ) {
@@ -856,6 +960,7 @@ export async function runPdfOcr(
   });
 
   let text = "";
+  const pages: Array<{ pageNumber: number; text: string }> = [];
 
   for (let index = 0; index < rendered.length; index += 1) {
     const page = rendered[index];
@@ -883,6 +988,10 @@ export async function runPdfOcr(
 
       const pageText = cleanOcrText(result?.data?.text || "");
       text += `--- Page ${page.pageNumber} ---\n${pageText}\n\n`;
+      pages.push({
+        pageNumber: page.pageNumber,
+        text: pageText,
+      });
     } finally {
       URL.revokeObjectURL(objectUrl);
     }
@@ -893,6 +1002,7 @@ export async function runPdfOcr(
   return {
     text: text.trim(),
     pageCount: rendered.length,
+    pages,
   };
 }
 
@@ -924,18 +1034,12 @@ export async function createRedactedPdf(
     context.fillStyle = "#000000";
 
     extractedPage.lines.forEach((line) => {
-      const normalizedLine = line.text.toLowerCase();
       cleanTerms.forEach((term) => {
-        let offset = 0;
-        while (offset < normalizedLine.length) {
-          const foundAt = normalizedLine.indexOf(term, offset);
-          if (foundAt === -1) break;
-
-          const rect = buildRectForLineMatch(extractedPage, canvas, line, term, foundAt);
+        findTermMatchOffsets(line.text, term).forEach((match) => {
+          const rect = buildRectForLineMatch(extractedPage, canvas, line, term, match.index);
           context.fillRect(rect.x, rect.y, rect.width, rect.height);
           matches += 1;
-          offset = foundAt + term.length;
-        }
+        });
       });
     });
 
@@ -959,14 +1063,16 @@ export async function comparePdfFiles(
   fileB: File,
   workerSrc: string,
   options: {
-    onProgress?: (progress: number) => void;
+    onProgress?: (progress: number, label?: string) => void;
   } = {}
 ): Promise<ComparePdfResult> {
-  const extractionA = await extractPdfFile(fileA, workerSrc, {
-    onProgress: (progress) => options.onProgress?.(Math.round(progress * 0.45)),
+  const extractionA = await extractPdfTextWithOcrFallback(fileA, workerSrc, {
+    onProgress: (progress, label) =>
+      options.onProgress?.(Math.round(progress * 0.48), label || "Preparing the first PDF"),
   });
-  const extractionB = await extractPdfFile(fileB, workerSrc, {
-    onProgress: (progress) => options.onProgress?.(45 + Math.round(progress * 0.45)),
+  const extractionB = await extractPdfTextWithOcrFallback(fileB, workerSrc, {
+    onProgress: (progress, label) =>
+      options.onProgress?.(48 + Math.round(progress * 0.48), label || "Preparing the second PDF"),
   });
 
   const pageCount = Math.max(extractionA.pageCount, extractionB.pageCount);
@@ -990,7 +1096,10 @@ export async function comparePdfFiles(
     });
   }
 
-  const overallScore = similarityScore(extractionA.text, extractionB.text);
+  const overallScore = similarityScore(
+    extractionA.pages.map((page) => page.text).join("\n"),
+    extractionB.pages.map((page) => page.text).join("\n")
+  );
   const html = buildComparisonHtml(fileA, fileB, extractionA, extractionB, overallScore, pageSummaries);
   const text = buildComparisonText(
     fileA,
@@ -1012,6 +1121,8 @@ export async function comparePdfFiles(
     differingPages,
     pageCountA: extractionA.pageCount,
     pageCountB: extractionB.pageCount,
+    sourceA: extractionA.source,
+    sourceB: extractionB.source,
   };
 }
 

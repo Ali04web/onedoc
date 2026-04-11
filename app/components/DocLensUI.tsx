@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { fmtSize } from "../lib/utils";
 import { UIcon } from "./Icons";
 
-export function Tip({ children, tip, side = "top" }: any) {
+export function Tip({ children, tip, side = "top", className = "" }: any) {
   const [show, setShow] = useState(false);
   const hideRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pos: any = {
@@ -36,7 +36,7 @@ export function Tip({ children, tip, side = "top" }: any) {
 
   return (
     <div
-      className="relative inline-flex max-w-full"
+      className={`relative inline-flex max-w-full ${className}`}
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
       onFocusCapture={() => setShow(true)}
@@ -118,7 +118,15 @@ export function SCard({ children, style = {} }: any) {
   );
 }
 
-export function CCard({ ico, title, desc, accentCol = "#7c6aff", children }: any) {
+export function CCard({
+  ico,
+  title,
+  desc,
+  accentCol = "#7c6aff",
+  children,
+  className = "",
+  bodyClassName = "",
+}: any) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -132,7 +140,7 @@ export function CCard({ ico, title, desc, accentCol = "#7c6aff", children }: any
     <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="vintage-card group relative flex h-full flex-col gap-4 p-6 transition-all duration-400 hover:-translate-y-1.5 hover:border-white/[0.12] overflow-hidden"
+      className={`vintage-card group relative flex h-full flex-col gap-4 overflow-hidden p-6 transition-all duration-400 hover:-translate-y-1.5 hover:border-white/[0.12] ${className}`}
     >
       {/* Cursor spotlight */}
       <div
@@ -156,13 +164,19 @@ export function CCard({ ico, title, desc, accentCol = "#7c6aff", children }: any
         </div>
         <div className="min-w-0">
           <div className="font-display text-[16px] font-bold text-white tracking-tight">{title}</div>
-          <div className="mt-0.5 text-[12px] font-medium text-[#6b6d80] leading-relaxed">{desc}</div>
+          {desc ? (
+            <div className="mt-0.5 text-[12px] font-medium leading-relaxed text-[#6b6d80]">
+              {desc}
+            </div>
+          ) : null}
         </div>
       </div>
 
       <div className="relative z-10 h-px bg-gradient-to-r from-white/[0.06] via-white/[0.03] to-transparent" />
 
-      <div className="relative z-10 flex flex-1 flex-col gap-3 text-[#9294a5]">{children}</div>
+      <div className={`relative z-10 flex flex-1 flex-col gap-3 text-[#9294a5] ${bodyClassName}`}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -313,7 +327,7 @@ export function CStat({ msg, type }: any) {
   );
 }
 
-export function HBtn({ onClick, disabled, loading, label, tip }: any) {
+export function HBtn({ onClick, disabled, loading, label, tip, className = "" }: any) {
   const isDisabled = disabled || loading;
 
   const btn = (
@@ -321,11 +335,11 @@ export function HBtn({ onClick, disabled, loading, label, tip }: any) {
       onClick={onClick}
       disabled={isDisabled}
       title={tip}
-      className={`group relative flex w-full items-center justify-center gap-2.5 rounded-xl px-4 py-3.5 text-[13px] font-bold transition-all duration-300 overflow-hidden ${
+      className={`group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl px-4 py-3.5 text-[13px] font-bold transition-all duration-300 ${
         isDisabled
           ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80] border border-white/[0.04]"
           : "cursor-pointer bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-lg shadow-[#7c6aff]/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#7c6aff]/30 active:translate-y-0 active:scale-[0.98]"
-      }`}
+      } ${className}`}
     >
       {/* Sweep animation */}
       {!isDisabled && (
