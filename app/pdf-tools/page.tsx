@@ -32,7 +32,6 @@ import {
   HBtn,
   HInput,
   HSel,
-  SHead,
   Tip,
   Toast,
 } from "@/app/components/DocLensUI";
@@ -66,6 +65,14 @@ function ProgressBar({
   label?: string;
 }) {
   if (!progress) return null;
+
+  const allCards = [
+    ...conversionCards,
+    ...organizeCards,
+    ...securityCards,
+    ...reviewCards,
+    ...extraToolCards,
+  ];
 
   return (
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 animate-fade-in">
