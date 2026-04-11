@@ -333,20 +333,25 @@ export default function PdfToolsPage() {
             file={getTool("pdfTxt").file}
             onFile={(file: File) => setTool("pdfTxt", { file })}
           />
-          <ProgressBar progress={getTool("pdfTxt").progress || 0} label="Extracting text" />
+          <ProgressBar
+            progress={getTool("pdfTxt").progress || 0}
+            label={getTool("pdfTxt").phase || "Extracting text"}
+          />
           <CStat msg={getTool("pdfTxt").status} type={getTool("pdfTxt").statusType} />
           <HBtn
             onClick={async () => {
               const file = getTool("pdfTxt").file;
               if (!file) return;
               await run("pdfTxt", async () => {
-                const extraction = await extractPdfFile(file, PDF_WORKER_SRC, {
-                  onProgress: (progress) =>
-                    setTool("pdfTxt", { progress: Math.max(6, progress) }),
+                const extraction = await extractPdfTextWithOcrFallback(file, PDF_WORKER_SRC, {
+                  onProgress: (progress, label) =>
+                    setProgress("pdfTxt", Math.max(6, progress), label || "Extracting text"),
                 });
                 dlText(`${stem(file.name)}.txt`, extraction.text);
-                setTool("pdfTxt", { progress: 100 });
-                return `${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"} extracted to TXT.`;
+                setProgress("pdfTxt", 100, extraction.source === "ocr" ? "OCR text ready" : "Text ready");
+                return extraction.source === "ocr"
+                  ? `Low native text detected, OCR text exported from ${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"}.`
+                  : `${extraction.pageCount} page${extraction.pageCount === 1 ? "" : "s"} extracted to TXT.`;
               });
             }}
             disabled={!getTool("pdfTxt").file}
@@ -1274,7 +1279,10 @@ export default function PdfToolsPage() {
             file={getTool("compare").right}
             onFile={(file: File) => setTool("compare", { right: file })}
           />
-          <ProgressBar progress={getTool("compare").progress || 0} label="Comparing extracted text" />
+          <ProgressBar
+            progress={getTool("compare").progress || 0}
+            label={getTool("compare").phase || "Comparing PDFs"}
+          />
           <CStat msg={getTool("compare").status} type={getTool("compare").statusType} />
           <HBtn
             onClick={async () => {
@@ -1284,16 +1292,21 @@ export default function PdfToolsPage() {
 
               await run("compare", async () => {
                 const result = await comparePdfFiles(left, right, PDF_WORKER_SRC, {
-                  onProgress: (progress) => setProgress("compare", progress, "Comparing PDFs"),
+                  onProgress: (progress, label) =>
+                    setProgress("compare", progress, label || "Comparing PDFs"),
                 });
                 const zip = new (window.JSZip as any)();
                 zip.file("comparison-report.html", result.html);
                 zip.file("comparison-report.txt", result.text);
                 dlBlob("pdf-comparison-report.zip", await zip.generateAsync({ type: "blob" }));
                 setProgress("compare", 100, "Comparison ready");
+                const ocrNote =
+                  result.sourceA === "ocr" || result.sourceB === "ocr"
+                    ? " OCR fallback was used for low-text pages."
+                    : "";
                 return result.identical
-                  ? "The PDFs appear identical in the extracted text comparison."
-                  : `Comparison report created. Overall similarity: ${Math.round(result.score * 100)}%.`;
+                  ? `The PDFs appear identical in the text comparison.${ocrNote}`
+                  : `Comparison report created. Overall similarity: ${Math.round(result.score * 100)}%.${ocrNote}`;
               });
             }}
             disabled={!getTool("compare").left || !getTool("compare").right}
