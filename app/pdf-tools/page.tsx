@@ -66,14 +66,6 @@ function ProgressBar({
 }) {
   if (!progress) return null;
 
-  const allCards = [
-    ...conversionCards,
-    ...organizeCards,
-    ...securityCards,
-    ...reviewCards,
-    ...extraToolCards,
-  ];
-
   return (
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 animate-fade-in">
       <div className="mb-2.5 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
@@ -1857,6 +1849,14 @@ export default function PdfToolsPage() {
     },
   ];
 
+  const allCards = [
+    ...conversionCards,
+    ...organizeCards,
+    ...securityCards,
+    ...reviewCards,
+    ...extraToolCards,
+  ];
+
   return (
     <div className="page-shell">
       {/* Page Hero */}
@@ -1879,66 +1879,10 @@ export default function PdfToolsPage() {
         </div>
       </div>
 
-      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
-          {conversionCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.15 + i * 0.05}s` }}>
-              <Tip tip={card.tip} side="top">
-                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                  {card.body}
-                </CCard>
-              </Tip>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
-          {organizeCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.25 + i * 0.05}s` }}>
-              <Tip tip={card.tip} side="top">
-                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                  {card.body}
-                </CCard>
-              </Tip>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
-          {securityCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.35 + i * 0.05}s` }}>
-              <Tip tip={card.tip} side="top">
-                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                  {card.body}
-                </CCard>
-              </Tip>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
-          {reviewCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.45 + i * 0.05}s` }}>
-              <Tip tip={card.tip} side="top">
-                <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
-                  {card.body}
-                </CCard>
-              </Tip>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="surface-panel p-6 md:p-8 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4 [grid-auto-rows:1fr]">
-          {extraToolCards.map((card, i) => (
-            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.55 + i * 0.05}s` }}>
+      <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
+          {allCards.map((card, i) => (
+            <div key={card.title} className="animate-fade-in h-full min-h-[420px]" style={{ animationDelay: `${0.08 + i * 0.02}s` }}>
               <Tip tip={card.tip} side="top">
                 <CCard ico={card.icon} title={card.title} accentCol={card.accent}>
                   {card.body}
