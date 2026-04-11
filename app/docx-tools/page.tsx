@@ -407,7 +407,7 @@ export default function DocxToolsPage() {
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex items-start gap-5">
           <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-xl shadow-[#ffa940]/25">
-            <UIcon name="FileSignature" size={26} className="text-white" />
+            <UIcon name="NavDocxTools" size={26} className="text-white" />
           </div>
           <div>
             <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">Word Tools</h1>

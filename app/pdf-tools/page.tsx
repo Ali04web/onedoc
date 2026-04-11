@@ -1902,7 +1902,7 @@ export default function PdfToolsPage() {
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex items-start gap-5">
           <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff6b6b] to-[#ee5a24] shadow-xl shadow-[#ff6b6b]/25">
-            <UIcon name="FileText" size={26} className="text-white" />
+            <UIcon name="NavPdfTools" size={26} className="text-white" />
           </div>
           <div>
             <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">PDF Suite</h1>
