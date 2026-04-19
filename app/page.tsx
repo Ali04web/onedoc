@@ -530,7 +530,7 @@ export default function HomePage() {
 
         {/* Scroll indicator */}
         <div
-          className={`absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-1000 ${
+          className={`absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 transition-all duration-1000 ${
             heroVisible ? "opacity-100" : "opacity-0"
           }`}
           style={{ transitionDelay: "0.7s" }}
