@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="font-display text-[20px] font-bold tracking-tight text-white transition-colors group-hover:text-white/90">
             OneDoc
           </div>
-          <span className="rounded-lg bg-[#f59e0b]/12 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#f59e0b] border border-[#f59e0b]/15 transition-all duration-300 group-hover:bg-[#f59e0b]/18">
+          <span className="rounded-lg bg-[#10b981]/12 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#10b981] border border-[#10b981]/15 transition-all duration-300 group-hover:bg-[#10b981]/18">
             FREE
           </span>
         </Link>
