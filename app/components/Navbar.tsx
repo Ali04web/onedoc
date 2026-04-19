@@ -49,7 +49,7 @@ export default function Navbar() {
           <div className="font-display text-[20px] font-bold tracking-tight text-white transition-colors group-hover:text-white/90">
             OneDoc
           </div>
-          <span className="rounded-lg bg-[#00d4aa]/12 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#00d4aa] border border-[#00d4aa]/15 transition-all duration-300 group-hover:bg-[#00d4aa]/18">
+          <span className="rounded-lg bg-[#f59e0b]/12 px-2.5 py-1 text-[10px] font-bold tracking-wider text-[#f59e0b] border border-[#f59e0b]/15 transition-all duration-300 group-hover:bg-[#f59e0b]/18">
             FREE
           </span>
         </Link>
@@ -69,7 +69,7 @@ export default function Navbar() {
                 }`}
               >
                 {active && (
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#7c6aff]/10 to-[#00d4aa]/5 border border-white/[0.08]" />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#10b981]/10 to-[#f59e0b]/5 border border-white/[0.08]" />
                 )}
                 <div className="relative flex h-4 w-4 items-center justify-center">
                   <UIcon name={icon} size={14} />
@@ -138,13 +138,13 @@ export default function Navbar() {
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
                     <div className={`flex h-9 w-9 items-center justify-center rounded-xl transition-colors ${
-                      active ? "bg-[#7c6aff]/15 text-[#7c6aff]" : "bg-white/[0.04]"
+                      active ? "bg-[#10b981]/15 text-[#10b981]" : "bg-white/[0.04]"
                     }`}>
                       <UIcon name={icon} size={16} />
                     </div>
                     <div className="text-[14px] font-semibold">{label}</div>
                     {active && (
-                      <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#00d4aa]" />
+                      <div className="ml-auto h-1.5 w-1.5 rounded-full bg-[#f59e0b]" />
                     )}
                   </Link>
                 );

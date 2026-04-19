@@ -85,14 +85,14 @@ function ProgressBar({
     <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 animate-fade-in">
       <div className="mb-2.5 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
         <span className="flex items-center gap-2">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#7c6aff] animate-pulse" />
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
           {label || "Working..."}
         </span>
         <span className="font-bold text-white/60">{progress}%</span>
       </div>
       <div className="relative h-2 overflow-hidden rounded-full bg-white/[0.04]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] via-[#00d4aa] to-[#7c6aff] transition-[width] duration-500 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-[#10b981] via-[#f59e0b] to-[#10b981] transition-[width] duration-500 ease-out"
           style={{ width: `${progress}%`, backgroundSize: "200% 100%", animation: progress < 100 ? "shimmer 2s linear infinite" : "none" }}
         />
         {progress < 100 && (
@@ -137,7 +137,7 @@ function TextAreaField({
   return (
     <textarea
       {...props}
-      className={`min-h-[108px] w-full resize-y rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:border-[#7c6aff]/35 focus:ring-2 focus:ring-[#7c6aff]/25 hover:border-white/[0.12] ${className}`}
+      className={`min-h-[108px] w-full resize-y rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:border-[#10b981]/35 focus:ring-2 focus:ring-[#10b981]/25 hover:border-white/[0.12] ${className}`}
     />
   );
 }
@@ -363,7 +363,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "PDF to Images",
-      accent: "#00d4aa",
+      accent: "#f59e0b",
       icon: <UIcon name="Image" size={18} />,
       tip: "Render pages as crisp images bundled in a ZIP.",
       body: (
@@ -414,7 +414,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "PDF to DOCX",
-      accent: "#7c6aff",
+      accent: "#10b981",
       icon: <UIcon name="FileSignature" size={18} />,
       tip: "Use page-faithful output for tricky layouts or editable text when extraction is strong.",
       body: (
@@ -549,7 +549,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "Split PDF",
-      accent: "#00d4aa",
+      accent: "#f59e0b",
       icon: <UIcon name="ScissorsLineDashed" size={18} />,
       tip: 'Use "1-3, 5, 9" syntax.',
       body: (
@@ -601,7 +601,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "Images to PDF",
-      accent: "#7c6aff",
+      accent: "#10b981",
       icon: <UIcon name="Images" size={18} />,
       tip: "Images added in selection order.",
       body: (
@@ -700,7 +700,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "PDF Link",
-      accent: "#00d4aa",
+      accent: "#f59e0b",
       icon: <UIcon name="Link" size={18} />,
       tip: "Dedicated shareable-link workspace.",
       body: (
@@ -710,7 +710,7 @@ export default function PdfToolsPage() {
           </div>
           <Link
             href="/pdf-link"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00d4aa] to-[#00b894] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-[#00d4aa]/20 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#d97706] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-[#f59e0b]/20 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
           >
             <UIcon name="ArrowUpRight" size={14} />
             Open PDF Link
@@ -748,7 +748,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "Unlock PDF",
-      accent: "#7c6aff",
+      accent: "#10b981",
       icon: <UIcon name="Unlock" size={18} />,
       tip: "Remove password from encrypted PDF.",
       body: (
@@ -1262,7 +1262,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "Compare PDFs",
-      accent: "#00b894",
+      accent: "#d97706",
       icon: <UIcon name="GitCompareArrows" size={18} />,
       tip: "Creates HTML and TXT reports with OCR fallback for low-text or scanned PDFs.",
       body: (
@@ -1824,7 +1824,7 @@ export default function PdfToolsPage() {
     },
     {
       title: "Web optimize PDF",
-      accent: "#00b894",
+      accent: "#d97706",
       icon: <UIcon name="Rocket" size={18} />,
       tip: "Aggressive optimization for web uploads and fast sharing.",
       body: (

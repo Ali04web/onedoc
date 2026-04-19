@@ -90,7 +90,7 @@ export default function DocxToolsPage() {
   const docxCards = [
     {
       title: "DOCX to HTML",
-      accent: "#00d4aa",
+      accent: "#f59e0b",
       icon: <UIcon name="Globe" size={18} />,
       tip: "Export as standalone web page.",
       body: (
@@ -160,7 +160,7 @@ export default function DocxToolsPage() {
     },
     {
       title: "DOCX to Markdown",
-      accent: "#7c6aff",
+      accent: "#10b981",
       icon: <UIcon name="NotebookPen" size={18} />,
       tip: "Great for docs, wikis, GitHub.",
       body: (
@@ -347,7 +347,7 @@ export default function DocxToolsPage() {
     },
     {
       title: "CSV to HTML table",
-      accent: "#00d4aa",
+      accent: "#f59e0b",
       icon: <UIcon name="TableProperties" size={18} />,
       tip: "Standalone HTML table export.",
       body: (
@@ -402,8 +402,8 @@ export default function DocxToolsPage() {
   return (
     <div className="page-shell">
       {/* Page Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#7c6aff]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#7c6aff]/5 blur-3xl pointer-events-none" />
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#10b981]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
+        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
         <div className="relative z-10 flex items-start gap-5">
           <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-xl shadow-[#ffa940]/25">

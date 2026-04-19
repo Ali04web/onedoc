@@ -31,7 +31,7 @@ export function TView({
         ? safe.replace(
             new RegExp(escRe(esc(searchQ)), "gi"),
             (match: string) =>
-              `<mark class="rounded-md bg-[#7c6aff]/20 px-1 py-0.5 text-white">${match}</mark>`
+              `<mark class="rounded-md bg-[#10b981]/20 px-1 py-0.5 text-white">${match}</mark>`
           )
         : safe;
 
@@ -120,7 +120,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
                   <div className="truncate text-[13px] font-semibold text-white">{word}</div>
                   <div className="h-2 overflow-hidden rounded-full bg-white/[0.04]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#7c6aff] to-[#00d4aa]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#10b981] to-[#f59e0b]"
                       style={{ width: `${Math.max(12, Math.round((count / longestBar) * 100))}%` }}
                     />
                   </div>
@@ -234,7 +234,7 @@ export function SearchView({ text }: { text: string }) {
                 const marked = esc(match.text).replace(
                   new RegExp(escRe(esc(query.trim())), "gi"),
                   (chunk: string) =>
-                    `<mark class="rounded-md bg-[#7c6aff]/20 px-1 py-0.5 text-white">${chunk}</mark>`
+                    `<mark class="rounded-md bg-[#10b981]/20 px-1 py-0.5 text-white">${chunk}</mark>`
                 );
 
                 return (
@@ -243,7 +243,7 @@ export function SearchView({ text }: { text: string }) {
                     onClick={() => setCurrent(index)}
                     className={`vintage-card text-left transition-all duration-200 ${
                       currentIndex === index
-                        ? "border-[#7c6aff]/20 bg-[#7c6aff]/[0.04]"
+                        ? "border-[#10b981]/20 bg-[#10b981]/[0.04]"
                         : "hover:-translate-y-0.5"
                     }`}
                   >

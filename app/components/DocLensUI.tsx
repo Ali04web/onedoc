@@ -50,7 +50,7 @@ export function Tip({ children, tip, side = "top", className = "" }: any) {
           className={`pointer-events-none absolute z-[9000] max-w-[260px] rounded-xl bg-[#16162a]/95 backdrop-blur-xl border border-white/[0.1] px-3.5 py-2.5 text-[11px] font-medium leading-relaxed text-[#e4e4ef] shadow-2xl animate-fade-in-scale ${pos[side]}`}
         >
           {tip}
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#7c6aff]/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#10b981]/5 to-transparent pointer-events-none" />
         </div>
       )}
     </div>
@@ -75,9 +75,9 @@ export function Toast({ msg, onDone }: any) {
         entering ? "translate-y-4 opacity-0 scale-95" : "translate-y-0 opacity-100 scale-100"
       }`}
     >
-      <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#00d4aa]/15 text-[#00d4aa]">
+      <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#f59e0b]/15 text-[#f59e0b]">
         <UIcon name="CheckCircle2" size={18} />
-        <div className="absolute inset-0 rounded-xl bg-[#00d4aa]/10 animate-glow-pulse" />
+        <div className="absolute inset-0 rounded-xl bg-[#f59e0b]/10 animate-glow-pulse" />
       </div>
       {msg}
     </div>
@@ -86,14 +86,14 @@ export function Toast({ msg, onDone }: any) {
 
 export function Spinner() {
   return (
-    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-white/10 border-t-[#7c6aff] animate-spin align-middle" />
+    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-white/10 border-t-[#10b981] animate-spin align-middle" />
   );
 }
 
 export function SHead({ ico, label, sub }: any) {
   return (
     <div className="mb-7 flex items-center gap-4 animate-fade-in">
-      <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#7c6aff]/10 border border-[#7c6aff]/15 text-[#7c6aff] transition-all duration-300 hover:bg-[#7c6aff]/15 hover:border-[#7c6aff]/25 hover:scale-105">
+      <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#10b981]/10 border border-[#10b981]/15 text-[#10b981] transition-all duration-300 hover:bg-[#10b981]/15 hover:border-[#10b981]/25 hover:scale-105">
         {typeof ico === "string" ? <UIcon emoji={ico} size={18} /> : ico}
       </div>
       <div className="min-w-0 flex-1">
@@ -122,7 +122,7 @@ export function CCard({
   ico,
   title,
   desc,
-  accentCol = "#7c6aff",
+  accentCol = "#10b981",
   children,
   className = "",
   bodyClassName = "",
@@ -211,11 +211,11 @@ export function FZone({
       title={tip}
       className={`relative flex min-h-[88px] cursor-pointer items-center justify-center gap-3.5 rounded-2xl border-2 border-dashed px-5 py-4 text-center transition-all duration-300 overflow-hidden ${
         has
-          ? "border-[#00d4aa]/30 bg-[#00d4aa]/[0.04] text-[#00d4aa]"
+          ? "border-[#f59e0b]/30 bg-[#f59e0b]/[0.04] text-[#f59e0b]"
           : dragOver
-            ? "border-[#7c6aff]/40 bg-[#7c6aff]/[0.06] text-white scale-[1.01]"
+            ? "border-[#10b981]/40 bg-[#10b981]/[0.06] text-white scale-[1.01]"
             : hov
-              ? "border-[#7c6aff]/25 bg-[#7c6aff]/[0.03] text-white"
+              ? "border-[#10b981]/25 bg-[#10b981]/[0.03] text-white"
               : "border-white/[0.08] bg-white/[0.02] text-[#9294a5]"
       }`}
     >
@@ -232,15 +232,15 @@ export function FZone({
       {/* Animated border shimmer */}
       {!has && hov && (
         <div className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden">
-          <div className="absolute -inset-[100%] animate-spin-slow bg-gradient-conic from-[#7c6aff]/0 via-[#7c6aff]/15 to-[#7c6aff]/0" style={{ animationDuration: "8s" }} />
+          <div className="absolute -inset-[100%] animate-spin-slow bg-gradient-conic from-[#10b981]/0 via-[#10b981]/15 to-[#10b981]/0" style={{ animationDuration: "8s" }} />
         </div>
       )}
 
       <div
         className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 ${
           has
-            ? "border-[#00d4aa]/20 bg-[#00d4aa]/10 shadow-lg shadow-[#00d4aa]/10"
-            : hov ? "border-[#7c6aff]/20 bg-[#7c6aff]/10" : "border-white/[0.06] bg-white/[0.03]"
+            ? "border-[#f59e0b]/20 bg-[#f59e0b]/10 shadow-lg shadow-[#f59e0b]/10"
+            : hov ? "border-[#10b981]/20 bg-[#10b981]/10" : "border-white/[0.06] bg-white/[0.03]"
         }`}
       >
         <UIcon name={has ? "CheckCircle2" : "Paperclip"} size={17} />
@@ -274,7 +274,7 @@ export function HInput({ className = "", tip, ...props }: any) {
     <input
       {...props}
       title={tip}
-      className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#7c6aff]/25 focus:border-[#7c6aff]/35 focus:bg-white/[0.04] hover:border-white/[0.12] ${className}`}
+      className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#10b981]/25 focus:border-[#10b981]/35 focus:bg-white/[0.04] hover:border-white/[0.12] ${className}`}
     />
   );
 
@@ -292,7 +292,7 @@ export function HSel({ className = "", children, tip, ...props }: any) {
     <select
       {...props}
       title={tip}
-      className={`w-full cursor-pointer rounded-xl border border-white/[0.08] bg-[#0e0e18] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 focus:ring-2 focus:ring-[#7c6aff]/25 focus:border-[#7c6aff]/35 hover:border-white/[0.12] ${className}`}
+      className={`w-full cursor-pointer rounded-xl border border-white/[0.08] bg-[#0e0e18] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 focus:ring-2 focus:ring-[#10b981]/25 focus:border-[#10b981]/35 hover:border-white/[0.12] ${className}`}
     >
       {children}
     </select>
@@ -312,7 +312,7 @@ export function CStat({ msg, type }: any) {
 
   const styles =
     type === "ok"
-      ? "border-[#00d4aa]/20 bg-[#00d4aa]/[0.06] text-[#00d4aa]"
+      ? "border-[#f59e0b]/20 bg-[#f59e0b]/[0.06] text-[#f59e0b]"
       : type === "err"
         ? "border-[#ff6b6b]/20 bg-[#ff6b6b]/[0.06] text-[#ff6b6b]"
         : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]";
@@ -338,7 +338,7 @@ export function HBtn({ onClick, disabled, loading, label, tip, className = "" }:
       className={`group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl px-4 py-3.5 text-[13px] font-bold transition-all duration-300 ${
         isDisabled
           ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80] border border-white/[0.04]"
-          : "cursor-pointer bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] text-white shadow-lg shadow-[#7c6aff]/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#7c6aff]/30 active:translate-y-0 active:scale-[0.98]"
+          : "cursor-pointer bg-gradient-to-r from-[#10b981] to-[#059669] text-white shadow-lg shadow-[#10b981]/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#10b981]/30 active:translate-y-0 active:scale-[0.98]"
       } ${className}`}
     >
       {/* Sweep animation */}
@@ -372,7 +372,7 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
         onClick={onSelect}
         className={`mb-1.5 flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-300 ${
           active
-            ? "border-[#7c6aff]/20 bg-[#7c6aff]/[0.06] shadow-lg shadow-[#7c6aff]/5"
+            ? "border-[#10b981]/20 bg-[#10b981]/[0.06] shadow-lg shadow-[#10b981]/5"
             : hov
               ? "border-white/[0.06] bg-white/[0.03]"
               : "border-transparent bg-transparent"
@@ -381,7 +381,7 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
         <div
           className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border transition-all duration-300 ${
             active
-              ? "border-[#7c6aff]/20 bg-[#7c6aff]/10 text-[#7c6aff] shadow-md shadow-[#7c6aff]/10"
+              ? "border-[#10b981]/20 bg-[#10b981]/10 text-[#10b981] shadow-md shadow-[#10b981]/10"
               : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]"
           }`}
         >

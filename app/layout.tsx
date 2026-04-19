@@ -60,7 +60,7 @@ export default function RootLayout({
             </div>
             <div className="flex items-center gap-4 text-[12px] text-[#6b6d80]">
               <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#00d4aa] animate-pulse" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
                 In-browser processing
               </span>
             </div>

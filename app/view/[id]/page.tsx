@@ -128,7 +128,7 @@ export default async function ViewPage({
                 padding:4px 10px;border-radius:999px;
                 border:1px solid rgba(124,106,255,0.12);
                 background:rgba(124,106,255,0.08);
-                color:#a78bfa;font-size:11px;font-weight:600;
+                color:#34d399;font-size:11px;font-weight:600;
               }
               .actions{
                 margin-left:auto;
@@ -143,7 +143,7 @@ export default async function ViewPage({
               }
               .btn-primary{
                 color:#fff;
-                background:linear-gradient(135deg,#7c6aff,#5b4bcf);
+                background:linear-gradient(135deg,#10b981,#059669);
                 box-shadow:0 8px 24px rgba(124,106,255,0.25);
               }
               .btn-secondary{

@@ -12,9 +12,9 @@ const tools = [
     label: "Analyze",
     tagline: "Deep document intelligence",
     desc: "Extract text, search content, and generate insights from PDFs & DOCX files with OCR fallback.",
-    gradient: "from-[#7c6aff] to-[#a78bfa]",
+    gradient: "from-[#10b981] to-[#34d399]",
     glow: "rgba(124, 106, 255, 0.15)",
-    accent: "#7c6aff",
+    accent: "#10b981",
     features: ["Text extraction", "OCR fallback", "Document insights"],
   },
   {
@@ -45,9 +45,9 @@ const tools = [
     label: "PDF Link",
     tagline: "Instant shareable links",
     desc: "Upload a PDF and instantly get a shareable viewer link — no accounts, no friction.",
-    gradient: "from-[#00d4aa] to-[#00b894]",
+    gradient: "from-[#f59e0b] to-[#d97706]",
     glow: "rgba(0, 212, 170, 0.15)",
-    accent: "#00d4aa",
+    accent: "#f59e0b",
     features: ["Instant share", "Viewer link", "No sign-up"],
   },
 ] as const;
@@ -58,7 +58,7 @@ const bentoFeatures = [
     icon: "ShieldCheck",
     title: "100% Private",
     desc: "Files never leave your browser. Zero server uploads, zero tracking.",
-    accent: "#00d4aa",
+    accent: "#f59e0b",
     span: "col",
   },
   {
@@ -72,7 +72,7 @@ const bentoFeatures = [
     icon: "Sparkles",
     title: "Always Free",
     desc: "Every tool, every feature. No paywalls, no sign-ups, no limits.",
-    accent: "#7c6aff",
+    accent: "#10b981",
     span: "normal",
   },
   {
@@ -91,14 +91,14 @@ const steps = [
     title: "Choose a tool",
     desc: "Pick from 20+ PDF and document tools built for every workflow.",
     icon: "LayoutGrid",
-    accent: "#7c6aff",
+    accent: "#10b981",
   },
   {
     num: "02",
     title: "Drop your file",
     desc: "Drag and drop or browse. We support PDF, DOCX, images, and more.",
     icon: "Upload",
-    accent: "#00d4aa",
+    accent: "#f59e0b",
   },
   {
     num: "03",
@@ -434,13 +434,13 @@ export default function HomePage() {
         <div className="relative z-10 flex flex-col items-center text-center max-w-[900px] mx-auto">
           {/* Floating badge */}
           <div
-            className={`inline-flex items-center gap-2.5 mb-7 md:mb-9 px-5 py-2.5 rounded-full bg-[#7c6aff]/8 border border-[#7c6aff]/15 text-[11px] md:text-[12px] font-semibold text-[#a78bfa] tracking-wide uppercase transition-all duration-700 ${
+            className={`inline-flex items-center gap-2.5 mb-7 md:mb-9 px-5 py-2.5 rounded-full bg-[#10b981]/8 border border-[#10b981]/15 text-[11px] md:text-[12px] font-semibold text-[#34d399] tracking-wide uppercase transition-all duration-700 ${
               heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}
           >
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4aa] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00d4aa]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f59e0b] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#f59e0b]" />
             </span>
             20+ tools · 100% free · No sign-up
           </div>
@@ -478,7 +478,7 @@ export default function HomePage() {
           >
             <Link
               href="/pdf-tools"
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] px-8 py-4 text-[15px] font-bold text-white no-underline shadow-xl shadow-[#7c6aff]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:scale-[0.97] overflow-hidden"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#10b981] to-[#059669] px-8 py-4 text-[15px] font-bold text-white no-underline shadow-xl shadow-[#10b981]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#10b981]/35 active:scale-[0.97] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               <UIcon name="Sparkles" size={16} />
@@ -502,8 +502,8 @@ export default function HomePage() {
             style={{ transitionDelay: "0.45s" }}
           >
             {[
-              { value: 20, suffix: "+", label: "Tools", icon: "Wrench", accent: "#7c6aff" },
-              { value: 0, suffix: "", label: "Data stored", icon: "ShieldCheck", accent: "#00d4aa", display: "0" },
+              { value: 20, suffix: "+", label: "Tools", icon: "Wrench", accent: "#10b981" },
+              { value: 0, suffix: "", label: "Data stored", icon: "ShieldCheck", accent: "#f59e0b", display: "0" },
               { value: 100, suffix: "%", label: "In-browser", icon: "Monitor", accent: "#ffa940" },
               { value: 0, suffix: "", label: "Cost", icon: "Sparkles", accent: "#ff6b6b", display: "Free" },
             ].map((stat, i) => (
@@ -546,7 +546,7 @@ export default function HomePage() {
           {/* Section header */}
           <div className="text-center mb-12 md:mb-16">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[11px] font-semibold uppercase tracking-wider text-[#6b6d80]">
-              <UIcon name="LayoutGrid" size={12} className="text-[#7c6aff]" />
+              <UIcon name="LayoutGrid" size={12} className="text-[#10b981]" />
               Tool Suites
             </div>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
@@ -573,7 +573,7 @@ export default function HomePage() {
           {/* Section header */}
           <div className="text-center mb-12 md:mb-16">
             <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.06] text-[11px] font-semibold uppercase tracking-wider text-[#6b6d80]">
-              <UIcon name="ShieldCheck" size={12} className="text-[#00d4aa]" />
+              <UIcon name="ShieldCheck" size={12} className="text-[#f59e0b]" />
               Why OneDoc
             </div>
             <h2 className="font-display text-3xl md:text-4xl font-bold text-white tracking-tight mb-4">
@@ -621,14 +621,14 @@ export default function HomePage() {
       {/* ════════ FINAL CTA ════════ */}
       <section className="relative px-5 md:px-8 pb-16 md:pb-24">
         <div className="mx-auto max-w-[800px]">
-          <div className="relative rounded-[28px] bg-gradient-to-br from-[#7c6aff]/8 via-transparent to-[#00d4aa]/5 border border-white/[0.06] p-8 md:p-14 text-center overflow-hidden">
+          <div className="relative rounded-[28px] bg-gradient-to-br from-[#10b981]/8 via-transparent to-[#f59e0b]/5 border border-white/[0.06] p-8 md:p-14 text-center overflow-hidden">
             {/* Background orbs */}
-            <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#7c6aff]/8 blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-[#00d4aa]/8 blur-[70px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#10b981]/8 blur-[80px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-[#f59e0b]/8 blur-[70px] pointer-events-none" />
 
             <div className="relative z-10">
               <div className="flex items-center justify-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#7c6aff] to-[#5b4bcf] flex items-center justify-center shadow-lg shadow-[#7c6aff]/25">
+                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-[#10b981] to-[#059669] flex items-center justify-center shadow-lg shadow-[#10b981]/25">
                   <UIcon name="Sparkles" size={22} className="text-white" />
                 </div>
               </div>
@@ -643,7 +643,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
                 <Link
                   href="/pdf-tools"
-                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#7c6aff] to-[#5b4bcf] px-7 py-3.5 text-[14px] font-bold text-white no-underline shadow-xl shadow-[#7c6aff]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#7c6aff]/35 active:scale-[0.97] overflow-hidden"
+                  className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#10b981] to-[#059669] px-7 py-3.5 text-[14px] font-bold text-white no-underline shadow-xl shadow-[#10b981]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#10b981]/35 active:scale-[0.97] overflow-hidden"
                 >
                   Open PDF Suite
                   <UIcon name="ArrowRight" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
@@ -675,8 +675,8 @@ export default function HomePage() {
           <span className="hidden sm:block h-3 w-px bg-white/[0.06]" />
           <span className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00d4aa] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00d4aa]" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#f59e0b] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#f59e0b]" />
             </span>
             All systems operational
           </span>

@@ -166,8 +166,8 @@ export default function DocLens() {
           >
             <div className="flex items-center justify-between border-b border-white/[0.04] px-4 py-4">
               <div className="flex items-center gap-3">
-                <div className="h-8 w-8 rounded-xl bg-[#7c6aff]/10 border border-[#7c6aff]/15 flex items-center justify-center">
-                  <UIcon name="NavAnalyze" size={14} className="text-[#7c6aff]" />
+                <div className="h-8 w-8 rounded-xl bg-[#10b981]/10 border border-[#10b981]/15 flex items-center justify-center">
+                  <UIcon name="NavAnalyze" size={14} className="text-[#10b981]" />
                 </div>
                 <div className="font-display text-[14px] font-bold text-white">Analyzer</div>
               </div>
@@ -186,7 +186,7 @@ export default function DocLens() {
                 onDrop={(event) => { event.preventDefault(); setDrag(false); handleFiles(event.dataTransfer.files); }}
                 className={`block cursor-pointer rounded-xl border-2 border-dashed px-4 py-5 text-center transition-all duration-200 ${
                   drag
-                    ? "border-[#7c6aff]/40 bg-[#7c6aff]/[0.04]"
+                    ? "border-[#10b981]/40 bg-[#10b981]/[0.04]"
                     : "border-white/[0.08] bg-white/[0.02]"
                 }`}
               >
@@ -317,7 +317,7 @@ export default function DocLens() {
                         onClick={() => setTab(item.id)}
                         className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-all duration-200 ${
                           tab === item.id
-                            ? "bg-[#7c6aff] text-white shadow-md shadow-[#7c6aff]/20"
+                            ? "bg-[#10b981] text-white shadow-md shadow-[#10b981]/20"
                             : "bg-transparent text-[#6b6d80] hover:bg-white/[0.04] hover:text-white"
                         }`}
                       >
