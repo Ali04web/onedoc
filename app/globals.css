@@ -13,14 +13,14 @@
   --color-text3: #9294a5;
   --color-text4: #6b6d80;
 
-  --color-accent: #7c6aff;
-  --color-accent2: #00d4aa;
+  --color-accent: #10b981;
+  --color-accent2: #f59e0b;
   --color-accent3: #ff6b6b;
   --color-accent4: #ffa940;
 
   --color-border: rgba(255, 255, 255, 0.06);
   --color-border2: rgba(255, 255, 255, 0.10);
-  --color-glow: rgba(124, 106, 255, 0.12);
+  --color-glow: rgba(16, 185, 129, 0.12);
 
   --font-display: var(--font-display-ui);
   --font-body: var(--font-body-ui);
@@ -52,7 +52,7 @@ body::before {
   width: 70%;
   height: 70%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 106, 255, 0.07) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.07) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
   animation: ambient-drift-1 18s ease-in-out infinite alternate;
@@ -66,7 +66,7 @@ body::after {
   width: 65%;
   height: 65%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.05) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
   animation: ambient-drift-2 22s ease-in-out infinite alternate;
@@ -130,9 +130,9 @@ main::before {
   border-radius: inherit;
   background: linear-gradient(
     135deg,
-    rgba(124, 106, 255, 0.04) 0%,
+    rgba(16, 185, 129, 0.04) 0%,
     transparent 50%,
-    rgba(0, 212, 170, 0.02) 100%
+    rgba(245, 158, 11, 0.02) 100%
   );
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -144,7 +144,7 @@ main::before {
   transform: translateY(-2px);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.3),
-    0 0 80px rgba(124, 106, 255, 0.04);
+    0 0 80px rgba(16, 185, 129, 0.04);
 }
 
 .surface-panel:hover::before {
@@ -196,7 +196,7 @@ main::before {
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.2),
-    0 0 60px rgba(124, 106, 255, 0.06);
+    0 0 60px rgba(16, 185, 129, 0.06);
   transform: translateY(-3px);
 }
 
@@ -216,15 +216,15 @@ main::before {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  background: rgba(124, 106, 255, 0.08);
+  background: rgba(16, 185, 129, 0.08);
   color: var(--color-accent);
-  border: 1px solid rgba(124, 106, 255, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.12);
   transition: all 0.3s ease;
 }
 
 .vintage-badge:hover {
-  background: rgba(124, 106, 255, 0.14);
-  border-color: rgba(124, 106, 255, 0.2);
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.2);
   transform: scale(1.04);
 }
 
@@ -313,8 +313,8 @@ main::before {
 }
 
 @keyframes border-glow {
-  0%, 100% { border-color: rgba(124, 106, 255, 0.1); }
-  50% { border-color: rgba(124, 106, 255, 0.25); }
+  0%, 100% { border-color: rgba(16, 185, 129, 0.1); }
+  50% { border-color: rgba(16, 185, 129, 0.25); }
 }
 
 @keyframes ink-load {
@@ -393,10 +393,10 @@ main::before {
 .animate-text-shimmer {
   background: linear-gradient(
     90deg,
-    #7c6aff,
-    #00d4aa,
-    #ffa940,
-    #7c6aff
+    #10b981,
+    #f59e0b,
+    #f97316,
+    #10b981
   );
   background-size: 300% 100%;
   -webkit-background-clip: text;
@@ -414,7 +414,7 @@ main::before {
   transform: translateY(-4px);
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 40px rgba(124, 106, 255, 0.08);
+    0 0 40px rgba(16, 185, 129, 0.08);
 }
 
 .interactive-lift:active {
@@ -504,13 +504,13 @@ main::before {
 
 /* ── Selection ── */
 ::selection {
-  background: rgba(124, 106, 255, 0.3);
+  background: rgba(16, 185, 129, 0.3);
   color: #fff;
 }
 
 /* ── Focus Rings ── */
 :focus-visible {
-  outline: 2px solid rgba(124, 106, 255, 0.5);
+  outline: 2px solid rgba(16, 185, 129, 0.5);
   outline-offset: 2px;
 }
 
