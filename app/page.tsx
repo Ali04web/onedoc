@@ -182,6 +182,21 @@ function Marquee() {
   );
 }
 
+/* ─── Bento card ─── */
+function BentoCard({ feature, index }: { feature: { icon: string; title: string; desc: string; accent: string; span: boolean }; index: number }) {
+  const reveal = useReveal(index * 80);
+  return (
+    <div ref={reveal.ref} className={`group relative rounded-[22px] bg-white/[0.025] border border-white/[0.06] p-6 md:p-8 transition-all duration-500 hover:border-white/[0.12] hover:-translate-y-1 overflow-hidden ${feature.span ? "sm:col-span-2" : ""} ${reveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity duration-500" style={{ background: feature.accent }} />
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl mb-4 transition-all duration-300 group-hover:scale-110" style={{ background: `${feature.accent}12`, border: `1px solid ${feature.accent}20` }}>
+        <UIcon name={feature.icon as any} size={20} style={{ color: feature.accent }} />
+      </div>
+      <h3 className="font-display text-lg font-bold text-white mb-2 tracking-tight">{feature.title}</h3>
+      <p className="text-[14px] text-[#9294a5] leading-relaxed">{feature.desc}</p>
+    </div>
+  );
+}
+
 /* ═══════════════════════════════════════
    HOMEPAGE
    ═══════════════════════════════════════ */
@@ -304,19 +319,9 @@ export default function HomePage() {
               { icon: "Zap", title: "Lightning Fast", desc: "Native browser processing — no waiting for server round-trips.", accent: "#f59e0b", span: false },
               { icon: "Sparkles", title: "Always Free", desc: "Every tool, every feature. No paywalls, no sign-ups, no limits.", accent: "#f97316", span: false },
               { icon: "Globe", title: "Works Anywhere", desc: "Desktop, tablet, or phone — OneDoc works beautifully on every device.", accent: "#14b8a6", span: true },
-            ] as const).map((f, i) => {
-              const reveal = useReveal(i * 80);
-              return (
-                <div key={f.title} ref={reveal.ref} className={`group relative rounded-[22px] bg-white/[0.025] border border-white/[0.06] p-6 md:p-8 transition-all duration-500 hover:border-white/[0.12] hover:-translate-y-1 overflow-hidden ${f.span ? "sm:col-span-2" : ""} ${reveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-                  <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity duration-500" style={{ background: f.accent }} />
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl mb-4 transition-all duration-300 group-hover:scale-110" style={{ background: `${f.accent}12`, border: `1px solid ${f.accent}20` }}>
-                    <UIcon name={f.icon as any} size={20} style={{ color: f.accent }} />
-                  </div>
-                  <h3 className="font-display text-lg font-bold text-white mb-2 tracking-tight">{f.title}</h3>
-                  <p className="text-[14px] text-[#9294a5] leading-relaxed">{f.desc}</p>
-                </div>
-              );
-            })}
+            ] as const).map((f, i) => (
+              <BentoCard key={f.title} feature={f} index={i} />
+            ))}
           </div>
         </div>
       </section>
