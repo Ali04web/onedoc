@@ -1886,13 +1886,73 @@ export default function PdfToolsPage() {
     },
   ];
 
-  const allCards = [
-    ...conversionCards,
-    ...organizeCards,
-    ...securityCards,
-    ...reviewCards,
-    ...extraToolCards,
-  ];
+  const allCardsMap = new Map(
+    [
+      ...conversionCards,
+      ...organizeCards,
+      ...securityCards,
+      ...reviewCards,
+      ...extraToolCards,
+    ].map((c) => [c.title, c])
+  );
+
+  const toolSections = [
+    {
+      title: "Organize PDF",
+      description: "Sort, delete, and manage PDF pages.",
+      cards: [
+        "Merge PDF",
+        "Split PDF",
+        "Remove PDF pages",
+        "Extract PDF images",
+        "Rearrange PDF pages",
+        "Rotate PDF pages",
+      ],
+    },
+    {
+      title: "Convert to PDF",
+      description: "Make PDFs from images or other formats.",
+      cards: ["Images to PDF", "Create PDF", "Webpage to PDF"],
+    },
+    {
+      title: "Convert from PDF",
+      description: "Turn your PDFs into editable formats.",
+      cards: [
+        "PDF Converter",
+        "PDF to DOCX",
+        "PDF to plain text",
+        "PDF to Images",
+        "PDF OCR",
+      ],
+    },
+    {
+      title: "Edit & Review PDF",
+      description: "Annotate, clean up, and check differences.",
+      cards: [
+        "Edit PDF",
+        "Add page numbers",
+        "Redact PDF",
+        "PDF Overlay",
+        "Compare PDFs",
+      ],
+    },
+    {
+      title: "Optimize & Security",
+      description: "Shrink, lock, and manage access.",
+      cards: [
+        "Compress PDF",
+        "Web optimize PDF",
+        "Protect PDF",
+        "Unlock PDF",
+        "PDF Link",
+      ],
+    },
+  ].map((s) => ({
+    ...s,
+    cards: s.cards
+      .map((t) => allCardsMap.get(t))
+      .filter((c): c is NonNullable<typeof c> => !!c),
+  }));
 
   return (
     <div className="page-shell">
@@ -1916,41 +1976,53 @@ export default function PdfToolsPage() {
         </div>
       </div>
 
-      <section className="animate-fade-in" style={{ animationDelay: "0.1s" }}>
-        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
-          {allCards.map((card, i) => (
-            <div
-              key={card.title}
-              className="animate-fade-in h-[31rem] min-h-[31rem]"
-              style={{ animationDelay: `${0.08 + i * 0.02}s` }}
-            >
-              {card.tip && IMPORTANT_CARD_TOOLTIPS.has(card.title) ? (
-                <Tip tip={card.tip} side="top" className="flex h-full w-full">
-                  <CCard
-                    ico={card.icon}
-                    title={card.title}
-                    accentCol={card.accent}
-                    className="min-h-0"
-                    bodyClassName="min-h-0 overflow-y-auto pr-1"
-                  >
-                    {card.body}
-                  </CCard>
-                </Tip>
-              ) : (
-                <CCard
-                  ico={card.icon}
-                  title={card.title}
-                  accentCol={card.accent}
-                  className="min-h-0"
-                  bodyClassName="min-h-0 overflow-y-auto pr-1"
-                >
-                  {card.body}
-                </CCard>
-              )}
+      <div className="flex flex-col gap-12 md:gap-16">
+        {toolSections.map((section, sIdx) => (
+          <section key={section.title} className="animate-fade-in" style={{ animationDelay: `${0.1 + sIdx * 0.05}s` }}>
+            <div className="mb-6 flex flex-col gap-1.5">
+              <h2 className="text-xl md:text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2">
+                {section.title}
+              </h2>
+              <p className="text-[14px] text-[#9294a5] leading-relaxed">
+                {section.description}
+              </p>
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
+              {section.cards.map((card, i) => (
+                <div
+                  key={card.title}
+                  className="animate-fade-in h-[31rem] min-h-[31rem]"
+                  style={{ animationDelay: `${0.05 + i * 0.02}s` }}
+                >
+                  {card.tip && IMPORTANT_CARD_TOOLTIPS.has(card.title) ? (
+                    <Tip tip={card.tip} side="top" className="flex h-full w-full">
+                      <CCard
+                        ico={card.icon}
+                        title={card.title}
+                        accentCol={card.accent}
+                        className="min-h-0"
+                        bodyClassName="min-h-0 overflow-y-auto pr-1"
+                      >
+                        {card.body}
+                      </CCard>
+                    </Tip>
+                  ) : (
+                    <CCard
+                      ico={card.icon}
+                      title={card.title}
+                      accentCol={card.accent}
+                      className="min-h-0"
+                      bodyClassName="min-h-0 overflow-y-auto pr-1"
+                    >
+                      {card.body}
+                    </CCard>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
 
       {toast && <Toast msg={toast} onDone={() => setToast(null)} />}
     </div>
