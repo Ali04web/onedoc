@@ -66,6 +66,60 @@ const steps = [
   { num: "03", title: "Download results", desc: "Instant processing, all in-browser.", icon: "Download", accent: "#f97316" },
 ];
 
+/* ─── Floating document cards data ─── */
+const docCards = [
+  {
+    type: "pdf" as const,
+    title: "Annual_Report.pdf",
+    pages: 24,
+    size: "2.4 MB",
+    rotate: -12,
+    offset: 40,
+    lines: [85, 60, 72, 45, 90, 55, 68],
+    accent: "#f97316",
+  },
+  {
+    type: "docx" as const,
+    title: "Project_Brief.docx",
+    pages: 8,
+    size: "840 KB",
+    rotate: -6,
+    offset: 15,
+    lines: [70, 90, 50, 80, 65, 40, 75],
+    accent: "#f59e0b",
+  },
+  {
+    type: "pdf" as const,
+    title: "Invoice_2026.pdf",
+    pages: 2,
+    size: "320 KB",
+    rotate: 0,
+    offset: -5,
+    lines: [60, 45, 85, 70, 55, 90, 40],
+    accent: "#10b981",
+  },
+  {
+    type: "docx" as const,
+    title: "Meeting_Notes.docx",
+    pages: 5,
+    size: "560 KB",
+    rotate: 6,
+    offset: 15,
+    lines: [90, 65, 80, 50, 75, 85, 60],
+    accent: "#14b8a6",
+  },
+  {
+    type: "pdf" as const,
+    title: "Contract_v3.pdf",
+    pages: 12,
+    size: "1.8 MB",
+    rotate: 12,
+    offset: 40,
+    lines: [75, 80, 55, 90, 60, 70, 45],
+    accent: "#f97316",
+  },
+];
+
 /* ─── Reveal hook ─── */
 function useReveal(delay = 0) {
   const [visible, setVisible] = useState(false);
@@ -80,7 +134,7 @@ function useReveal(delay = 0) {
   return { ref, visible };
 }
 
-/* ─── Animated counter ─── */
+/* ─── Counter ─── */
 function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
@@ -102,6 +156,119 @@ function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
     return () => obs.disconnect();
   }, [end]);
   return <span ref={ref}>{count}{suffix}</span>;
+}
+
+/* ─── Floating Document Card ─── */
+function DocCard({ card, index, scrollY }: { card: (typeof docCards)[number]; index: number; scrollY: number }) {
+  const parallaxSpeed = (index % 2 === 0) ? 0.08 : 0.12;
+  const yOffset = card.offset + scrollY * parallaxSpeed * (index % 2 === 0 ? -1 : 1);
+  const isPdf = card.type === "pdf";
+
+  return (
+    <div
+      className="relative flex-shrink-0 w-[180px] md:w-[220px] transition-transform duration-100"
+      style={{
+        transform: `rotate(${card.rotate}deg) translateY(${yOffset}px)`,
+      }}
+    >
+      {/* Card body — looks like a mini document page */}
+      <div className="relative rounded-2xl overflow-hidden bg-[#111118] border border-white/[0.08] shadow-2xl shadow-black/40 group hover:border-white/[0.16] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+        {/* Top bar */}
+        <div className="flex items-center gap-2 px-3.5 py-2.5 border-b border-white/[0.06] bg-white/[0.02]">
+          <div className="flex items-center gap-1.5">
+            <div
+              className="h-6 w-6 rounded-lg flex items-center justify-center text-[9px] font-black tracking-wider text-white"
+              style={{ background: `linear-gradient(135deg, ${card.accent}, ${card.accent}cc)` }}
+            >
+              {isPdf ? "PDF" : "W"}
+            </div>
+            <div className="min-w-0">
+              <div className="text-[10px] font-semibold text-white/80 truncate max-w-[130px]">{card.title}</div>
+              <div className="text-[8px] text-white/30 font-medium">{card.pages} pages · {card.size}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Document preview body */}
+        <div className="px-4 py-4 space-y-[6px]">
+          {/* Simulated header */}
+          <div className="h-2 rounded-full bg-white/[0.12] mb-3" style={{ width: "60%" }} />
+
+          {/* Simulated text lines */}
+          {card.lines.map((w, i) => (
+            <div
+              key={i}
+              className="h-[3px] rounded-full transition-all duration-300"
+              style={{
+                width: `${w}%`,
+                background: i === 0 ? `${card.accent}30` : "rgba(255,255,255,0.05)",
+              }}
+            />
+          ))}
+
+          {/* Simulated image block */}
+          <div
+            className="mt-3 h-10 rounded-lg border border-white/[0.04]"
+            style={{ background: `linear-gradient(135deg, ${card.accent}08, ${card.accent}04)` }}
+          >
+            <div className="flex items-center justify-center h-full">
+              <UIcon name="Image" size={14} className="text-white/10" />
+            </div>
+          </div>
+
+          {/* More text lines */}
+          <div className="mt-2 space-y-[5px]">
+            {[65, 80, 45].map((w, i) => (
+              <div key={`b-${i}`} className="h-[3px] rounded-full bg-white/[0.04]" style={{ width: `${w}%` }} />
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom status bar */}
+        <div className="px-3.5 py-2 border-t border-white/[0.04] flex items-center justify-between">
+          <div className="flex items-center gap-1.5">
+            <div className="h-1.5 w-1.5 rounded-full" style={{ background: card.accent }} />
+            <span className="text-[8px] font-semibold text-white/25">Ready</span>
+          </div>
+          <span className="text-[8px] font-medium text-white/20">{card.type.toUpperCase()}</span>
+        </div>
+
+        {/* Glow overlay on hover */}
+        <div
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl"
+          style={{ background: `radial-gradient(ellipse at center, ${card.accent}08, transparent 70%)` }}
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ─── Floating Docs Gallery (with scroll parallax) ─── */
+function FloatingDocs({ heroVisible }: { heroVisible: boolean }) {
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    function onScroll() { setScrollY(window.scrollY); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <div
+      className={`relative flex items-end justify-center gap-4 md:gap-6 mt-12 md:mt-16 px-4 transition-all duration-1000 ${
+        heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"
+      }`}
+      style={{ transitionDelay: "0.5s", perspective: "1200px" }}
+    >
+      {/* Fade masks */}
+      <div className="absolute left-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-r from-[#06060b] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-16 md:w-24 bg-gradient-to-l from-[#06060b] to-transparent z-10 pointer-events-none" />
+
+      {docCards.map((card, i) => (
+        <DocCard key={card.title} card={card} index={i} scrollY={scrollY} />
+      ))}
+    </div>
+  );
 }
 
 /* ─── Tool card ─── */
@@ -160,6 +327,21 @@ function StepCard({ step, index, isLast }: { step: (typeof steps)[number]; index
   );
 }
 
+/* ─── Bento card ─── */
+function BentoCard({ feature, index }: { feature: { icon: string; title: string; desc: string; accent: string; span: boolean }; index: number }) {
+  const reveal = useReveal(index * 80);
+  return (
+    <div ref={reveal.ref} className={`group relative rounded-[22px] bg-white/[0.025] border border-white/[0.06] p-6 md:p-8 transition-all duration-500 hover:border-white/[0.12] hover:-translate-y-1 overflow-hidden ${feature.span ? "sm:col-span-2" : ""} ${reveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
+      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity duration-500" style={{ background: feature.accent }} />
+      <div className="flex h-12 w-12 items-center justify-center rounded-2xl mb-4 transition-all duration-300 group-hover:scale-110" style={{ background: `${feature.accent}12`, border: `1px solid ${feature.accent}20` }}>
+        <UIcon name={feature.icon as any} size={20} style={{ color: feature.accent }} />
+      </div>
+      <h3 className="font-display text-lg font-bold text-white mb-2 tracking-tight">{feature.title}</h3>
+      <p className="text-[14px] text-[#9294a5] leading-relaxed">{feature.desc}</p>
+    </div>
+  );
+}
+
 /* ─── Marquee ─── */
 function Marquee() {
   return (
@@ -182,21 +364,6 @@ function Marquee() {
   );
 }
 
-/* ─── Bento card ─── */
-function BentoCard({ feature, index }: { feature: { icon: string; title: string; desc: string; accent: string; span: boolean }; index: number }) {
-  const reveal = useReveal(index * 80);
-  return (
-    <div ref={reveal.ref} className={`group relative rounded-[22px] bg-white/[0.025] border border-white/[0.06] p-6 md:p-8 transition-all duration-500 hover:border-white/[0.12] hover:-translate-y-1 overflow-hidden ${feature.span ? "sm:col-span-2" : ""} ${reveal.visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-      <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full blur-[60px] opacity-0 group-hover:opacity-40 transition-opacity duration-500" style={{ background: feature.accent }} />
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl mb-4 transition-all duration-300 group-hover:scale-110" style={{ background: `${feature.accent}12`, border: `1px solid ${feature.accent}20` }}>
-        <UIcon name={feature.icon as any} size={20} style={{ color: feature.accent }} />
-      </div>
-      <h3 className="font-display text-lg font-bold text-white mb-2 tracking-tight">{feature.title}</h3>
-      <p className="text-[14px] text-[#9294a5] leading-relaxed">{feature.desc}</p>
-    </div>
-  );
-}
-
 /* ═══════════════════════════════════════
    HOMEPAGE
    ═══════════════════════════════════════ */
@@ -208,7 +375,7 @@ export default function HomePage() {
     <div className="relative z-10 w-full overflow-x-hidden">
 
       {/* ══════ HERO ══════ */}
-      <section className="relative min-h-[92vh] flex flex-col items-center justify-center px-5 md:px-8 pt-8 pb-16 md:pt-12 md:pb-24">
+      <section className="relative flex flex-col items-center px-5 md:px-8 pt-8 pb-0 md:pt-16 overflow-hidden">
         {/* Gradient orbs */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute rounded-full blur-[120px] opacity-30" style={{ width: "60vw", height: "60vw", maxWidth: 800, maxHeight: 800, top: "-20%", left: "-10%", background: "radial-gradient(circle, rgba(16,185,129,0.4) 0%, transparent 70%)", animation: "ambient-drift-1 18s ease-in-out infinite alternate" }} />
@@ -218,6 +385,7 @@ export default function HomePage() {
         {/* Grid */}
         <div className="pointer-events-none absolute inset-0 opacity-[0.03]" aria-hidden="true" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
 
+        {/* Text content */}
         <div className="relative z-10 flex flex-col items-center text-center max-w-[900px] mx-auto">
           {/* Badge */}
           <div className={`inline-flex items-center gap-2.5 mb-7 md:mb-9 px-5 py-2.5 rounded-full bg-[#10b981]/8 border border-[#10b981]/15 text-[11px] md:text-[12px] font-semibold text-[#34d399] tracking-wide uppercase transition-all duration-700 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
@@ -232,11 +400,11 @@ export default function HomePage() {
           </h1>
 
           {/* Subtitle */}
-          <p className={`mt-5 md:mt-6 text-[clamp(1rem,2.2vw,1.25rem)] text-[#9294a5] max-w-[600px] mx-auto leading-relaxed font-medium transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.2s" }}>
+          <p className={`mt-5 md:mt-6 text-[clamp(1rem,2.2vw,1.2rem)] text-[#9294a5] max-w-[560px] mx-auto leading-relaxed font-medium transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.2s" }}>
             Convert, analyze, merge, split, and share — entirely in your browser. No uploads, no sign-ups, no limits.
           </p>
 
-          {/* CTAs */}
+          {/* CTA */}
           <div className={`mt-8 md:mt-10 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.3s" }}>
             <Link href="/pdf-tools" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-2xl bg-gradient-to-r from-[#10b981] to-[#059669] px-8 py-4 text-[15px] font-bold text-white no-underline shadow-xl shadow-[#10b981]/25 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#10b981]/35 active:scale-[0.97] overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -249,32 +417,34 @@ export default function HomePage() {
               Analyze a document
             </Link>
           </div>
-
-          {/* Stats */}
-          <div className={`mt-14 md:mt-20 grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-10 w-full max-w-[700px] transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.45s" }}>
-            {[
-              { value: 20, suffix: "+", label: "Tools", icon: "Wrench", accent: "#10b981" },
-              { value: 0, suffix: "", label: "Data stored", icon: "ShieldCheck", accent: "#f59e0b", display: "0" },
-              { value: 100, suffix: "%", label: "In-browser", icon: "Monitor", accent: "#f97316" },
-              { value: 0, suffix: "", label: "Cost", icon: "Sparkles", accent: "#ff6b6b", display: "Free" },
-            ].map((s) => (
-              <div key={s.label} className="group text-center">
-                <div className="relative mx-auto mb-3 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110" style={{ background: `${s.accent}10`, border: `1px solid ${s.accent}18` }}>
-                  <UIcon name={s.icon as any} size={18} style={{ color: s.accent }} />
-                </div>
-                <div className="font-display text-2xl md:text-3xl font-bold text-white mb-0.5">
-                  {s.display !== undefined ? s.display : <Counter end={s.value} suffix={s.suffix} />}
-                </div>
-                <div className="text-[10px] md:text-[11px] text-[#6b6d80] font-semibold uppercase tracking-[0.12em]">{s.label}</div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 transition-all duration-1000 ${heroVisible ? "opacity-100" : "opacity-0"}`} style={{ transitionDelay: "0.7s" }}>
-          <div className="text-[10px] uppercase tracking-widest text-[#6b6d80] font-semibold">Scroll</div>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-[#6b6d80] to-transparent animate-pulse" />
+        {/* ── Floating Document Cards Gallery ── */}
+        <FloatingDocs heroVisible={heroVisible} />
+
+        {/* Bottom gradient fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#06060b] to-transparent pointer-events-none z-20" />
+      </section>
+
+      {/* ══════ STATS BAR ══════ */}
+      <section className="relative px-5 md:px-8 py-12 md:py-16">
+        <div className="mx-auto max-w-[800px] grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-10">
+          {[
+            { value: 20, suffix: "+", label: "Tools", icon: "Wrench", accent: "#10b981" },
+            { value: 0, suffix: "", label: "Data stored", icon: "ShieldCheck", accent: "#f59e0b", display: "0" },
+            { value: 100, suffix: "%", label: "In-browser", icon: "Monitor", accent: "#f97316" },
+            { value: 0, suffix: "", label: "Cost", icon: "Sparkles", accent: "#ff6b6b", display: "Free" },
+          ].map((s) => (
+            <div key={s.label} className="group text-center">
+              <div className="relative mx-auto mb-3 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110" style={{ background: `${s.accent}10`, border: `1px solid ${s.accent}18` }}>
+                <UIcon name={s.icon as any} size={18} style={{ color: s.accent }} />
+              </div>
+              <div className="font-display text-2xl md:text-3xl font-bold text-white mb-0.5">
+                {s.display !== undefined ? s.display : <Counter end={s.value} suffix={s.suffix} />}
+              </div>
+              <div className="text-[10px] md:text-[11px] text-[#6b6d80] font-semibold uppercase tracking-[0.12em]">{s.label}</div>
+            </div>
+          ))}
         </div>
       </section>
 
