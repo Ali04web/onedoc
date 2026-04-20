@@ -47,10 +47,9 @@ export function Tip({ children, tip, side = "top", className = "" }: any) {
       {show && tip && (
         <div
           role="tooltip"
-          className={`pointer-events-none absolute z-[9000] max-w-[260px] rounded-xl bg-[#16162a]/95 backdrop-blur-xl border border-white/[0.1] px-3.5 py-2.5 text-[11px] font-medium leading-relaxed text-[#e4e4ef] shadow-2xl animate-fade-in-scale ${pos[side]}`}
+          className={`pointer-events-none absolute z-[9000] max-w-[260px] rounded-xl bg-[#1a1a2e] px-3.5 py-2.5 text-[11px] font-medium leading-relaxed text-white shadow-xl animate-fade-in-scale ${pos[side]}`}
         >
           {tip}
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-[#10b981]/5 to-transparent pointer-events-none" />
         </div>
       )}
     </div>
@@ -71,13 +70,12 @@ export function Toast({ msg, onDone }: any) {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-3 rounded-2xl bg-[#0e0e18]/95 backdrop-blur-2xl border border-white/[0.1] px-6 py-4 text-[13px] font-semibold text-white shadow-2xl transition-all duration-500 ${
+      className={`fixed bottom-6 right-6 z-[9999] flex items-center gap-3 rounded-2xl bg-white border border-black/[0.08] px-6 py-4 text-[13px] font-semibold text-[#1a1a2e] shadow-2xl transition-all duration-500 ${
         entering ? "translate-y-4 opacity-0 scale-95" : "translate-y-0 opacity-100 scale-100"
       }`}
     >
-      <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#f59e0b]/15 text-[#f59e0b]">
+      <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-[#10b981]/10 text-[#10b981]">
         <UIcon name="CheckCircle2" size={18} />
-        <div className="absolute inset-0 rounded-xl bg-[#f59e0b]/10 animate-glow-pulse" />
       </div>
       {msg}
     </div>
@@ -86,23 +84,23 @@ export function Toast({ msg, onDone }: any) {
 
 export function Spinner() {
   return (
-    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-white/10 border-t-[#10b981] animate-spin align-middle" />
+    <span className="mr-2 inline-block h-4 w-4 rounded-full border-2 border-black/10 border-t-[#e5322d] animate-spin align-middle" />
   );
 }
 
 export function SHead({ ico, label, sub }: any) {
   return (
-    <div className="mb-7 flex items-center gap-4 animate-fade-in">
-      <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl bg-[#10b981]/10 border border-[#10b981]/15 text-[#10b981] transition-all duration-300 hover:bg-[#10b981]/15 hover:border-[#10b981]/25 hover:scale-105">
+    <div className="mb-6 flex items-center gap-3.5 animate-fade-in">
+      <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-[#e5322d]/[0.06] text-[#e5322d] transition-all duration-300 hover:bg-[#e5322d]/10 hover:scale-105">
         {typeof ico === "string" ? <UIcon emoji={ico} size={18} /> : ico}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="font-display text-[17px] font-bold text-white tracking-tight">{label}</div>
+        <div className="font-display text-[17px] font-bold text-[#1a1a2e] tracking-tight">{label}</div>
         {sub && (
-          <div className="text-[13px] text-[#6b6d80] font-medium mt-0.5">{sub}</div>
+          <div className="text-[13px] text-[#9aa0a6] font-medium mt-0.5">{sub}</div>
         )}
       </div>
-      <div className="hidden lg:block flex-1 h-px bg-gradient-to-r from-white/[0.06] to-transparent" />
+      <div className="hidden lg:block flex-1 h-px bg-gradient-to-r from-black/[0.06] to-transparent" />
     </div>
   );
 }
@@ -110,7 +108,7 @@ export function SHead({ ico, label, sub }: any) {
 export function SCard({ children, style = {} }: any) {
   return (
     <div
-      className="vintage-card p-5 transition-all duration-400 hover:-translate-y-1 hover:border-white/[0.12]"
+      className="vintage-card p-5 transition-all duration-400 hover:-translate-y-1 hover:border-black/[0.12]"
       style={style}
     >
       {children}
@@ -122,59 +120,38 @@ export function CCard({
   ico,
   title,
   desc,
-  accentCol = "#10b981",
+  accentCol = "#e5322d",
   children,
   className = "",
   bodyClassName = "",
 }: any) {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  function handleMouseMove(e: React.MouseEvent) {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  }
-
   return (
     <div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      className={`vintage-card group relative flex h-full flex-col gap-4 overflow-hidden p-6 transition-all duration-400 hover:-translate-y-1.5 hover:border-white/[0.12] ${className}`}
+      className={`vintage-card group relative flex h-full flex-col gap-4 overflow-hidden p-5 sm:p-6 transition-all duration-300 hover:-translate-y-1 hover:border-black/[0.1] hover:shadow-lg hover:shadow-black/[0.04] ${className}`}
     >
-      {/* Cursor spotlight */}
-      <div
-        className="pointer-events-none absolute -inset-px opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[22px]"
-        style={{
-          background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, ${accentCol}12, transparent 60%)`,
-        }}
-      />
-
       <div className="relative z-10 flex items-start gap-3.5">
         <div
-          className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl border shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
+          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110"
           style={{
-            borderColor: `${accentCol}25`,
             background: `${accentCol}10`,
             color: accentCol,
-            boxShadow: `0 4px 16px ${accentCol}15`,
           }}
         >
           {typeof ico === "string" ? <UIcon emoji={ico} size={18} /> : ico}
         </div>
         <div className="min-w-0">
-          <div className="font-display text-[16px] font-bold text-white tracking-tight">{title}</div>
+          <div className="font-display text-[15px] font-bold text-[#1a1a2e] tracking-tight">{title}</div>
           {desc ? (
-            <div className="mt-0.5 text-[12px] font-medium leading-relaxed text-[#6b6d80]">
+            <div className="mt-0.5 text-[12px] font-medium leading-relaxed text-[#9aa0a6]">
               {desc}
             </div>
           ) : null}
         </div>
       </div>
 
-      <div className="relative z-10 h-px bg-gradient-to-r from-white/[0.06] via-white/[0.03] to-transparent" />
+      <div className="relative z-10 h-px bg-gradient-to-r from-black/[0.05] via-black/[0.02] to-transparent" />
 
-      <div className={`relative z-10 flex flex-1 flex-col gap-3 text-[#9294a5] ${bodyClassName}`}>
+      <div className={`relative z-10 flex flex-1 flex-col gap-3 text-[#5f6368] ${bodyClassName}`}>
         {children}
       </div>
     </div>
@@ -209,14 +186,14 @@ export function FZone({
         else if (dropped[0]) onFile?.(dropped[0]);
       }}
       title={tip}
-      className={`relative flex min-h-[88px] cursor-pointer items-center justify-center gap-3.5 rounded-2xl border-2 border-dashed px-5 py-4 text-center transition-all duration-300 overflow-hidden ${
+      className={`relative flex min-h-[80px] cursor-pointer items-center justify-center gap-3.5 rounded-xl border-2 border-dashed px-5 py-4 text-center transition-all duration-300 overflow-hidden ${
         has
-          ? "border-[#f59e0b]/30 bg-[#f59e0b]/[0.04] text-[#f59e0b]"
+          ? "border-[#10b981]/30 bg-[#10b981]/[0.04] text-[#10b981]"
           : dragOver
-            ? "border-[#10b981]/40 bg-[#10b981]/[0.06] text-white scale-[1.01]"
+            ? "border-[#e5322d]/40 bg-[#e5322d]/[0.04] text-[#e5322d] scale-[1.01]"
             : hov
-              ? "border-[#10b981]/25 bg-[#10b981]/[0.03] text-white"
-              : "border-white/[0.08] bg-white/[0.02] text-[#9294a5]"
+              ? "border-[#e5322d]/25 bg-[#e5322d]/[0.02] text-[#1a1a2e]"
+              : "border-black/[0.1] bg-[#f7f8fc] text-[#5f6368]"
       }`}
     >
       <input
@@ -229,21 +206,14 @@ export function FZone({
         }
       />
 
-      {/* Animated border shimmer */}
-      {!has && hov && (
-        <div className="pointer-events-none absolute inset-0 rounded-2xl overflow-hidden">
-          <div className="absolute -inset-[100%] animate-spin-slow bg-gradient-conic from-[#10b981]/0 via-[#10b981]/15 to-[#10b981]/0" style={{ animationDuration: "8s" }} />
-        </div>
-      )}
-
       <div
-        className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 ${
+        className={`relative z-10 flex h-9 w-9 items-center justify-center rounded-lg border transition-all duration-300 ${
           has
-            ? "border-[#f59e0b]/20 bg-[#f59e0b]/10 shadow-lg shadow-[#f59e0b]/10"
-            : hov ? "border-[#10b981]/20 bg-[#10b981]/10" : "border-white/[0.06] bg-white/[0.03]"
+            ? "border-[#10b981]/20 bg-[#10b981]/10"
+            : hov ? "border-[#e5322d]/15 bg-[#e5322d]/[0.06]" : "border-black/[0.06] bg-white"
         }`}
       >
-        <UIcon name={has ? "CheckCircle2" : "Paperclip"} size={17} />
+        <UIcon name={has ? "CheckCircle2" : "Paperclip"} size={16} />
       </div>
       <div className="relative z-10 min-w-0 text-left">
         <div className="text-[13px] font-semibold leading-tight">
@@ -253,7 +223,7 @@ export function FZone({
               : file.name
             : label}
         </div>
-        {!has && <div className="mt-0.5 text-[11px] font-medium text-[#6b6d80]">Click or drag to upload</div>}
+        {!has && <div className="mt-0.5 text-[11px] font-medium text-[#9aa0a6]">Click or drag to upload</div>}
       </div>
     </label>
   );
@@ -274,7 +244,7 @@ export function HInput({ className = "", tip, ...props }: any) {
     <input
       {...props}
       title={tip}
-      className={`w-full rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:ring-2 focus:ring-[#10b981]/25 focus:border-[#10b981]/35 focus:bg-white/[0.04] hover:border-white/[0.12] ${className}`}
+      className={`w-full rounded-xl border border-black/[0.08] bg-[#f7f8fc] px-4 py-3 text-[13px] font-medium text-[#1a1a2e] outline-none transition-all duration-300 placeholder:text-[#9aa0a6] focus:ring-2 focus:ring-[#e5322d]/15 focus:border-[#e5322d]/30 focus:bg-white hover:border-black/[0.12] ${className}`}
     />
   );
 
@@ -292,7 +262,7 @@ export function HSel({ className = "", children, tip, ...props }: any) {
     <select
       {...props}
       title={tip}
-      className={`w-full cursor-pointer rounded-xl border border-white/[0.08] bg-[#0e0e18] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 focus:ring-2 focus:ring-[#10b981]/25 focus:border-[#10b981]/35 hover:border-white/[0.12] ${className}`}
+      className={`w-full cursor-pointer rounded-xl border border-black/[0.08] bg-[#f7f8fc] px-4 py-3 text-[13px] font-medium text-[#1a1a2e] outline-none transition-all duration-300 focus:ring-2 focus:ring-[#e5322d]/15 focus:border-[#e5322d]/30 hover:border-black/[0.12] ${className}`}
     >
       {children}
     </select>
@@ -312,10 +282,10 @@ export function CStat({ msg, type }: any) {
 
   const styles =
     type === "ok"
-      ? "border-[#f59e0b]/20 bg-[#f59e0b]/[0.06] text-[#f59e0b]"
+      ? "border-[#10b981]/20 bg-[#10b981]/[0.04] text-[#10b981]"
       : type === "err"
-        ? "border-[#ff6b6b]/20 bg-[#ff6b6b]/[0.06] text-[#ff6b6b]"
-        : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]";
+        ? "border-[#ef4444]/20 bg-[#ef4444]/[0.04] text-[#ef4444]"
+        : "border-black/[0.06] bg-[#f7f8fc] text-[#5f6368]";
 
   return (
     <div className={`flex items-start gap-2.5 rounded-xl border px-4 py-3 text-[12px] font-semibold leading-relaxed animate-fade-in-scale ${styles}`}>
@@ -335,15 +305,15 @@ export function HBtn({ onClick, disabled, loading, label, tip, className = "" }:
       onClick={onClick}
       disabled={isDisabled}
       title={tip}
-      className={`group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl px-4 py-3.5 text-[13px] font-bold transition-all duration-300 ${
+      className={`group relative flex w-full items-center justify-center gap-2.5 overflow-hidden rounded-xl px-4 py-3 text-[13px] font-bold transition-all duration-300 ${
         isDisabled
-          ? "cursor-not-allowed bg-white/[0.04] text-[#6b6d80] border border-white/[0.04]"
-          : "cursor-pointer bg-gradient-to-r from-[#10b981] to-[#059669] text-white shadow-lg shadow-[#10b981]/20 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#10b981]/30 active:translate-y-0 active:scale-[0.98]"
+          ? "cursor-not-allowed bg-[#f0f2f7] text-[#9aa0a6] border border-black/[0.04]"
+          : "cursor-pointer bg-[#e5322d] text-white shadow-md shadow-[#e5322d]/15 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#e5322d]/20 hover:bg-[#d42b26] active:translate-y-0 active:scale-[0.98]"
       } ${className}`}
     >
       {/* Sweep animation */}
       {!isDisabled && (
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.08] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.1] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
       )}
       <span className="relative flex items-center gap-2">
         {loading && <Spinner />}
@@ -372,26 +342,26 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
         onClick={onSelect}
         className={`mb-1.5 flex cursor-pointer items-center gap-3 rounded-xl border px-3.5 py-3 transition-all duration-300 ${
           active
-            ? "border-[#10b981]/20 bg-[#10b981]/[0.06] shadow-lg shadow-[#10b981]/5"
+            ? "border-[#e5322d]/15 bg-[#e5322d]/[0.04] shadow-sm"
             : hov
-              ? "border-white/[0.06] bg-white/[0.03]"
+              ? "border-black/[0.06] bg-[#f7f8fc]"
               : "border-transparent bg-transparent"
         }`}
       >
         <div
           className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl border transition-all duration-300 ${
             active
-              ? "border-[#10b981]/20 bg-[#10b981]/10 text-[#10b981] shadow-md shadow-[#10b981]/10"
-              : "border-white/[0.06] bg-white/[0.03] text-[#9294a5]"
+              ? "border-[#e5322d]/15 bg-[#e5322d]/[0.06] text-[#e5322d]"
+              : "border-black/[0.06] bg-[#f7f8fc] text-[#9aa0a6]"
           }`}
         >
           <UIcon name={doc.type === "pdf" ? "FileText" : "FileSignature"} size={16} />
         </div>
         <div className="min-w-0 flex-1">
-          <div className={`truncate text-[13px] font-semibold ${active ? "text-white" : "text-[#9294a5]"}`}>
+          <div className={`truncate text-[13px] font-semibold ${active ? "text-[#1a1a2e]" : "text-[#5f6368]"}`}>
             {doc.name}
           </div>
-          <div className="mt-0.5 text-[11px] font-medium text-[#6b6d80]">
+          <div className="mt-0.5 text-[11px] font-medium text-[#9aa0a6]">
             {fmtSize(doc.size)}
             {doc.pages ? ` · ${doc.pages} pages` : ""}
           </div>
@@ -402,7 +372,7 @@ export function DItem({ doc, active, onSelect, onRemove }: any) {
               e.stopPropagation();
               onRemove();
             }}
-            className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] text-[#6b6d80] hover:text-[#ff6b6b] hover:bg-[#ff6b6b]/10 transition-all duration-200"
+            className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f7f8fc] text-[#9aa0a6] hover:text-[#ef4444] hover:bg-[#ef4444]/[0.06] transition-all duration-200"
           >
             <UIcon name="X" size={12} />
           </button>

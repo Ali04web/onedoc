@@ -82,22 +82,22 @@ function ProgressBar({
   if (!progress) return null;
 
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-3.5 animate-fade-in">
-      <div className="mb-2.5 flex items-center justify-between gap-3 text-[11px] text-[#6b6d80] font-medium">
+    <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] p-3.5 animate-fade-in">
+      <div className="mb-2.5 flex items-center justify-between gap-3 text-[11px] text-[#9aa0a6] font-medium">
         <span className="flex items-center gap-2">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-[#e5322d] animate-pulse" />
           {label || "Working..."}
         </span>
-        <span className="font-bold text-white/60">{progress}%</span>
+        <span className="font-bold text-[#1a1a2e]/60">{progress}%</span>
       </div>
-      <div className="relative h-2 overflow-hidden rounded-full bg-white/[0.04]">
+      <div className="relative h-2 overflow-hidden rounded-full bg-black/[0.04]">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-[#10b981] via-[#f59e0b] to-[#10b981] transition-[width] duration-500 ease-out"
+          className="h-full rounded-full bg-gradient-to-r from-[#e5322d] via-[#f97316] to-[#e5322d] transition-[width] duration-500 ease-out"
           style={{ width: `${progress}%`, backgroundSize: "200% 100%", animation: progress < 100 ? "shimmer 2s linear infinite" : "none" }}
         />
         {progress < 100 && (
           <div
-            className="absolute top-0 h-full w-8 rounded-full bg-white/20 blur-sm"
+            className="absolute top-0 h-full w-8 rounded-full bg-white/40 blur-sm"
             style={{ left: `${Math.max(0, progress - 4)}%`, transition: "left 0.5s ease-out" }}
           />
         )}
@@ -120,7 +120,7 @@ function FileListPreview({
       {files.map((file) => (
         <div
           key={`${file.name}-${file.size}`}
-          className="flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2 text-[12px] text-[#9294a5]"
+          className="flex items-center gap-2 rounded-lg border border-black/[0.06] bg-[#f7f8fc] px-3 py-2 text-[12px] text-[#5f6368]"
         >
           <UIcon name={icon as any} size={12} />
           <span className="truncate">{file.name}</span>
@@ -137,14 +137,14 @@ function TextAreaField({
   return (
     <textarea
       {...props}
-      className={`min-h-[108px] w-full resize-y rounded-xl border border-white/[0.08] bg-white/[0.03] px-4 py-3 text-[13px] font-medium text-white outline-none transition-all duration-300 placeholder:text-[#6b6d80] focus:border-[#10b981]/35 focus:ring-2 focus:ring-[#10b981]/25 hover:border-white/[0.12] ${className}`}
+      className={`min-h-[108px] w-full resize-y rounded-xl border border-black/[0.08] bg-[#f7f8fc] px-4 py-3 text-[13px] font-medium text-[#1a1a2e] outline-none transition-all duration-300 placeholder:text-[#9aa0a6] focus:border-[#e5322d]/30 focus:ring-2 focus:ring-[#e5322d]/15 focus:bg-white hover:border-black/[0.12] ${className}`}
     />
   );
 }
 
 function HelperNote({ children }: { children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-[12px] leading-relaxed text-[#7f8296]">
+    <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-4 py-3 text-[12px] leading-relaxed text-[#5f6368]">
       {children}
     </div>
   );
@@ -705,12 +705,12 @@ export default function PdfToolsPage() {
       tip: "Dedicated shareable-link workspace.",
       body: (
         <div className="flex h-full flex-col justify-between gap-4">
-          <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-4 py-3 text-[13px] leading-relaxed text-[#6b6d80]">
+          <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-4 py-3 text-[13px] leading-relaxed text-[#5f6368]">
             Upload a PDF and get an instant shareable viewer link.
           </div>
           <Link
             href="/pdf-link"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#d97706] px-5 py-3 text-[13px] font-bold text-white shadow-lg shadow-[#f59e0b]/20 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#f59e0b] px-5 py-3 text-[13px] font-bold text-white shadow-md shadow-[#f59e0b]/15 no-underline transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:bg-[#d97706]"
           >
             <UIcon name="ArrowUpRight" size={14} />
             Open PDF Link
@@ -1980,14 +1980,14 @@ export default function PdfToolsPage() {
         {toolSections.map((section, sIdx) => (
           <section key={section.title} className="animate-fade-in" style={{ animationDelay: `${0.1 + sIdx * 0.05}s` }}>
             <div className="mb-6 flex flex-col gap-1.5">
-              <h2 className="text-xl md:text-2xl font-display font-bold text-white tracking-tight flex items-center gap-2">
+              <h2 className="text-xl md:text-2xl font-display font-bold text-[#1a1a2e] tracking-tight flex items-center gap-2">
                 {section.title}
               </h2>
-              <p className="text-[14px] text-[#9294a5] leading-relaxed">
+              <p className="text-[14px] text-[#5f6368] leading-relaxed">
                 {section.description}
               </p>
             </div>
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5 [grid-auto-rows:1fr]">
               {section.cards.map((card, i) => (
                 <div
                   key={card.title}
