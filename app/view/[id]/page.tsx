@@ -50,25 +50,16 @@ export default async function ViewPage({
             __html: `
               @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
               :root{
-                color-scheme: dark;
+                color-scheme: light;
               }
               *{box-sizing:border-box}
               html,body{height:100%}
               body{
                 margin:0;
                 font-family:'Inter',system-ui,sans-serif;
-                color:#e4e4ef;
-                background-color:#0a0a0f;
+                color:#1a1a2e;
+                background-color:#f7f8fc;
                 overflow:hidden;
-              }
-              body::before{
-                content:"";
-                position:fixed;
-                top:-40%;left:-20%;
-                width:80%;height:80%;
-                border-radius:50%;
-                background:radial-gradient(circle,rgba(124,106,255,0.06) 0%,transparent 70%);
-                pointer-events:none;
               }
               .shell{
                 min-height:100%;
@@ -82,10 +73,10 @@ export default async function ViewPage({
                 align-items:center;
                 gap:14px;
                 padding:14px 18px;
-                border:1px solid rgba(255,255,255,0.06);
-                border-radius:20px;
-                background:rgba(255,255,255,0.025);
-                backdrop-filter:blur(24px);
+                border:1px solid rgba(0,0,0,0.06);
+                border-radius:16px;
+                background:#ffffff;
+                box-shadow:0 1px 3px rgba(0,0,0,0.04);
                 flex-shrink:0;
               }
               .brand{
@@ -98,15 +89,15 @@ export default async function ViewPage({
                 width:42px;height:42px;
                 border-radius:14px;
                 display:flex;align-items:center;justify-content:center;
-                background:rgba(255,255,255,0.04);
-                border:1px solid rgba(255,255,255,0.06);
+                background:#f7f8fc;
+                border:1px solid rgba(0,0,0,0.06);
               }
               .brand-copy{min-width:0}
               .eyebrow{
                 font-size:10px;
                 letter-spacing:.18em;
                 text-transform:uppercase;
-                color:#6b6d80;
+                color:#9aa0a6;
                 font-weight:600;
               }
               .title{
@@ -114,7 +105,7 @@ export default async function ViewPage({
                 font-size:clamp(16px,2vw,22px);
                 line-height:1.1;
                 font-weight:700;
-                color:#fff;
+                color:#1a1a2e;
                 white-space:nowrap;
                 overflow:hidden;
                 text-overflow:ellipsis;
@@ -126,9 +117,9 @@ export default async function ViewPage({
               .chip{
                 display:inline-flex;align-items:center;gap:4px;
                 padding:4px 10px;border-radius:999px;
-                border:1px solid rgba(124,106,255,0.12);
-                background:rgba(124,106,255,0.08);
-                color:#34d399;font-size:11px;font-weight:600;
+                border:1px solid rgba(229,50,45,0.12);
+                background:rgba(229,50,45,0.06);
+                color:#e5322d;font-size:11px;font-weight:600;
               }
               .actions{
                 margin-left:auto;
@@ -136,20 +127,20 @@ export default async function ViewPage({
               }
               .btn{
                 display:inline-flex;align-items:center;justify-content:center;
-                gap:6px;border-radius:14px;padding:10px 16px;
+                gap:6px;border-radius:12px;padding:10px 16px;
                 text-decoration:none;font-size:13px;font-weight:700;
                 transition:transform .18s ease,box-shadow .18s ease;
-                white-space:nowrap;border:none;
+                white-space:nowrap;border:none;cursor:pointer;
               }
               .btn-primary{
                 color:#fff;
-                background:linear-gradient(135deg,#10b981,#059669);
-                box-shadow:0 8px 24px rgba(124,106,255,0.25);
+                background:#e5322d;
+                box-shadow:0 4px 16px rgba(229,50,45,0.2);
               }
               .btn-secondary{
-                color:#e4e4ef;
-                background:rgba(255,255,255,0.04);
-                border:1px solid rgba(255,255,255,0.06);
+                color:#1a1a2e;
+                background:#f7f8fc;
+                border:1px solid rgba(0,0,0,0.08);
               }
               .btn:hover{transform:translateY(-1px)}
               .viewer-shell{
@@ -157,67 +148,67 @@ export default async function ViewPage({
               }
               .viewer-panel{
                 min-width:0;flex:1;display:flex;flex-direction:column;
-                border:1px solid rgba(255,255,255,0.06);
-                border-radius:20px;overflow:hidden;
-                background:rgba(255,255,255,0.025);
-                backdrop-filter:blur(16px);
+                border:1px solid rgba(0,0,0,0.06);
+                border-radius:16px;overflow:hidden;
+                background:#ffffff;
+                box-shadow:0 1px 3px rgba(0,0,0,0.04);
               }
               .viewer-head{
                 display:flex;align-items:center;justify-content:space-between;
                 gap:10px;padding:12px 16px;
-                border-bottom:1px solid rgba(255,255,255,0.04);
-                background:rgba(255,255,255,0.02);
+                border-bottom:1px solid rgba(0,0,0,0.06);
+                background:#f7f8fc;
               }
-              .viewer-head strong{font-size:13px;color:#fff}
-              .viewer-head span{color:#6b6d80;font-size:11px}
+              .viewer-head strong{font-size:13px;color:#1a1a2e}
+              .viewer-head span{color:#9aa0a6;font-size:11px}
               .viewer-frame{
                 min-height:0;flex:1;padding:12px;
-                background:rgba(255,255,255,0.01);
+                background:#ffffff;
               }
               .viewer-frame iframe{
                 width:100%;height:100%;border:none;
-                border-radius:14px;background:#1a1a26;
-                box-shadow:0 12px 32px rgba(0,0,0,0.3);
+                border-radius:12px;background:#f0f2f7;
+                box-shadow:0 4px 16px rgba(0,0,0,0.06);
               }
               .side-panel{
                 width:300px;flex-shrink:0;
                 display:flex;flex-direction:column;gap:12px;
               }
               .card{
-                border:1px solid rgba(255,255,255,0.06);
-                border-radius:20px;
-                background:rgba(255,255,255,0.025);
-                backdrop-filter:blur(16px);
+                border:1px solid rgba(0,0,0,0.06);
+                border-radius:16px;
+                background:#ffffff;
+                box-shadow:0 1px 3px rgba(0,0,0,0.04);
                 padding:18px;
               }
-              .card h2{margin:0;font-size:18px;line-height:1.1;color:#fff}
-              .card p{margin:10px 0 0;color:#6b6d80;line-height:1.6;font-size:13px}
+              .card h2{margin:0;font-size:18px;line-height:1.1;color:#1a1a2e}
+              .card p{margin:10px 0 0;color:#5f6368;line-height:1.6;font-size:13px}
               .list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
               .list-item{
-                border:1px solid rgba(255,255,255,0.06);
-                border-radius:14px;background:rgba(255,255,255,0.02);padding:12px;
+                border:1px solid rgba(0,0,0,0.06);
+                border-radius:12px;background:#f7f8fc;padding:12px;
               }
-              .list-item strong{display:block;font-size:12px;color:#fff;margin-bottom:4px}
-              .list-item span{color:#6b6d80;font-size:12px;line-height:1.6}
+              .list-item strong{display:block;font-size:12px;color:#1a1a2e;margin-bottom:4px}
+              .list-item span{color:#5f6368;font-size:12px;line-height:1.6}
               .mobile-fallback{
                 display:none;min-height:0;flex:1;
-                border:1px solid rgba(255,255,255,0.06);
-                border-radius:20px;background:rgba(255,255,255,0.025);
-                backdrop-filter:blur(16px);
+                border:1px solid rgba(0,0,0,0.06);
+                border-radius:16px;background:#ffffff;
+                box-shadow:0 1px 3px rgba(0,0,0,0.04);
                 padding:24px 18px;text-align:center;
                 align-items:center;justify-content:center;flex-direction:column;
               }
               .mobile-fallback .icon{
-                width:72px;height:72px;border-radius:20px;
+                width:72px;height:72px;border-radius:16px;
                 display:flex;align-items:center;justify-content:center;
-                background:rgba(255,255,255,0.04);
-                border:1px solid rgba(255,255,255,0.06);
+                background:#f7f8fc;
+                border:1px solid rgba(0,0,0,0.06);
               }
-              .mobile-fallback h2{margin:14px 0 0;font-size:22px;color:#fff}
-              .mobile-fallback p{margin:10px 0 0;max-width:320px;color:#6b6d80;line-height:1.6;font-size:13px}
+              .mobile-fallback h2{margin:14px 0 0;font-size:22px;color:#1a1a2e}
+              .mobile-fallback p{margin:10px 0 0;max-width:320px;color:#5f6368;line-height:1.6;font-size:13px}
               .powered{
                 position:fixed;right:16px;bottom:12px;
-                color:rgba(107,109,128,0.6);font-size:11px;
+                color:rgba(154,160,166,0.6);font-size:11px;
               }
               .powered a{color:inherit;text-decoration:none}
               @media (max-width: 1080px){
