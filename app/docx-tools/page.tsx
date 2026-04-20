@@ -28,15 +28,15 @@ function CsvPreview({ rows }: { rows: string[][] }) {
   const [header, ...body] = rows;
 
   return (
-    <div className="overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02]">
-      <div className="border-b border-white/[0.06] bg-white/[0.03] px-4 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#6b6d80]">
+    <div className="overflow-hidden rounded-xl border border-black/[0.06] bg-[#f7f8fc]">
+      <div className="border-b border-black/[0.06] bg-white px-4 py-2.5 text-[11px] font-semibold uppercase tracking-widest text-[#5f6368]">
         {header.join(" · ")}
       </div>
       <div className="max-h-[120px] overflow-auto">
         {body.slice(0, 4).map((row, index) => (
           <div
             key={`${row.join("|")}-${index}`}
-            className="border-b border-white/[0.04] px-4 py-2.5 text-[12px] text-[#9294a5] last:border-b-0"
+            className="border-b border-black/[0.04] px-4 py-2.5 text-[12px] text-[#5f6368] last:border-b-0"
           >
             {row.join(" · ")}
           </div>
@@ -402,19 +402,19 @@ export default function DocxToolsPage() {
   return (
     <div className="page-shell">
       {/* Page Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#10b981]/8 via-transparent to-[#ffa940]/5 border border-white/[0.06] p-8 md:p-10 animate-fade-in">
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-[#10b981]/5 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-[#ffa940]/5 blur-3xl pointer-events-none" />
-        <div className="relative z-10 flex items-start gap-5">
-          <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ffa940] to-[#ff7b3a] shadow-xl shadow-[#ffa940]/25">
-            <UIcon name="NavDocxTools" size={26} className="text-white" />
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#f97316]/[0.05] via-transparent to-[#f59e0b]/[0.04] border border-black/[0.06] p-6 sm:p-8 md:p-10 animate-fade-in">
+        <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#f97316]/[0.04] blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-[#f59e0b]/[0.03] blur-3xl pointer-events-none" />
+        <div className="relative z-10 flex flex-col sm:flex-row items-start gap-4 sm:gap-5">
+          <div className="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#f97316] shadow-lg shadow-[#f97316]/20">
+            <UIcon name="NavDocxTools" size={24} className="text-white" />
           </div>
           <div>
-            <h1 className="font-display text-2xl md:text-3xl font-bold text-white tracking-tight">Word Tools</h1>
-            <p className="mt-1.5 text-[14px] text-[#9294a5] font-medium max-w-[500px] leading-relaxed">Export DOCX to HTML, text, markdown, and PDF — plus handy data-to-table conversions.</p>
+            <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a2e] tracking-tight">Word Tools</h1>
+            <p className="mt-1.5 text-[14px] text-[#5f6368] font-medium max-w-[500px] leading-relaxed">Export DOCX to HTML, text, markdown, and PDF — plus handy data-to-table conversions.</p>
             <div className="mt-3 flex flex-wrap gap-2">
               {["HTML", "Text", "Markdown", "PDF", "CSV"].map((t) => (
-                <span key={t} className="rounded-lg bg-white/[0.05] border border-white/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#6b6d80]">{t}</span>
+                <span key={t} className="rounded-lg bg-[#f7f8fc] border border-black/[0.06] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#5f6368]">{t}</span>
               ))}
             </div>
           </div>
