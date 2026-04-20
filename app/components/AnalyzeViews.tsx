@@ -31,7 +31,7 @@ export function TView({
         ? safe.replace(
             new RegExp(escRe(esc(searchQ)), "gi"),
             (match: string) =>
-              `<mark class="rounded-md bg-[#10b981]/20 px-1 py-0.5 text-white">${match}</mark>`
+              `<mark class="rounded-md bg-[#e5322d]/15 px-1 py-0.5 text-[#1a1a2e]">${match}</mark>`
           )
         : safe;
 
@@ -45,7 +45,7 @@ export function TView({
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-white/[0.04] bg-white/[0.02] px-5 py-3 md:px-7">
+      <div className="border-b border-black/[0.06] bg-[#f7f8fc] px-5 py-3 md:px-7">
         <div className="flex flex-wrap items-center gap-2">
           <span className="vintage-badge text-[10px]">
             <UIcon name="ScanText" size={11} />
@@ -60,7 +60,7 @@ export function TView({
       <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 md:px-7">
         <div className="vintage-card min-h-full p-0">
           <div
-            className="px-5 py-5 font-mono text-[12px] leading-7 text-[#9294a5] md:px-6"
+            className="px-5 py-5 font-mono text-[12px] leading-7 text-[#5f6368] md:px-6"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>
@@ -92,14 +92,14 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
         {cards.map((card) => (
           <div key={card.label} className="vintage-card p-4">
             <div className="flex items-center justify-between gap-2">
-              <div className="text-[10px] font-semibold uppercase tracking-widest text-[#6b6d80]">
+              <div className="text-[10px] font-semibold uppercase tracking-widest text-[#9aa0a6]">
                 {card.label}
               </div>
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#9294a5]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f7f8fc] border border-black/[0.06] text-[#9aa0a6]">
                 <UIcon name={card.icon} size={14} />
               </div>
             </div>
-            <div className="mt-3 font-display text-2xl font-bold text-white">{card.value}</div>
+            <div className="mt-3 font-display text-2xl font-bold text-[#1a1a2e]">{card.value}</div>
           </div>
         ))}
       </div>
@@ -107,28 +107,28 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
       <div className="mt-5 grid gap-4 xl:grid-cols-[minmax(0,1.35fr)_minmax(280px,.65fr)]">
         <SCard>
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#9294a5]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f7f8fc] border border-black/[0.06] text-[#9aa0a6]">
               <UIcon name="BarChart3" size={15} />
             </div>
-            <div className="font-display text-[15px] font-bold text-white">Top terms</div>
+            <div className="font-display text-[15px] font-bold text-[#1a1a2e]">Top terms</div>
           </div>
           <div className="flex flex-col gap-3">
             {topWords.length ? (
               topWords.map(([word, count], index) => (
                 <div key={word} className="grid grid-cols-[24px_minmax(0,100px)_1fr_40px] items-center gap-2">
-                  <div className="text-right text-[11px] font-medium text-[#6b6d80]">{index + 1}</div>
-                  <div className="truncate text-[13px] font-semibold text-white">{word}</div>
-                  <div className="h-2 overflow-hidden rounded-full bg-white/[0.04]">
+                  <div className="text-right text-[11px] font-medium text-[#9aa0a6]">{index + 1}</div>
+                  <div className="truncate text-[13px] font-semibold text-[#1a1a2e]">{word}</div>
+                  <div className="h-2 overflow-hidden rounded-full bg-black/[0.04]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#10b981] to-[#f59e0b]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#e5322d] to-[#f97316]"
                       style={{ width: `${Math.max(12, Math.round((count / longestBar) * 100))}%` }}
                     />
                   </div>
-                  <div className="text-right text-[12px] text-[#6b6d80]">{count}</div>
+                  <div className="text-right text-[12px] text-[#9aa0a6]">{count}</div>
                 </div>
               ))
             ) : (
-              <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-3 text-[13px] text-[#6b6d80]">
+              <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-3 py-3 text-[13px] text-[#9aa0a6]">
                 No standout terms detected.
               </div>
             )}
@@ -137,10 +137,10 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
 
         <SCard>
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#9294a5]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f7f8fc] border border-black/[0.06] text-[#9aa0a6]">
               <UIcon name="Sparkles" size={15} />
             </div>
-            <div className="font-display text-[15px] font-bold text-white">Insights</div>
+            <div className="font-display text-[15px] font-bold text-[#1a1a2e]">Insights</div>
           </div>
           <div className="flex flex-col gap-2">
             {[
@@ -152,7 +152,7 @@ export function StatsView({ stats }: { stats: StatsShape | null }) {
             ].map((line) => (
               <div
                 key={line}
-                className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-3 text-[13px] leading-relaxed text-[#9294a5]"
+                className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-3 py-3 text-[13px] leading-relaxed text-[#5f6368]"
               >
                 {line}
               </div>
@@ -182,10 +182,10 @@ export function SearchView({ text }: { text: string }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="border-b border-white/[0.04] bg-white/[0.02] px-5 py-3 md:px-7">
+      <div className="border-b border-black/[0.06] bg-[#f7f8fc] px-5 py-3 md:px-7">
         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
-          <div className="flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-2">
-            <UIcon name="Search" size={15} className="text-[#6b6d80]" />
+          <div className="flex items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-3 py-2">
+            <UIcon name="Search" size={15} className="text-[#9aa0a6]" />
             <HInput
               value={query}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -203,14 +203,14 @@ export function SearchView({ text }: { text: string }) {
             <button
               onClick={() => setCurrent((v) => matches.length ? (v - 1 + matches.length) % matches.length : 0)}
               disabled={!matches.length}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9294a5] transition-all disabled:opacity-30 enabled:hover:bg-white/[0.04] enabled:hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/[0.06] bg-white text-[#9aa0a6] transition-all disabled:opacity-30 enabled:hover:bg-[#f7f8fc] enabled:hover:text-[#1a1a2e]"
             >
               <UIcon name="ChevronUp" size={14} />
             </button>
             <button
               onClick={() => setCurrent((v) => matches.length ? (v + 1) % matches.length : 0)}
               disabled={!matches.length}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06] bg-white/[0.02] text-[#9294a5] transition-all disabled:opacity-30 enabled:hover:bg-white/[0.04] enabled:hover:text-white"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-black/[0.06] bg-white text-[#9aa0a6] transition-all disabled:opacity-30 enabled:hover:bg-[#f7f8fc] enabled:hover:text-[#1a1a2e]"
             >
               <UIcon name="ChevronDown" size={14} />
             </button>
@@ -222,11 +222,11 @@ export function SearchView({ text }: { text: string }) {
         <div className="min-h-0 overflow-y-auto">
           <div className="flex flex-col gap-2">
             {!query || query.trim().length < 2 ? (
-              <div className="vintage-card px-4 py-5 text-[13px] text-[#6b6d80]">
+              <div className="vintage-card px-4 py-5 text-[13px] text-[#9aa0a6]">
                 Type at least 2 characters to search.
               </div>
             ) : matches.length === 0 ? (
-              <div className="vintage-card px-4 py-5 text-[13px] text-[#ff6b6b]">
+              <div className="vintage-card px-4 py-5 text-[13px] text-[#ef4444]">
                 {`No matches for "${query}".`}
               </div>
             ) : (
@@ -234,7 +234,7 @@ export function SearchView({ text }: { text: string }) {
                 const marked = esc(match.text).replace(
                   new RegExp(escRe(esc(query.trim())), "gi"),
                   (chunk: string) =>
-                    `<mark class="rounded-md bg-[#10b981]/20 px-1 py-0.5 text-white">${chunk}</mark>`
+                    `<mark class="rounded-md bg-[#e5322d]/15 px-1 py-0.5 text-[#1a1a2e]">${chunk}</mark>`
                 );
 
                 return (
@@ -243,16 +243,16 @@ export function SearchView({ text }: { text: string }) {
                     onClick={() => setCurrent(index)}
                     className={`vintage-card text-left transition-all duration-200 ${
                       currentIndex === index
-                        ? "border-[#10b981]/20 bg-[#10b981]/[0.04]"
+                        ? "border-[#e5322d]/15 bg-[#e5322d]/[0.03]"
                         : "hover:-translate-y-0.5"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="vintage-badge text-[10px]">Line {match.line}</span>
-                      <span className="text-[11px] text-[#6b6d80]">Match {index + 1}</span>
+                      <span className="text-[11px] text-[#9aa0a6]">Match {index + 1}</span>
                     </div>
                     <div
-                      className="mt-3 text-[13px] leading-7 text-[#9294a5]"
+                      className="mt-3 text-[13px] leading-7 text-[#5f6368]"
                       dangerouslySetInnerHTML={{ __html: marked }}
                     />
                   </button>
@@ -264,19 +264,19 @@ export function SearchView({ text }: { text: string }) {
 
         <SCard style={{ height: "fit-content" }}>
           <div className="flex items-center gap-3 mb-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.06] text-[#9294a5]">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#f7f8fc] border border-black/[0.06] text-[#9aa0a6]">
               <UIcon name="LocateFixed" size={15} />
             </div>
-            <div className="font-display text-[14px] font-bold text-white">Focus</div>
+            <div className="font-display text-[14px] font-bold text-[#1a1a2e]">Focus</div>
           </div>
 
           {selected ? (
-            <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-3">
-              <div className="text-[11px] font-semibold uppercase tracking-widest text-[#6b6d80]">Line {selected.line}</div>
-              <div className="mt-2 text-[13px] leading-relaxed text-[#9294a5]">{selected.text}</div>
+            <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-3 py-3">
+              <div className="text-[11px] font-semibold uppercase tracking-widest text-[#9aa0a6]">Line {selected.line}</div>
+              <div className="mt-2 text-[13px] leading-relaxed text-[#5f6368]">{selected.text}</div>
             </div>
           ) : (
-            <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-3 text-[12px] text-[#6b6d80]">
+            <div className="rounded-xl border border-black/[0.06] bg-[#f7f8fc] px-3 py-3 text-[12px] text-[#9aa0a6]">
               Results appear here.
             </div>
           )}
@@ -354,11 +354,11 @@ export function ExportView({ doc }: { doc: DocShape }) {
           <SCard key={item.title}>
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.04] border border-white/[0.06] text-[#9294a5]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f7f8fc] border border-black/[0.06] text-[#9aa0a6]">
                   <UIcon name={item.icon} size={17} />
                 </div>
                 <div>
-                  <div className="font-display text-[15px] font-bold text-white">{item.title}</div>
+                  <div className="font-display text-[15px] font-bold text-[#1a1a2e]">{item.title}</div>
                   <span className="vintage-badge text-[10px] mt-0.5">{item.ext}</span>
                 </div>
               </div>
