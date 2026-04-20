@@ -77,29 +77,6 @@ function useReveal(delay = 0) {
   return { ref, visible };
 }
 
-/* ─── Counter ─── */
-function Counter({ end, suffix = "" }: { end: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting && !started.current) {
-        started.current = true;
-        const dur = 1400, t0 = performance.now();
-        function tick(now: number) {
-          const p = Math.min((now - t0) / dur, 1);
-          setCount(Math.round((1 - Math.pow(1 - p, 3)) * end));
-          if (p < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.3 });
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [end]);
-  return <span ref={ref}>{count}{suffix}</span>;
-}
 
 /* ─── Tool Card (iLovePDF style) ─── */
 function ToolCard({ tool, index }: { tool: (typeof allTools)[number]; index: number }) {
@@ -143,29 +120,6 @@ function FeatureCard({ feature, index }: { feature: { icon: string; title: strin
   );
 }
 
-/* ─── Marquee ─── */
-const marqueeItems = [
-  "Merge PDF", "Split PDF", "Compress PDF", "OCR", "DOCX to HTML",
-  "Redact PDF", "Rotate Pages", "Lock PDF", "Text Extraction",
-  "Image Export", "Compare PDFs", "PDF Overlay", "Page Numbers", "Web Optimize",
-];
-
-function Marquee() {
-  return (
-    <div className="relative overflow-hidden py-6 md:py-8">
-      <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-r from-white to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 bg-gradient-to-l from-white to-transparent z-10" />
-      <div className="flex gap-3 animate-marquee whitespace-nowrap">
-        {[...marqueeItems, ...marqueeItems].map((item, i) => (
-          <span key={`${item}-${i}`} className="inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-[#f7f8fc] px-4 py-2 text-[12px] font-semibold text-[#5f6368] transition-colors hover:text-[#e5322d] hover:border-[#e5322d]/20 hover:bg-[#e5322d]/[0.04]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#e5322d]/40" />
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════
    HOMEPAGE
@@ -225,30 +179,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════ STATS BAR ══════ */}
-      <section className="relative px-4 sm:px-6 md:px-8 py-8 md:py-12">
-        <div className="mx-auto max-w-[800px] grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-10">
-          {[
-            { value: 20, suffix: "+", label: "Tools", icon: "Wrench", color: "#e5322d", bg: "#fef2f2" },
-            { value: 0, suffix: "", label: "Data stored", icon: "ShieldCheck", color: "#10b981", bg: "#ecfdf5", display: "0" },
-            { value: 100, suffix: "%", label: "In-browser", icon: "Monitor", color: "#f97316", bg: "#fff7ed" },
-            { value: 0, suffix: "", label: "Cost", icon: "Sparkles", color: "#3b82f6", bg: "#eff6ff", display: "Free" },
-          ].map((s) => (
-            <div key={s.label} className="group text-center">
-              <div className="relative mx-auto mb-3 flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl transition-all duration-300 group-hover:scale-110" style={{ backgroundColor: s.bg, color: s.color }}>
-                <UIcon name={s.icon as any} size={18} />
-              </div>
-              <div className="font-display text-2xl md:text-3xl font-bold text-[#1a1a2e] mb-0.5">
-                {s.display !== undefined ? s.display : <Counter end={s.value} suffix={s.suffix} />}
-              </div>
-              <div className="text-[10px] md:text-[11px] text-[#9aa0a6] font-semibold uppercase tracking-[0.12em]">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══════ MARQUEE ══════ */}
-      <Marquee />
 
       {/* ══════ ALL TOOLS GRID (Smallpdf / iLovePDF style) ══════ */}
       <section id="tools" className="relative px-4 sm:px-6 md:px-8 pb-16 md:pb-24">
