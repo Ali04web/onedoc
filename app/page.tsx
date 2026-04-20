@@ -7,30 +7,30 @@ import { UIcon } from "./components/Icons";
 /* ─── All individual PDF tools (Smallpdf / iLovePDF style grid) ─── */
 const allTools = [
   // PDF Core
-  { href: "/pdf-tools", icon: "Combine", label: "Merge PDF", desc: "Combine multiple PDFs into one file", color: "#e5322d", bg: "#fef2f2" },
-  { href: "/pdf-tools", icon: "ScissorsLineDashed", label: "Split PDF", desc: "Extract pages from your PDF", color: "#f97316", bg: "#fff7ed" },
-  { href: "/pdf-tools", icon: "Minimize2", label: "Compress PDF", desc: "Reduce PDF file size", color: "#3b82f6", bg: "#eff6ff" },
-  { href: "/pdf-tools", icon: "FileSignature", label: "PDF to Word", desc: "Convert PDF to editable DOCX", color: "#2563eb", bg: "#eff6ff" },
-  { href: "/pdf-tools", icon: "Image", label: "PDF to Images", desc: "Every page as a high-quality image", color: "#f59e0b", bg: "#fffbeb" },
-  { href: "/pdf-tools", icon: "FileText", label: "PDF to Text", desc: "Extract all text from your PDF", color: "#10b981", bg: "#ecfdf5" },
+  { href: "/tools/merge-pdf", icon: "Combine", label: "Merge PDF", desc: "Combine multiple PDFs into one file", color: "#e5322d", bg: "#fef2f2" },
+  { href: "/tools/split-pdf", icon: "ScissorsLineDashed", label: "Split PDF", desc: "Extract pages from your PDF", color: "#f97316", bg: "#fff7ed" },
+  { href: "/tools/compress-pdf", icon: "Minimize2", label: "Compress PDF", desc: "Reduce PDF file size", color: "#3b82f6", bg: "#eff6ff" },
+  { href: "/tools/pdf-to-word", icon: "FileSignature", label: "PDF to Word", desc: "Convert PDF to editable DOCX", color: "#2563eb", bg: "#eff6ff" },
+  { href: "/tools/pdf-to-images", icon: "Image", label: "PDF to Images", desc: "Every page as a high-quality image", color: "#f59e0b", bg: "#fffbeb" },
+  { href: "/tools/pdf-to-text", icon: "FileText", label: "PDF to Text", desc: "Extract all text from your PDF", color: "#10b981", bg: "#ecfdf5" },
 
   // Organize
-  { href: "/pdf-tools", icon: "RotateCw", label: "Rotate PDF", desc: "Fix page orientation in seconds", color: "#8b5cf6", bg: "#f5f3ff" },
-  { href: "/pdf-tools", icon: "Images", label: "Images to PDF", desc: "Create PDF from JPG or PNG", color: "#ec4899", bg: "#fdf2f8" },
-  { href: "/pdf-tools", icon: "Lock", label: "Protect PDF", desc: "Encrypt with a password", color: "#ef4444", bg: "#fef2f2" },
-  { href: "/pdf-tools", icon: "Unlock", label: "Unlock PDF", desc: "Remove password protection", color: "#10b981", bg: "#ecfdf5" },
+  { href: "/tools/rotate-pdf", icon: "RotateCw", label: "Rotate PDF", desc: "Fix page orientation in seconds", color: "#8b5cf6", bg: "#f5f3ff" },
+  { href: "/tools/images-to-pdf", icon: "Images", label: "Images to PDF", desc: "Create PDF from JPG or PNG", color: "#ec4899", bg: "#fdf2f8" },
+  { href: "/tools/protect-pdf", icon: "Lock", label: "Protect PDF", desc: "Encrypt with a password", color: "#ef4444", bg: "#fef2f2" },
+  { href: "/tools/unlock-pdf", icon: "Unlock", label: "Unlock PDF", desc: "Remove password protection", color: "#10b981", bg: "#ecfdf5" },
 
   // Edit & Review
-  { href: "/pdf-tools", icon: "PencilLine", label: "Edit PDF", desc: "Add text to any page", color: "#f97316", bg: "#fff7ed" },
-  { href: "/pdf-tools", icon: "Hash", label: "Page Numbers", desc: "Add page numbers to PDF", color: "#6366f1", bg: "#eef2ff" },
-  { href: "/pdf-tools", icon: "EyeOff", label: "Redact PDF", desc: "Black out sensitive text", color: "#1f2937", bg: "#f3f4f6" },
-  { href: "/pdf-tools", icon: "GitCompare", label: "Compare PDFs", desc: "Find differences between files", color: "#0891b2", bg: "#ecfeff" },
+  { href: "/tools/edit-pdf", icon: "PencilLine", label: "Edit PDF", desc: "Add text to any page", color: "#f97316", bg: "#fff7ed" },
+  { href: "/tools/page-numbers", icon: "Hash", label: "Page Numbers", desc: "Add page numbers to PDF", color: "#6366f1", bg: "#eef2ff" },
+  { href: "/tools/redact-pdf", icon: "EyeOff", label: "Redact PDF", desc: "Black out sensitive text", color: "#1f2937", bg: "#f3f4f6" },
+  { href: "/tools/compare-pdfs", icon: "GitCompare", label: "Compare PDFs", desc: "Find differences between files", color: "#0891b2", bg: "#ecfeff" },
 
   // DOCX Tools
-  { href: "/docx-tools", icon: "Globe", label: "DOCX to HTML", desc: "Convert Word to web page", color: "#2563eb", bg: "#eff6ff" },
-  { href: "/docx-tools", icon: "FileText", label: "DOCX to Text", desc: "Extract plain text from Word", color: "#f59e0b", bg: "#fffbeb" },
-  { href: "/docx-tools", icon: "NotebookPen", label: "DOCX to MD", desc: "Convert Word to Markdown", color: "#10b981", bg: "#ecfdf5" },
-  { href: "/docx-tools", icon: "Printer", label: "DOCX to PDF", desc: "Print preview as PDF", color: "#e5322d", bg: "#fef2f2" },
+  { href: "/tools/docx-to-html", icon: "Globe", label: "DOCX to HTML", desc: "Convert Word to web page", color: "#2563eb", bg: "#eff6ff" },
+  { href: "/tools/docx-to-text", icon: "FileText", label: "DOCX to Text", desc: "Extract plain text from Word", color: "#f59e0b", bg: "#fffbeb" },
+  { href: "/tools/docx-to-markdown", icon: "NotebookPen", label: "DOCX to MD", desc: "Convert Word to Markdown", color: "#10b981", bg: "#ecfdf5" },
+  { href: "/tools/docx-to-pdf", icon: "Printer", label: "DOCX to PDF", desc: "Print preview as PDF", color: "#e5322d", bg: "#fef2f2" },
 
   // More
   { href: "/analyze", icon: "Search", label: "Analyze Doc", desc: "Extract text & deep insights", color: "#8b5cf6", bg: "#f5f3ff" },
@@ -211,7 +211,7 @@ export default function HomePage() {
 
           {/* CTA */}
           <div className={`mt-7 md:mt-9 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.3s" }}>
-            <Link href="/pdf-tools" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#e5322d] px-7 py-3.5 text-[15px] font-bold text-white no-underline shadow-lg shadow-[#e5322d]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#e5322d]/25 hover:bg-[#d42b26] active:scale-[0.97] overflow-hidden">
+            <Link href="#tools" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#e5322d] px-7 py-3.5 text-[15px] font-bold text-white no-underline shadow-lg shadow-[#e5322d]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#e5322d]/25 hover:bg-[#d42b26] active:scale-[0.97] overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
               <UIcon name="Sparkles" size={16} />
               Get started — it&apos;s free
@@ -251,7 +251,7 @@ export default function HomePage() {
       <Marquee />
 
       {/* ══════ ALL TOOLS GRID (Smallpdf / iLovePDF style) ══════ */}
-      <section className="relative px-4 sm:px-6 md:px-8 pb-16 md:pb-24">
+      <section id="tools" className="relative px-4 sm:px-6 md:px-8 pb-16 md:pb-24">
         <div className="mx-auto max-w-[1100px]">
           {/* Header */}
           <div className="text-center mb-8 md:mb-10">

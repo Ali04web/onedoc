@@ -8,8 +8,6 @@ import { UIcon } from "./Icons";
 const navItems = [
   { href: "/", icon: "NavHome", label: "Home" },
   { href: "/analyze", icon: "NavAnalyze", label: "Analyze" },
-  { href: "/pdf-tools", icon: "NavPdfTools", label: "PDF Tools" },
-  { href: "/docx-tools", icon: "NavDocxTools", label: "DOCX Tools" },
   { href: "/pdf-link", icon: "NavPdfLink", label: "PDF Link" },
   { href: "/support", icon: "NavSupport", label: "Support" },
 ] as const;
@@ -88,10 +86,10 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           {/* CTA button - Desktop only */}
           <Link
-            href="/pdf-tools"
+            href="/#tools"
             className="hidden lg:inline-flex items-center gap-2 rounded-lg bg-[#e5322d] px-4 py-2 text-[13px] font-semibold text-white no-underline transition-all duration-200 hover:bg-[#d42b26] hover:shadow-md hover:shadow-[#e5322d]/20 active:scale-[0.97]"
           >
-            Get Started
+            All Tools
           </Link>
 
           {/* Mobile Toggle */}
@@ -173,11 +171,11 @@ export default function Navbar() {
             {/* Mobile CTA */}
             <div className="px-4 sm:px-6 pt-4 pb-6">
               <Link
-                href="/pdf-tools"
+                href="/#tools"
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-2 rounded-xl bg-[#e5322d] px-6 py-3.5 text-[15px] font-bold text-white no-underline transition-all hover:bg-[#d42b26] active:scale-[0.97] w-full"
               >
-                Get Started — Free
+                All Tools — Free
               </Link>
             </div>
 
