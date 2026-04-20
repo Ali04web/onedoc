@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { UIcon } from "./Icons";
+import LanguageSelector from "./LanguageSelector";
 
 const navItems = [
   { href: "/", icon: "NavHome", label: "Home" },
@@ -83,7 +84,8 @@ export default function Navbar() {
         </nav>
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <LanguageSelector />
           {/* CTA button - Desktop only */}
           <Link
             href="/#tools"

@@ -371,3 +371,15 @@ body {
 .animate-marquee {
   animation: marquee 35s linear infinite;
 }
+
+/* ── Google Translate Overrides ── */
+body {
+    top: 0 !important;
+}
+.skiptranslate iframe {
+    display: none !important;
+    visibility: hidden !important;
+}
+.goog-te-banner-frame {
+    display: none !important;
+}
