@@ -26,7 +26,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "OneDoc | Document Conversion Suite",
+  title: "FixPDF | Document Conversion Suite",
   description:
     "Fast PDF and DOCX tools for convert, analyze, and share workflows.",
   icons: {
@@ -59,8 +59,8 @@ export default function RootLayout({
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <img src="/onedoc-symbol.svg" alt="OneDoc" className="h-8 w-8" />
-                  <span className="font-display text-[18px] font-bold text-[#1a1a2e] tracking-tight">OneDoc</span>
+                  <img src="/onedoc-symbol.svg" alt="FixPDF" className="h-8 w-8" />
+                  <span className="font-display text-[18px] font-bold text-[#1a1a2e] tracking-tight">FixPDF</span>
                 </div>
                 <p className="text-[13px] text-[#5f6368] max-w-[320px] leading-relaxed">
                   Every document tool you need, entirely in your browser. No uploads, no sign-ups, completely free.
@@ -87,7 +87,7 @@ export default function RootLayout({
             {/* Bottom row */}
             <div className="pt-6 border-t border-black/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-[12px] text-[#9aa0a6] font-medium">
-                © 2026 OneDoc · All tools free · No sign-up required
+                © 2026 FixPDF · All tools free · No sign-up required
               </div>
               <div className="flex items-center gap-4 text-[12px] text-[#9aa0a6] font-medium">
                 <span className="flex items-center gap-1.5">

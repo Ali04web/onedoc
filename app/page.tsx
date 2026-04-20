@@ -287,12 +287,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════ WHY ONEDOC ══════ */}
+      {/* ══════ WHY FIXPDF ══════ */}
       <section className="relative px-4 sm:px-6 md:px-8 pb-16 md:pb-24 bg-[#f7f8fc]">
         <div className="mx-auto max-w-[1100px] pt-16 md:pt-24">
           <div className="text-center mb-10 md:mb-14">
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a2e] tracking-tight mb-3">
-              Why choose OneDoc?
+              Why choose FixPDF?
             </h2>
             <p className="text-[14px] sm:text-[15px] text-[#5f6368] max-w-[480px] mx-auto leading-relaxed">No servers, no subscriptions, no compromise.</p>
           </div>
@@ -301,7 +301,7 @@ export default function HomePage() {
               { icon: "ShieldCheck", title: "100% Private", desc: "Files never leave your browser. Zero server uploads, zero tracking.", color: "#10b981", bg: "#ecfdf5" },
               { icon: "Zap", title: "Lightning Fast", desc: "Native browser processing — no waiting for server round-trips.", color: "#f59e0b", bg: "#fffbeb" },
               { icon: "Sparkles", title: "Always Free", desc: "Every tool, every feature. No paywalls, no sign-ups, no limits.", color: "#e5322d", bg: "#fef2f2" },
-              { icon: "Globe", title: "Works Anywhere", desc: "Desktop, tablet, or phone — OneDoc works beautifully on every device.", color: "#3b82f6", bg: "#eff6ff" },
+              { icon: "Globe", title: "Works Anywhere", desc: "Desktop, tablet, or phone — FixPDF works beautifully on every device.", color: "#3b82f6", bg: "#eff6ff" },
             ] as const).map((f, i) => (
               <FeatureCard key={f.title} feature={f} index={i} />
             ))}

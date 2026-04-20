@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
 
     const response = await fetch(targetUrl.toString(), {
       headers: {
-        "user-agent": "Mozilla/5.0 OneDoc Webpage Capture",
+        "user-agent": "Mozilla/5.0 FixPDF Webpage Capture",
         accept: "text/html,application/xhtml+xml",
       },
     });

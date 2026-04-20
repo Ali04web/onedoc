@@ -320,7 +320,7 @@ export function ExportView({ doc }: { doc: DocShape }) {
         dlText(
           `${stem(doc.name)}_report.txt`,
           [
-            "OneDoc Analysis Report",
+            "FixPDF Analysis Report",
             "======================",
             `File: ${doc.name}`,
             `Words: ${stats.wordCount}`,

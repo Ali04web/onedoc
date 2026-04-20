@@ -53,10 +53,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2.5 group no-underline transition-all active:scale-95">
           <div className="relative h-9 w-9 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
-            <img src="/onedoc-symbol.svg" alt="OneDoc Logo" className="h-full w-full object-contain" />
+            <img src="/onedoc-symbol.svg" alt="FixPDF Logo" className="h-full w-full object-contain" />
           </div>
           <div className="font-display text-[19px] font-bold tracking-tight text-[#1a1a2e] transition-colors group-hover:text-[#e5322d]">
-            OneDoc
+            FixPDF
           </div>
         </Link>
 

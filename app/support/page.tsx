@@ -6,7 +6,7 @@ import { UIcon } from "@/app/components/Icons";
 
 const faqs = [
   {
-    q: "Is OneDoc free to use?",
+    q: "Is FixPDF free to use?",
     a: "Yes. All tools are free with no sign-up required.",
   },
   {
@@ -18,7 +18,7 @@ const faqs = [
     a: "Use accuracy mode when visual fidelity matters. Use editable mode when you need to edit the text.",
   },
   {
-    q: "Does OneDoc work on mobile?",
+    q: "Does FixPDF work on mobile?",
     a: "Yes. The layout is fully responsive.",
   },
 ];

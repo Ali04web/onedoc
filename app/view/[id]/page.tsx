@@ -44,7 +44,7 @@ export default async function ViewPage({
       <head>
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
-        <title>{meta.originalName} | OneDoc Viewer</title>
+        <title>{meta.originalName} | FixPDF Viewer</title>
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -240,7 +240,7 @@ export default async function ViewPage({
                 <BrandSymbol size={32} />
               </div>
               <div className="brand-copy">
-                <div className="eyebrow">OneDoc Shared Viewer</div>
+                <div className="eyebrow">FixPDF Shared Viewer</div>
                 <div className="title">{meta.originalName}</div>
                 <div className="meta">
                   <span className="chip">PDF</span>
@@ -251,7 +251,7 @@ export default async function ViewPage({
             </div>
             <div className="actions">
               <a className="btn btn-secondary" href="/">
-                Back to OneDoc
+                Back to FixPDF
               </a>
               <a className="btn btn-primary" href={pdfUrl} download={meta.originalName}>
                 Download PDF
@@ -265,7 +265,7 @@ export default async function ViewPage({
                 <div>
                   <strong>Live document view</strong>
                 </div>
-                <span>OneDoc</span>
+                <span>FixPDF</span>
               </div>
               <div className="viewer-frame">
                 <iframe src={pdfUrl} title={meta.originalName} />
@@ -330,7 +330,7 @@ export default async function ViewPage({
           </div>
 
           <div className="powered">
-            Powered by <a href="/">OneDoc</a>
+            Powered by <a href="/">FixPDF</a>
           </div>
         </div>
       </body>
