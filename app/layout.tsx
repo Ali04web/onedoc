@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import {
-  Space_Grotesk,
   Inter,
+  Space_Grotesk,
   JetBrains_Mono,
 } from "next/font/google";
 import "./globals.css";
@@ -46,23 +46,55 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${body.variable} ${mono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">
+      <body className="min-h-full bg-white">
         <Navbar />
         <main className="relative flex flex-col min-h-screen">
           {children}
         </main>
 
         {/* Footer */}
-        <footer className="relative z-10 border-t border-white/[0.04] bg-[rgba(6,6,11,0.5)] backdrop-blur-xl">
-          <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-5">
-            <div className="text-[12px] text-[#6b6d80] font-medium">
-              © 2026 OneDoc · All tools free
+        <footer className="relative z-10 border-t border-black/[0.06] bg-[#f7f8fc]">
+          <div className="mx-auto max-w-[1200px] px-6 py-10 md:py-14">
+            {/* Top row */}
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-8">
+              <div>
+                <div className="flex items-center gap-3 mb-2">
+                  <img src="/onedoc-symbol.svg" alt="OneDoc" className="h-8 w-8" />
+                  <span className="font-display text-[18px] font-bold text-[#1a1a2e] tracking-tight">OneDoc</span>
+                </div>
+                <p className="text-[13px] text-[#5f6368] max-w-[320px] leading-relaxed">
+                  Every document tool you need, entirely in your browser. No uploads, no sign-ups, completely free.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-12 gap-y-4 text-[13px]">
+                <div>
+                  <div className="font-semibold text-[#1a1a2e] mb-2">Tools</div>
+                  <div className="flex flex-col gap-1.5 text-[#5f6368]">
+                    <a href="/pdf-tools" className="hover:text-[#e5322d] transition-colors no-underline text-[#5f6368]">PDF Tools</a>
+                    <a href="/docx-tools" className="hover:text-[#e5322d] transition-colors no-underline text-[#5f6368]">Word Tools</a>
+                    <a href="/analyze" className="hover:text-[#e5322d] transition-colors no-underline text-[#5f6368]">Analyze</a>
+                  </div>
+                </div>
+                <div>
+                  <div className="font-semibold text-[#1a1a2e] mb-2">More</div>
+                  <div className="flex flex-col gap-1.5 text-[#5f6368]">
+                    <a href="/pdf-link" className="hover:text-[#e5322d] transition-colors no-underline text-[#5f6368]">PDF Link</a>
+                    <a href="/support" className="hover:text-[#e5322d] transition-colors no-underline text-[#5f6368]">Support</a>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-4 text-[12px] text-[#6b6d80]">
-              <span className="flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
-                In-browser processing
-              </span>
+            {/* Bottom row */}
+            <div className="pt-6 border-t border-black/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-[12px] text-[#9aa0a6] font-medium">
+                © 2026 OneDoc · All tools free · No sign-up required
+              </div>
+              <div className="flex items-center gap-4 text-[12px] text-[#9aa0a6] font-medium">
+                <span className="flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
+                  In-browser processing
+                </span>
+              </div>
             </div>
           </div>
         </footer>
