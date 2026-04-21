@@ -41,15 +41,7 @@ export default function SupportPage() {
     message: "",
   });
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
-      setToast("Please complete all fields.");
-      return;
-    }
-    setToast("Message prepared. Connect this form to your inbox.");
-    setForm({ name: "", email: "", type: "question", message: "" });
-  }
+  // Native form post to FormSubmit
 
   return (
     <div className="flex-1 overflow-y-auto">
@@ -128,16 +120,30 @@ export default function SupportPage() {
 
           {/* Contact Form */}
           <div className="surface-panel p-5 sm:p-6 md:p-8">
-            <div className="mb-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f59e0b]/[0.08] text-[#f59e0b]">
-                <UIcon name="Mail" size={17} />
+            <div className="mb-6 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f59e0b]/[0.08] text-[#f59e0b]">
+                  <UIcon name="Mail" size={17} />
+                </div>
+                <div className="font-display text-[16px] font-bold text-[#1a1a2e]">Contact</div>
               </div>
-              <div className="font-display text-[16px] font-bold text-[#1a1a2e]">Contact</div>
+              <a
+                href="https://x.com/alivldm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-4 py-2 text-[12px] font-semibold text-[#1a1a2e] no-underline transition-all hover:-translate-y-0.5 hover:bg-[#f7f8fc] hover:border-black/[0.12] active:scale-[0.98]"
+              >
+                <UIcon name="XBrand" size={12} />
+                Follow on X
+              </a>
             </div>
 
-            <form onSubmit={handleSubmit} className="grid gap-3.5">
+            <form action="https://formsubmit.co/alihusain.or@gmail.com" method="POST" className="grid gap-3.5">
+              <input type="hidden" name="_captcha" value="false" />
               <input
                 type="text"
+                name="name"
+                required
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 placeholder="Your name"
@@ -145,12 +151,16 @@ export default function SupportPage() {
               />
               <input
                 type="email"
+                name="email"
+                required
                 value={form.email}
                 onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 placeholder="Email address"
                 className="w-full rounded-xl border border-black/[0.08] bg-[#f7f8fc] px-4 py-3 text-[13px] text-[#1a1a2e] outline-none placeholder:text-[#9aa0a6] focus:ring-2 focus:ring-[#e5322d]/15 focus:border-[#e5322d]/30 focus:bg-white hover:border-black/[0.12] transition-all duration-300"
               />
               <select
+                name="type"
+                required
                 value={form.type}
                 onChange={(e) => setForm((f) => ({ ...f, type: e.target.value }))}
                 className="w-full rounded-xl border border-black/[0.08] bg-[#f7f8fc] px-4 py-3 text-[13px] text-[#1a1a2e] outline-none focus:ring-2 focus:ring-[#e5322d]/15 focus:border-[#e5322d]/30 hover:border-black/[0.12] transition-all duration-300"
@@ -161,6 +171,8 @@ export default function SupportPage() {
                 <option value="feedback">General feedback</option>
               </select>
               <textarea
+                name="message"
+                required
                 rows={4}
                 value={form.message}
                 onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
@@ -177,15 +189,6 @@ export default function SupportPage() {
                   <UIcon name="Mail" size={14} />
                   <span className="relative">Send</span>
                 </button>
-                <a
-                  href="https://x.com/alivldm"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-6 py-3 text-[13px] font-semibold text-[#1a1a2e] no-underline transition-all hover:-translate-y-0.5 hover:bg-[#f7f8fc] hover:border-black/[0.12] active:scale-[0.98]"
-                >
-                  <UIcon name="XBrand" size={12} />
-                  X
-                </a>
               </div>
             </form>
           </div>
