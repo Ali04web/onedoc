@@ -46,28 +46,17 @@ export default function SupportPage() {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="page-shell">
-        {/* Page Hero */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#f59e0b]/[0.05] via-transparent to-[#10b981]/[0.04] border border-black/[0.06] p-6 sm:p-8 md:p-10 animate-fade-in">
-          <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[#f59e0b]/[0.04] blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-40 h-40 rounded-full bg-[#10b981]/[0.03] blur-3xl pointer-events-none" />
-          <div className="relative z-10 flex flex-col sm:flex-row items-start gap-4 sm:gap-5">
-            <div className="flex h-12 w-12 sm:h-14 sm:w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#f59e0b] shadow-lg shadow-[#f59e0b]/20">
-              <UIcon name="NavSupport" size={24} className="text-white" />
-            </div>
-            <div>
-              <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a2e] tracking-tight">Support</h1>
-              <p className="mt-1.5 text-[14px] text-[#5f6368] font-medium max-w-[500px] leading-relaxed">Find answers, check supported formats, or send us a message.</p>
-            </div>
+        {/* Minimal Page Header */}
+        <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in">
+          <div>
+            <h1 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a2e] tracking-tight">Support</h1>
+            <p className="mt-1.5 text-[14px] text-[#5f6368] font-medium leading-relaxed">Find answers or send us a message.</p>
           </div>
-        </div>
-
-        {/* Global X Button (Outside of the boxes) */}
-        <div className="flex justify-end pt-2 pb-0 animate-fade-in" style={{ animationDelay: "0.05s" }}>
           <a
             href="https://x.com/ali04web"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] text-white px-5 py-2.5 text-[13px] font-semibold no-underline transition-all hover:-translate-y-0.5 hover:bg-[#1a1a2e]/90 hover:shadow-lg active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-5 py-2.5 text-[13px] font-semibold text-[#1a1a2e] shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#f7f8fc] hover:shadow hover:border-black/[0.12] active:scale-[0.98]"
           >
             <UIcon name="XBrand" size={14} />
             Follow on X
