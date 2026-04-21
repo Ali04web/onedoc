@@ -210,7 +210,18 @@ export default function HomePage() {
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a1a2e] tracking-tight mb-3">
               Why choose FixPDF?
             </h2>
-            <p className="text-[14px] sm:text-[15px] text-[#5f6368] max-w-[480px] mx-auto leading-relaxed">No servers, no subscriptions, no compromise.</p>
+            <p className="text-[14px] sm:text-[15px] text-[#5f6368] max-w-[480px] mx-auto leading-relaxed mb-6">No servers, no subscriptions, no compromise.</p>
+            
+            <div className="mx-auto max-w-[600px] flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[12px] text-[#9aa0a6] font-medium">
+              <span className="flex items-center gap-2"><UIcon name="Lock" size={12} />End-to-end private</span>
+              <span className="hidden sm:block h-3 w-px bg-black/[0.08]" />
+              <span className="flex items-center gap-2"><UIcon name="Zap" size={12} />No server uploads</span>
+              <span className="hidden sm:block h-3 w-px bg-black/[0.08]" />
+              <span className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" /></span>
+                All systems operational
+              </span>
+            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
             {([
@@ -284,19 +295,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════ TRUST BAR ══════ */}
-      <div className="px-4 sm:px-6 md:px-8 pb-10">
-        <div className="mx-auto max-w-[600px] flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-[12px] text-[#9aa0a6] font-medium">
-          <span className="flex items-center gap-2"><UIcon name="Lock" size={12} />End-to-end private</span>
-          <span className="hidden sm:block h-3 w-px bg-black/[0.08]" />
-          <span className="flex items-center gap-2"><UIcon name="Zap" size={12} />No server uploads</span>
-          <span className="hidden sm:block h-3 w-px bg-black/[0.08]" />
-          <span className="flex items-center gap-2">
-            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-[#10b981]" /></span>
-            All systems operational
-          </span>
-        </div>
-      </div>
     </div>
   );
 }
