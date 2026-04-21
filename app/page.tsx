@@ -136,7 +136,7 @@ export default function HomePage() {
     <div className="relative z-10 w-full overflow-x-hidden">
 
       {/* ══════ HERO ══════ */}
-      <section className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 pt-10 md:pt-20 pb-10 md:pb-16 overflow-hidden">
+      <section className="relative flex flex-col items-center px-4 sm:px-6 md:px-8 pt-10 md:pt-20 pb-6 md:pb-10 overflow-hidden">
         {/* Subtle background pattern */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
           <div className="absolute rounded-full blur-[100px] opacity-30" style={{ width: "50vw", height: "50vw", maxWidth: 600, maxHeight: 600, top: "-15%", left: "-5%", background: "radial-gradient(circle, rgba(229,50,45,0.08) 0%, transparent 70%)" }} />
@@ -162,20 +162,6 @@ export default function HomePage() {
             Convert, analyze, merge, split, and share — entirely in your browser.
             No uploads to servers, no sign-ups, no limits.
           </p>
-
-          {/* CTA */}
-          <div className={`mt-7 md:mt-9 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto transition-all duration-1000 ${heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: "0.3s" }}>
-            <Link href="#tools" className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#e5322d] px-7 py-3.5 text-[15px] font-bold text-white no-underline shadow-lg shadow-[#e5322d]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#e5322d]/25 hover:bg-[#d42b26] active:scale-[0.97] overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
-              <UIcon name="Sparkles" size={16} />
-              Get started — it&apos;s free
-              <UIcon name="ArrowRight" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link href="/analyze" className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl border border-black/[0.1] bg-white px-7 py-3.5 text-[15px] font-bold text-[#1a1a2e] no-underline transition-all duration-300 hover:bg-[#f7f8fc] hover:border-black/[0.14] hover:-translate-y-0.5 active:scale-[0.97]">
-              <UIcon name="NavAnalyze" size={16} />
-              Analyze a document
-            </Link>
-          </div>
         </div>
       </section>
 
