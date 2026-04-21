@@ -267,33 +267,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ══════ FINAL CTA ══════ */}
-      <section className="relative px-4 sm:px-6 md:px-8 pb-16 md:pb-24">
-        <div className="mx-auto max-w-[800px]">
-          <div className="relative rounded-3xl bg-gradient-to-br from-[#e5322d]/[0.04] via-transparent to-[#f97316]/[0.03] border border-black/[0.06] p-8 md:p-14 text-center overflow-hidden">
-            {/* Decorative blobs */}
-            <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-[#e5322d]/[0.04] blur-[60px] pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-36 h-36 rounded-full bg-[#f97316]/[0.04] blur-[50px] pointer-events-none" />
 
-            <div className="relative z-10">
-              <div className="flex items-center justify-center gap-3 mb-5">
-                <div className="h-12 w-12 rounded-2xl bg-[#e5322d] flex items-center justify-center shadow-lg shadow-[#e5322d]/20">
-                  <UIcon name="Sparkles" size={22} className="text-white" />
-                </div>
-              </div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-[#1a1a2e] tracking-tight mb-3">Ready to get started?</h2>
-              <p className="text-[14px] sm:text-[15px] text-[#5f6368] max-w-[400px] mx-auto leading-relaxed mb-7">No accounts, no uploads, no nonsense. Just powerful document tools that work instantly.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                <Link href="/pdf-tools" className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-[#e5322d] px-7 py-3.5 text-[14px] font-bold text-white no-underline shadow-lg shadow-[#e5322d]/20 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#e5322d]/25 hover:bg-[#d42b26] active:scale-[0.97] overflow-hidden">
-                  Open PDF Suite
-                  <UIcon name="ArrowRight" size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-                <Link href="/docx-tools" className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl border border-black/[0.08] bg-white px-7 py-3.5 text-[14px] font-bold text-[#1a1a2e] no-underline transition-all duration-300 hover:bg-[#f7f8fc] hover:border-black/[0.12] hover:-translate-y-0.5 active:scale-[0.97]">Open Word Tools</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
     </div>
   );
