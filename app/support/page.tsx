@@ -61,6 +61,19 @@ export default function SupportPage() {
           </div>
         </div>
 
+        {/* Global X Button (Outside of the boxes) */}
+        <div className="flex justify-end pt-2 pb-0 animate-fade-in" style={{ animationDelay: "0.05s" }}>
+          <a
+            href="https://x.com/ali04web"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] text-white px-5 py-2.5 text-[13px] font-semibold no-underline transition-all hover:-translate-y-0.5 hover:bg-[#1a1a2e]/90 hover:shadow-lg active:scale-[0.98]"
+          >
+            <UIcon name="XBrand" size={14} />
+            Follow on X
+          </a>
+        </div>
+
         <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px] animate-fade-in" style={{ animationDelay: "0.1s" }}>
           {/* FAQ */}
           <div className="surface-panel p-5 sm:p-6 md:p-8">
@@ -120,22 +133,11 @@ export default function SupportPage() {
 
           {/* Contact Form */}
           <div className="surface-panel p-5 sm:p-6 md:p-8">
-            <div className="mb-6 flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f59e0b]/[0.08] text-[#f59e0b]">
-                  <UIcon name="Mail" size={17} />
-                </div>
-                <div className="font-display text-[16px] font-bold text-[#1a1a2e]">Contact</div>
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f59e0b]/[0.08] text-[#f59e0b]">
+                <UIcon name="Mail" size={17} />
               </div>
-              <a
-                href="https://x.com/alivldm"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl border border-black/[0.08] bg-white px-4 py-2 text-[12px] font-semibold text-[#1a1a2e] no-underline transition-all hover:-translate-y-0.5 hover:bg-[#f7f8fc] hover:border-black/[0.12] active:scale-[0.98]"
-              >
-                <UIcon name="XBrand" size={12} />
-                Follow on X
-              </a>
+              <div className="font-display text-[16px] font-bold text-[#1a1a2e]">Contact</div>
             </div>
 
             <form action="https://formsubmit.co/alihusain.or@gmail.com" method="POST" className="grid gap-3.5">
